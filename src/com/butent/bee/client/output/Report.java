@@ -529,6 +529,7 @@ public enum Report implements HasWidgetSupplier {
       return Arrays.asList(
         new ReportTextItem(COL_ORDER_NO, loc.order()),
         new ReportTextItem(TaskConstants.COL_TASK_ID, loc.captionId()),
+        new ReportEnumItem(TaskConstants.COL_STATUS, loc.crmTaskStatus(), TaskStatus.class),
         new ReportDateTimeItem(TaskConstants.COL_START_TIME, Data.getColumnLabel(
           TaskConstants.VIEW_TASKS, TaskConstants.COL_START_TIME)),
         new ReportDateTimeItem(TaskConstants.COL_FINISH_TIME, Data.getColumnLabel(
@@ -577,6 +578,7 @@ public enum Report implements HasWidgetSupplier {
       for (String item : new String[]{
         COL_ORDER_NO,
         COL_TASK_ID,
+        TaskConstants.COL_STATUS,
         COL_START_TIME,
         COL_FINISH_TIME,
         "InvoiceSupplier",

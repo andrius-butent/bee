@@ -474,6 +474,13 @@
   </Disclosure>
 
   <Disclosure open="false" style="margin-top: 2ex;">
+    <Label text="KITA" />
+    <FlowPanel>
+      <ChildGrid name="TaskOrderOtherItems" relColumn="Task" class="flexible" style="height: 300px;" />
+    </FlowPanel>
+
+  </Disclosure>
+  <Disclosure open="false" style="margin-top: 2ex;">
     <Label text="KAINA" />
     <FlowPanel>
       <Table kind="controls" >

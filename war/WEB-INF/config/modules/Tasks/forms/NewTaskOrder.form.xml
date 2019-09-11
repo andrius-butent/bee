@@ -111,9 +111,9 @@
           <col index="0" cellStyle="&col1;" />
 
           <row>
-            <Label text="=crmTaskExecutorGroups" style="display: none;" />
+            <Label text="=crmTaskExecutorGroups" />
             <MultiSelector name="UserGroupSettings" viewName="UserGroupSettings" property="ExecutorGroups"
-                           renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y; display: none;" label="=crmTaskExecutorGroups"
+                           renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;" label="=crmTaskExecutorGroups"
                            filter="Owner {u} or Visibility 1" >
             </MultiSelector>
           </row>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table xmlns="http://www.butent.com/table"
+
+       name="TaskOrderOtherItems"
+       idName="TaskOrderOtherItemID"
+>
+    <Fields>
+        <Relation name="Task" relation="Tasks" cascade="DELETE" label="=task" />
+        <Relation name="Item" notNull="true" relation="Items" label="=service" />
+        <String name="Description" precision="50" label="=description" />
+        <Integer name="Quantity" notNull="true" label="=quantity" />
+        <Numeric name="Price" notNull="true" precision="15" scale="4" label="=unitPrice" />
+    </Fields>
+</Table>

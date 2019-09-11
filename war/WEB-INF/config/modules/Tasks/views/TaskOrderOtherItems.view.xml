@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view"
+
+      name="TaskOrderOtherItems" source="TaskOrderOtherItems"
+>
+    <Columns>
+        <SimpleColumn name="Task" />
+
+        <SimpleColumn name="Item"/>
+        <SimpleJoin joinType="LEFT" name="Item">
+            <SimpleColumn name="Name" alias="ItemName" />
+        </SimpleJoin>
+
+        <SimpleColumn name="Description" />
+        <SimpleColumn name="Price" />
+        <SimpleColumn name="Quantity" />
+    </Columns>
+</View>

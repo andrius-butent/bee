@@ -591,6 +591,7 @@
       <xs:enumeration value="TaskOrders" />
       <xs:enumeration value="TaskOrderColumns" />
       <xs:enumeration value="TaskOrderItems" />
+      <xs:enumeration value="TaskOrderOtherItems" />
       <xs:enumeration value="TaskProducts" />
       <xs:enumeration value="TaskTemplates" />
       <xs:enumeration value="TaskTypes" />

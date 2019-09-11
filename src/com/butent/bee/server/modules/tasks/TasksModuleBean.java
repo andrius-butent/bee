@@ -2080,7 +2080,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
     SqlSelect select = new SqlSelect();
     select.addField(VIEW_TASKS, sys.getIdName(VIEW_TASKS), COL_TASK_ID);
-    select.addFields(VIEW_TASKS, COL_START_TIME, COL_FINISH_TIME, COL_SUMMARY);
+    select.addFields(VIEW_TASKS, COL_START_TIME, COL_FINISH_TIME, COL_SUMMARY, COL_STATUS);
     select.addField(VIEW_COMPANIES, COL_COMPANY_NAME, ALS_COMPANY_NAME);
     select.addField(supplier, COL_COMPANY_NAME, "Supplier");
     select.addField(decorationSupplier, COL_COMPANY_NAME, "DecorationSupplier");
@@ -2111,6 +2111,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
     clause.add(report.getCondition(TBL_TASKS, COL_START_TIME));
     clause.add(report.getCondition(TBL_TASKS, COL_FINISH_TIME));
     clause.add(report.getCondition(TBL_TASKS, COL_SUMMARY));
+    clause.add(report.getCondition(TBL_TASKS, COL_STATUS));
     clause.add(report.getCondition(SqlUtils.field(VIEW_COMPANIES, COL_COMPANY_NAME), ALS_COMPANY_NAME));
     clause.add(report.getCondition(SqlUtils.field(supplier, COL_COMPANY_NAME), "Supplier"));
     clause.add(report.getCondition(SqlUtils.field(decorationSupplier, COL_COMPANY_NAME), "DecorationSupplier"));
