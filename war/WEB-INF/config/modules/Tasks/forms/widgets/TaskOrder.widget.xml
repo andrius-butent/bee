@@ -580,6 +580,24 @@
         </row>
 
         <row>
+          <Label for="TransportationSupplier" style="margin-bottom: 10px;" />
+          <cell colSpan="5">
+            <DataSelector source="TransportationSupplier" style="width: 495px;" />
+          </cell>
+        </row>
+
+        <row>
+          <Label for="TransportationSeries" />
+          <InputText source="TransportationSeries" style="width: 100px;" />
+
+          <Label for="TransportationNumber" />
+          <InputText source="TransportationNumber" style="&inline; width: 100px;" />
+
+          <Label for="TransportationPrice" style="&inline; margin-left: 50px; margin-right: 5px;"/>
+          <InputMoney source="TransportationPrice" style="&inline; width: 100px;" />
+        </row>
+
+        <row>
           <Label for="TransportationNote" style="margin-bottom: 10px;" />
           <cell colSpan="5">
             <InputText source="TransportationNote" style="width: 495px; margin-bottom: 10px;" />

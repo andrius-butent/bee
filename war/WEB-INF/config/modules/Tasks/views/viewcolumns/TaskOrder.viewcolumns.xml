@@ -124,6 +124,17 @@
   <SimpleColumn name="Weight" />
   <SimpleColumn name="TransportationNote" />
 
+  <SimpleColumn name="TransportationSupplier" />
+  <SimpleJoin name="TransportationSupplier" joinType="LEFT">
+    <SimpleColumn alias="TransportationSupplierName" name="Name" />
+    <SimpleJoin joinType="LEFT" name="CompanyType">
+      <SimpleColumn name="Name" alias="TransportationSupplierTypeName" />
+    </SimpleJoin>
+  </SimpleJoin>
+  <SimpleColumn name="TransportationSeries" />
+  <SimpleColumn name="TransportationNumber" />
+  <SimpleColumn name="TransportationPrice" />
+
   <SimpleColumn name="InvoiceSupplier" />
   <SimpleColumn name="InvoicePrice" />
   <SimpleColumn name="InvoiceNote" />

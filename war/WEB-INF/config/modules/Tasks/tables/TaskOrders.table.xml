@@ -22,7 +22,7 @@
     <Date name="PressDate" label="Data" />
     <String name="SupplierNote" precision="114" label="Pastaba" />
     <String name="PaperEnvelope" precision="25" label="Žaliava" />
-    <String name="PaperEnvelopeNote" precision="100" label="Pastaba" />
+    <String name="PaperEnvelopeNote" precision="88" label="Pastaba" />
     <Integer name="Color1" label="Spalvingumas" />
     <Integer name="Color2" label="Spalvingumas" />
     <String name="ColorNote" precision="100" label="Pastaba" />
@@ -79,6 +79,10 @@
     <String name="TransportationNote" precision="115" label="Pastaba" />
     <Integer name="PackageQty" label="Pakuočių kiekis" />
     <Numeric name="Weight" precision="9" scale="3" label="Svoris" />
+    <Relation name="TransportationSupplier" relation="Companies" label="TRANSP. Tiekėjas" />
+    <String name="TransportationSeries" precision="10" label="Serija" />
+    <String name="TransportationNumber" precision="10" label="Numeris" />
+    <Numeric name="TransportationPrice" precision="10" scale="4" label="Kaina" />
 
     <String name="InvoiceSupplier" label="Sąskaitą išrašė"  precision="25" />
     <Numeric name="InvoicePrice" precision="10" scale="4" label="Kaina" />
