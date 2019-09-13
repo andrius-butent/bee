@@ -338,7 +338,7 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
             .bracket(Localized.dictionary().createNewRow()));
       } else if (DataUtils.isId(row.getLong(Data.getColumnIndex(VIEW_TASKS, COL_TASK_ORDER)))) {
         event.consume();
-        RowEditor.openForm(FORM_TASK_ORDER, Data.getDataInfo(VIEW_TASKS),
+        RowEditor.openForm(FORM_TASK_ORDER, Data.getDataInfo(VIEW_TASK_ORDERS),
             Filter.compareId(row.getId()), Opener.NEW_TAB);
       } else if (BeeKeeper.getUser().openInNewTab()) {
         event.consume();

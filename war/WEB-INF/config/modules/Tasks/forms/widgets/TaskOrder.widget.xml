@@ -114,7 +114,7 @@
           </ListBox>
 
           <Label for="PaperEnvelopeNote" />
-          <InputText source="PaperEnvelopeNote" style="width: 285px;" maxLength="58" />
+          <InputText source="PaperEnvelopeNote" style="width: 285px;" maxLength="46" />
         </row>
 
         <row>

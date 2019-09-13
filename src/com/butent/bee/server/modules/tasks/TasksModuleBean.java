@@ -2589,7 +2589,10 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
                 COL_EXECUTOR, COL_START_TIME, COL_FINISH_TIME)
             .addField(TBL_COMPANIES, COL_COMPANY_NAME, ALS_COMPANY_NAME)
             .addField(TBL_COMPANY_TYPES, COL_COMPANY_TYPE_NAME, ALS_COMPANY_TYPE_NAME)
+            .addFields(VIEW_TASK_ORDERS, "OrderNo")
             .addFrom(TBL_TASKS)
+            .addFromLeft(VIEW_TASK_ORDERS,
+                sys.joinTables(VIEW_TASK_ORDERS, TBL_TASKS, COL_TASK_ORDER))
             .addFromLeft(TBL_COMPANIES,
                 sys.joinTables(TBL_COMPANIES, TBL_TASKS, COL_COMPANY))
             .addFromLeft(TBL_COMPANY_TYPES,
@@ -2646,8 +2649,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
     logger.info(label, taskId, "mail to", recipientUser, recipientEmail);
 
-    String headerCaption = BeeUtils.joinWords(constants.crmTask(), taskId,
-        row.getValue(COL_SUMMARY));
+    String headerCaption = BeeUtils.joinWords("Užsakymo Nr.", row.getValue("OrderNo"),"(ID: " + taskId + ")");
 
     ResponseObject mailResponse = mail.sendStyledMail(senderAccountId, recipientEmail,
         mailSubject == null ? constants.crmMailTaskSubject() : mailSubject, content, headerCaption);
