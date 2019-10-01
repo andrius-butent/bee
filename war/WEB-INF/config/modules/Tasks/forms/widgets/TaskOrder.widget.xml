@@ -473,13 +473,13 @@
     </FlowPanel>
   </Disclosure>
 
-  <Disclosure open="false" style="margin-top: 2ex;">
+<!--  <Disclosure open="false" style="margin-top: 2ex;">
     <Label text="KITA" />
     <FlowPanel>
       <ChildGrid name="TaskOrderOtherItems" relColumn="Task" class="flexible" style="height: 300px;" />
     </FlowPanel>
+  </Disclosure>-->
 
-  </Disclosure>
   <Disclosure open="false" style="margin-top: 2ex;">
     <Label text="KAINA" />
     <FlowPanel>
@@ -579,7 +579,7 @@
                        style="width: 100px;" />
         </row>
 
-        <row>
+<!--        <row>
           <Label for="TransportationSupplier" style="margin-bottom: 10px;" />
           <cell colSpan="5">
             <DataSelector source="TransportationSupplier" style="width: 495px;" />
@@ -595,7 +595,7 @@
 
           <Label for="TransportationPrice" style="&inline; margin-left: 50px; margin-right: 5px;"/>
           <InputMoney source="TransportationPrice" style="&inline; width: 100px;" />
-        </row>
+        </row>-->
 
         <row>
           <Label for="TransportationNote" style="margin-bottom: 10px;" />

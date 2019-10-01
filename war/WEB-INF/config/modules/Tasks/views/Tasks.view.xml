@@ -4,7 +4,7 @@
    xmlns:xi="http://www.w3.org/2001/XInclude"
 
   name="Tasks" source="Tasks" caption="=crmTasks"
-  editForm="Task" newRowForm="NewTaskOrder" rowCaption="Summary"
+  editForm="Task" newRowForm="NewTask" rowCaption="Summary"
   >
   <Relation renderColumns="Id Summary ExecutorFirstName ExecutorLastName"
     choiceColumns="Id Summary ExecutorFirstName ExecutorLastName StartTime FinishTime" />

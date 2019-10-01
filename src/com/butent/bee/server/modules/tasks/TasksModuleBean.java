@@ -2088,7 +2088,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
       "InvoiceDate", "TransportationNote", "PrintFormat", "ProductFormat", "PaperEnvelope", "PaperEnvelopeNote",
       "NumberOfRuns", "ArcNumber", "Price", "DecorationPrice", "PageNumber", "From", "To", "Series", "Color1",
       "Color2","InvoiceSupplier");
-    select.addFields(VIEW_TASK_ORDER_ITEMS, COL_CURRENCY_RATE_QUANTITY);
+    select.addFields(VIEW_TASK_ORDER_ITEMS, COL_CURRENCY_RATE_QUANTITY, COL_DESCRIPTION);
     select.addField(VIEW_TASK_ORDER_ITEMS, COL_ITEM_PRICE, COL_ITEM + COL_ITEM_PRICE);
     select.addField(VIEW_ITEMS, COL_ITEM_NAME, ALS_ITEM_NAME);
     addExprForUserFirstLastNames(select, ownerPerson, TaskConstants.COL_OWNER);
