@@ -22,7 +22,7 @@
     <Date name="PressDate" label="Data" />
     <String name="SupplierNote" precision="114" label="Pastaba" />
     <String name="PaperEnvelope" precision="25" label="Žaliava" />
-    <String name="PaperEnvelopeNote" precision="88" label="Pastaba" />
+    <String name="PaperEnvelopeNote" precision="100" label="Pastaba" />
     <Integer name="Color1" label="Spalvingumas" />
     <Integer name="Color2" label="Spalvingumas" />
     <String name="ColorNote" precision="100" label="Pastaba" />
