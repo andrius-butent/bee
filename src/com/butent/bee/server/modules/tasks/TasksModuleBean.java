@@ -2649,7 +2649,8 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
     logger.info(label, taskId, "mail to", recipientUser, recipientEmail);
 
-    String headerCaption = BeeUtils.joinWords("Užsakymo Nr.", row.getValue("OrderNo"),"(ID: " + taskId + ")");
+    String headerCaption = BeeUtils.joinWords("Užsakymo Nr.", row.getValue("OrderNo"),
+      "(ID: " + taskId + ")", row.getValue(COL_SUMMARY));
 
     ResponseObject mailResponse = mail.sendStyledMail(senderAccountId, recipientEmail,
         mailSubject == null ? constants.crmMailTaskSubject() : mailSubject, content, headerCaption);

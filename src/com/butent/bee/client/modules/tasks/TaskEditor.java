@@ -1695,7 +1695,7 @@ class TaskEditor extends ProductSupportInterceptor {
             true, exclusions, filter, null);
     final String obs = dialog.addCheckBox(true);
 
-    final String cid = dialog.addComment(true);
+    final String cid = dialog.addComment(false);
     final String fid = dialog.addFileCollector();
 
     dialog.addAction(Localized.dictionary().crmActionForward(), () -> {

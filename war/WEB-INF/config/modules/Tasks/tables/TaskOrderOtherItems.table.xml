@@ -10,5 +10,7 @@
         <String name="Description" precision="50" label="=description" />
         <Integer name="Quantity" notNull="true" label="=quantity" />
         <Numeric name="Price" notNull="true" precision="15" scale="4" label="=unitPrice" />
+        <Relation name="Supplier" relation="Companies" label="=supplier" />
+        <String name="Number" precision="15" label="S/F numeris" />
     </Fields>
 </Table>

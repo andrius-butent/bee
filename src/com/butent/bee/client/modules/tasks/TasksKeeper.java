@@ -194,7 +194,7 @@ public final class TasksKeeper {
     FormFactory.registerFormInterceptor(FORM_REQUEST, new RequestEditor());
 
     GridFactory.registerGridInterceptor(GRID_TODO_LIST, new TodoListInterceptor());
-
+    GridFactory.registerGridInterceptor("TaskOrderOtherItems", new TaskOrderOtherItems());
     GridFactory.registerGridInterceptor(GRID_CHILD_REQUESTS, new ChildRequestsGrid());
 
     GridFactory.registerGridInterceptor(GRID_RECURRING_TASKS, new RecurringTasksGrid());

@@ -63,6 +63,13 @@
       </row>
 
       <row>
+        <Label text="=crmTaskObserverGroups" />
+        <MultiSelector name="ObserverGroups" viewName="UserGroupSettings" property="ObserverGroups"
+                           renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;" label="=crmTaskObserverGroups"
+                           filter="Owner {u} or Visibility 1" />
+      </row>
+
+      <row>
         <Label for="Company" />
         <DataSelector source="Company" editPopup="true" newRowEnabled="true" choiceColumns="Name TypeName"
                       renderColumns="CompanyName CompanyTypeName" style="&inp2x;" />
@@ -116,13 +123,6 @@
                            renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;" label="=crmTaskExecutorGroups"
                            filter="Owner {u} or Visibility 1" >
             </MultiSelector>
-          </row>
-
-          <row>
-            <Label text="=crmTaskObserverGroups" />
-            <MultiSelector name="ObserverGroups" viewName="UserGroupSettings" property="ObserverGroups"
-                           renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;" label="=crmTaskObserverGroups"
-                           filter="Owner {u} or Visibility 1" />
           </row>
 
           <row module="Projects" data="Projects">

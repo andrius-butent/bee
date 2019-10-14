@@ -14,5 +14,15 @@
         <SimpleColumn name="Description" />
         <SimpleColumn name="Price" />
         <SimpleColumn name="Quantity" />
+
+        <SimpleColumn name="Supplier" />
+        <SimpleJoin name="Supplier" joinType="LEFT">
+          <SimpleColumn alias="SupplierName" name="Name" />
+          <SimpleJoin joinType="LEFT" name="CompanyType">
+            <SimpleColumn name="Name" alias="SupplierTypeName" />
+          </SimpleJoin>
+        </SimpleJoin>
+
+        <SimpleColumn name="Number" />
     </Columns>
 </View>

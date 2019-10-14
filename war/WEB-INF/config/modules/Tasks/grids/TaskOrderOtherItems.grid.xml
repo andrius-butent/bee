@@ -25,5 +25,8 @@
             </render>
             <footer aggregate="sum" />
         </CalcColumn>
+
+        <RelColumn name="Supplier" />
+        <DataColumn name="Number" />
     </g:columns>
 </g:Grid>
