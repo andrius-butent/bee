@@ -1713,10 +1713,6 @@ class TaskEditor extends ProductSupportInterceptor {
       }
 
       String comment = dialog.getComment(cid);
-      if (BeeUtils.isEmpty(comment)) {
-        showError(Localized.dictionary().crmEnterComment());
-        return;
-      }
 
       BeeRow newRow = getNewRow();
       RelationUtils.updateRow(Data.getDataInfo(VIEW_TASKS), COL_EXECUTOR, newRow,
