@@ -506,3 +506,82 @@ td.bee-crm-taskDialog-filesLabelCell{
   top: 50%;
   transform: translate(0, -50%);
 }
+
+.bee-task-picker-name-cell-bold {
+    font-weight: bold;
+}
+
+.bee-task-picker-search-panel {
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+    width: 400px;
+}
+
+.bee-task-picker-item-panel {
+    max-height: 70vh;
+    overflow: auto;
+}
+.bee-task-picker-item-table {
+    border-collapse: collapse;
+}
+
+.bee-task-picker-item-table td {
+    border: 1px solid #ddd;
+}
+.bee-task-picker-header td {
+    text-align: center;
+    padding: 3px 5px;
+    font-weight: bold;
+}
+.bee-task-picker-price-label,
+.bee-task-picker-sel-price-label {
+    max-width: 80px;
+}
+
+.bee-task-picker-item:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+
+.bee-task-picker-item:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+.bee-task-picker-item td {
+    padding: 2px 5px;
+}
+
+.bee-task-picker-price-cell,
+.bee-task-picker-sel-price-cell,
+.bee-task-picker-from-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.bee-task-picker-type-cell,
+.bee-task-picker-group-cell {
+    white-space: pre-line;
+}
+
+.bee-task-picker-price-currency {
+    padding-left: 5px;
+    font-size: x-small;
+}
+
+.bee-task-picker-sel-price-label,
+.bee-task-picker-sel-price-cell.bee-task-picker-sel-price-cell {
+    background-color: honeydew;
+}
+
+.bee-task-picker-from-label,
+.bee-task-picker-from-cell.bee-task-picker-from-cell {
+    background-color: azure;
+}
+
+.bee-task-picker-qty-cell {
+    text-align: center;
+}
+
+.bee-task-picker-qty-input.bee-task-picker-qty-input {
+    width: 60px;
+    font-weight: bold;
+}
