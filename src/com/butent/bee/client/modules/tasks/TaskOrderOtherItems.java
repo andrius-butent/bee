@@ -28,7 +28,7 @@ import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
 
 public class TaskOrderOtherItems extends AbstractGridInterceptor {
 
-  private static final String STYLE_PREFIX = "be-task-" + "picker-";
+  private static final String STYLE_PREFIX = "bee-task-" + "picker-";
   private static final String STYLE_ITEM_PANEL = STYLE_PREFIX + "item-panel";
   private static final String STYLE_HEADER_CELL_SUFFIX = "label";
   private static final String STYLE_ITEM_TABLE = STYLE_PREFIX + "item-table";
