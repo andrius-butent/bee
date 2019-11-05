@@ -2081,6 +2081,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
     SqlSelect select = new SqlSelect();
     select.addField(VIEW_TASKS, sys.getIdName(VIEW_TASKS), COL_TASK_ID);
     select.addFields(VIEW_TASKS, COL_START_TIME, COL_FINISH_TIME, COL_SUMMARY, COL_STATUS);
+    select.addField(TBL_TASK_TYPES, COL_TASK_TYPE_NAME, "TaskType");
     select.addField(VIEW_COMPANIES, COL_COMPANY_NAME, ALS_COMPANY_NAME);
     select.addField(supplier, COL_COMPANY_NAME, "Supplier");
     select.addField(decorationSupplier, COL_COMPANY_NAME, "DecorationSupplier");
@@ -2096,6 +2097,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
     addJoinsForUserFirstLastNames(select, ownerPerson, TBL_TASKS, COL_OWNER);
 
+    select.addFromLeft(TBL_TASK_TYPES, sys.joinTables(TBL_TASK_TYPES, TBL_TASKS, COL_TASK_TYPE));
     select.addFromLeft(VIEW_TASK_ORDERS, sys.joinTables(VIEW_TASK_ORDERS, TBL_TASKS, COL_TASK_ORDER));
     select.addFromLeft(VIEW_TASK_ORDER_ITEMS, sys.joinTables(TBL_TASKS, VIEW_TASK_ORDER_ITEMS, COL_TASK));
     select.addFromLeft(VIEW_ITEMS, sys.joinTables(VIEW_ITEMS, VIEW_TASK_ORDER_ITEMS, COL_ITEM));
