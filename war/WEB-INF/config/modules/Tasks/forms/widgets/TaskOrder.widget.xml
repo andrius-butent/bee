@@ -99,8 +99,8 @@
         </row>
 
         <row>
-          <Label for="PaperEnvelope" />
-          <ListBox source="PaperEnvelope" style="width: 175px;" >
+          <Label for="PaperEnvelope" class="bee-required" />
+          <ListBox source="PaperEnvelope" style="width: 175px;" required="true" >
             <item>popierius</item>
             <item>vokai</item>
             <item>plastikas</item>
