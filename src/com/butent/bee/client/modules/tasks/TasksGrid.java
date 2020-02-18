@@ -97,11 +97,7 @@ import com.butent.bee.shared.utils.BeeUtils;
 import com.butent.bee.shared.utils.Codec;
 import com.butent.bee.shared.utils.EnumUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handler {
@@ -173,8 +169,6 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
 
       presenter.getHeader().addCommandItem(createProject);
     }
-
-    presenter.getHeader().addCommandItem(CustomTasksGrid.getOrderAction());
   }
 
   @Override
@@ -184,7 +178,7 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
         String title = presenter.getActiveRow().getString(getDataIndex(COL_SUMMARY));
         List<String> msg = Lists.newArrayList(Localized.dictionary().crmTaskCopyQuestion());
 
-        List<String> options = Lists.newArrayList(Localized.dictionary().crmNewTask(),
+        List<String> options = Lists.newArrayList(Localized.dictionary().newOrder(),
             Localized.dictionary().crmNewRecurringTask(), Localized.dictionary().cancel());
         int defValue = options.size() - 1;
 
@@ -839,6 +833,12 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
   }
 
   private void copyTask(BeeRow oldRow) {
+    List<String> excludedColumns = Arrays.asList("TransportationSupplier", "TransportationSeries",
+      "TransportationNumber", "TransportationPrice", "TransportationNote", "Supplier", "PressSeries", "PressNumber",
+      "PressDate", "Price", "SupplierNote", "DecorationSupplier", "PriceSeries", "Number", "Date", "DecorationPrice",
+      "DecorationSupplierNote", "InvoiceSupplier", "InvoicePrice", "InvoiceNote", "InvoiceSeries", "InvoiceNumber",
+      "InvoiceDate", "Transportation", "PackageQty", "Weight");
+
     DataInfo dataInfo = Data.getDataInfo(VIEW_TASKS);
     if (dataInfo == null) {
       return;
@@ -895,6 +895,11 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
 
     if (DataUtils.isId(Data.getLong(VIEW_TASKS, oldRow, COL_TASK_ORDER))) {
       for (BeeColumn column : Data.getColumns(VIEW_TASK_ORDER_COLUMNS)) {
+
+        if (excludedColumns.contains(column.getId())) {
+          continue;
+        }
+
         int index = dataInfo.getColumnIndex(column.getId());
         String value = oldRow.getString(index);
 

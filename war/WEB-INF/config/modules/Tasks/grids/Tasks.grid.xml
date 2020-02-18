@@ -2,7 +2,7 @@
 <g:Grid xmlns="http://www.butent.com/column" xmlns:g="http://www.butent.com/grid"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   
-  name="Tasks" viewName="Tasks" caption="=crmTasks"
+  name="Tasks" viewName="TaskOrders" caption="=crmTasks"
   cacheData="false" favorite="Summary" enabledActions="copy"
   editForm="Task:=inputFull, TaskPreview:=inputSimple"
   order="Status, FinishTime, TaskID desc" maxColumnWidth="160"

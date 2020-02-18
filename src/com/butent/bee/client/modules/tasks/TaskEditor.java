@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.shared.data.cache.CachingPolicy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
@@ -639,6 +640,7 @@ class TaskEditor extends ProductSupportInterceptor {
   @Override
   public void afterRefresh(FormView form, IsRow row) {
     Widget area = form.getWidgetBySource(COL_DESCRIPTION);
+		TaskHelper.setWidgetsEnabled(form);
 
     if (area != null && area instanceof InputArea) {
       StyleUtils.setHeight(area, 60);
@@ -1064,17 +1066,31 @@ class TaskEditor extends ProductSupportInterceptor {
   @Override
   protected void getReportData(Consumer<BeeRowSet[]> dataConsumer) {
     if (!Data.isNull(VIEW_TASKS, getActiveRow(), COL_TASK_ORDER)) {
-      Queries.getRowSet(VIEW_TASK_ORDER_ITEMS, null, Filter.equals(COL_TASK, getActiveRowId()),
-          new RowSetCallback() {
-            @Override
-            public void onSuccess(BeeRowSet result) {
-              if (result.getNumberOfRows() > 0) {
-                dataConsumer.accept(new BeeRowSet[] {result});
-              } else {
-                TaskEditor.super.getReportData(dataConsumer);
-              }
+
+      Map<String, Filter> tableMaps = new HashMap<>();
+      tableMaps.put(VIEW_TASK_ORDER_ITEMS, Filter.equals(COL_TASK, getActiveRowId()));
+      tableMaps.put(VIEW_TASK_ORDER_OTHER_ITEMS, Filter.equals(COL_TASK, getActiveRowId()));
+
+      Queries.getData(Arrays.asList(VIEW_TASK_ORDER_ITEMS, VIEW_TASK_ORDER_OTHER_ITEMS), tableMaps, CachingPolicy.NONE,
+        new Queries.DataCallback() {
+        @Override
+        public void onSuccess(Collection<BeeRowSet> result) {
+
+          ArrayList<BeeRowSet> inputData = new ArrayList<>();
+
+          for (BeeRowSet rowSet : result) {
+            if (rowSet.getNumberOfRows() > 0) {
+              inputData.add(rowSet);
             }
-          });
+          }
+
+          if (!inputData.isEmpty()) {
+            dataConsumer.accept(inputData.toArray(new BeeRowSet[0]));
+          } else {
+            TaskEditor.super.getReportData(dataConsumer);
+          }
+        }
+      });
     }
   }
 

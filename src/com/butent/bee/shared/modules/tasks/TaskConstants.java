@@ -811,6 +811,7 @@ public final class TaskConstants {
   public static final String VIEW_TASK_ORDERS = "TaskOrders";
   public static final String VIEW_TASK_ORDER_COLUMNS = "TaskOrderColumns";
   public static final String VIEW_TASK_ORDER_ITEMS = "TaskOrderItems";
+  public static final String VIEW_TASK_ORDER_OTHER_ITEMS = "TaskOrderOtherItems";
 
   public static final String VIEW_TASK_TEMPLATES = "TaskTemplates";
   public static final String VIEW_TASK_TYPES = "TaskTypes";

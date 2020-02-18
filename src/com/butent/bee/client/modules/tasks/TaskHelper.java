@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.client.grid.ChildGrid;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,12 +31,7 @@ import com.butent.bee.shared.ui.UiConstants;
 import com.butent.bee.shared.utils.BeeUtils;
 import com.butent.bee.shared.utils.Codec;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Shared utility for Task creating or editing between create and edit task's forms.
@@ -44,7 +40,11 @@ final class TaskHelper {
 
   static final String NAME_TASK_TREE = "TaskTree";
   static final String NAME_ORDER = "TaskEventsOrder";
-
+  private static final List<String> widgetNames = Arrays.asList("Supplier", "PressSeries", "PressNumber", "PressDate", "Price",
+		"SupplierNote", "DecorationSupplier", "PriceSeries", "Number", "Date", "DecorationPrice", "DecorationSupplierNote",
+		"InvoiceSupplier", "InvoicePrice", "InvoiceNote", "InvoiceSeries", "InvoiceNumber", "InvoiceDate",
+		"TransportationSupplier", "TransportationSeries", "TransportationNumber", "TransportationPrice",
+		"TransportationNote");
 
   static ParameterList createTaskParams(FormView form, TaskConstants.TaskEvent event,
                                         BeeRow newRow, Collection<RowChildren> updatedRelations,
@@ -227,6 +227,21 @@ final class TaskHelper {
     }
   }
 
+  static void setWidgetsEnabled(FormView form) {
+		if (form != null && BeeKeeper.getUser().getUserData().canMergeData("TaskOrderOtherItems")) {
+			ChildGrid otherOrderItems = (ChildGrid) form.getWidgetByName("TaskOrderOtherItems");
+			if (otherOrderItems != null) {
+				setWidgetEnabled(otherOrderItems, true);
+			}
+
+			for(String widgetName : widgetNames) {
+				Widget widget = form.getWidgetBySource(widgetName);
+				if (widget != null) {
+					setWidgetEnabled((HasEnabled) widget, true);
+				}
+			}
+		}
+	}
   static void setSelectorFilter(DataSelector selector, Filter filter) {
     if (selector == null) {
       return;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Entry xmlns="http://www.butent.com/menu"
 
-name="Tasks" label="=crmTasks" order="20" module="Tasks"
+name="Tasks" label="=orders" order="20" module="Tasks"
 >
   <Item name="Requests" label="=crmRequests" service="grid" parameters="Requests" />
 

@@ -49,7 +49,7 @@ public enum Module implements HasLocalizedCaption {
   TASKS {
     @Override
     public String getCaption(Dictionary constants) {
-      return constants.crmTasks();
+      return constants.orders();
     }
 
     @Override
