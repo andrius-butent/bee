@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Table xmlns="http://www.butent.com/table"
+
+       name="AdditionStocks"
+       idName="AdditionStockID"
+>
+  <Fields>
+    <Relation name="Item" relation="Items" label="=stocks" />
+    <String name="Name" precision="100" label="=name" notNull="true" />
+    <Relation name="StockSupplier" relation="Companies" label="Tiekėjas" />
+    <Numeric name="Quantity" label="=quantity" precision="15" notNull="true" />
+    <Relation name="Unit" relation="Units" label="=unit" notNull="true" />
+    <Date name="Date" label="=date" notNull="true" />
+    <Numeric name="Price" precision="15" scale="5" label="=price" />
+    <Relation name="Currency" relation="Currencies" label="=currency" />
+    <String name="InvoiceSeries" precision="20" label="S/F serija" />
+    <String name="InvoiceNumber" precision="20" label="S/F numeris" />
+    <Text name="Notes" label="=notes" />
+  </Fields>
+</Table>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view"
+
+      name="StocksCategoryTree" source="StocksCategoryTree" module="Classifiers"
+      caption="=stocksCategories" editForm="StockCategory"
+>
+  <Columns>
+    <SimpleColumn name="Name" />
+    <SimpleColumn name="Parent" />
+    <SimpleJoin joinType="LEFT" name="Parent">
+      <SimpleColumn name="Name" alias="ParentName" />
+    </SimpleJoin>
+  </Columns>
+
+  <Order>
+    <OrderBy column="ParentName" nulls="first" />
+    <OrderBy column="Name" />
+  </Order>
+</View>

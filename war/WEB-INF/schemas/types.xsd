@@ -232,6 +232,7 @@
 
   <xs:simpleType name="listDataView">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="AdditionStocks" />
       <xs:enumeration value="AbsenceTypes" />
       <xs:enumeration value="Accounts" />
       <xs:enumeration value="AccountUsers" />
@@ -582,6 +583,8 @@
       <xs:enumeration value="StageConditions" />
       <xs:enumeration value="Stages" />
       <xs:enumeration value="StageTriggers" />
+      <xs:enumeration value="StocksCategories" />
+      <xs:enumeration value="StocksCategoryTree" />
       <xs:enumeration value="StateProcess" />
       <xs:enumeration value="TaskDurations" />
       <xs:enumeration value="TaskEvents" />
@@ -696,6 +699,7 @@
       <xs:enumeration value="WorkSchedule" />
       <xs:enumeration value="WorkScheduleLocks" />
       <xs:enumeration value="Workspaces" />
+      <xs:enumeration value="WriteOffStocks" />
 
       <!-- samples -->
       <xs:enumeration value="DataTypes" />

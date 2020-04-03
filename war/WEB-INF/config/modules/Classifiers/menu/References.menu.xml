@@ -9,6 +9,9 @@
   <Item name="ItemCategories" label="=itemCategoryTree" service="form" parameters="CategoryTree"
         data="CategoryTree" separator="true" />
 
+  <Item name="StocksCategories" label="=stocksCategories" service="form" parameters="StocksCategoryTree"
+        data="StocksCategoryTree" separator="true" />
+
   <Item name="Units" label="=units" service="grid" parameters="Units" separator="true" />
 
   <Item name="Currencies" label="=currencies" service="grid" parameters="Currencies"

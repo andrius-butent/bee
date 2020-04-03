@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view"
+
+      name="WriteOffStocks" source="WriteOffStocks" caption="=writeOffStocks" module="Classifiers"
+>
+  <Columns>
+    <IdColumn name="ID" />
+    <SimpleColumn name="Item" />
+    <SimpleColumn name="Name" />
+    <SimpleColumn name="Quantity" />
+    <SimpleColumn name="Unit" />
+    <SimpleJoin joinType="LEFT" name="Unit">
+      <SimpleColumn name="Name" alias="UnitName" />
+    </SimpleJoin>
+    <SimpleColumn name="Date" />
+    <SimpleColumn name="Notes" />
+  </Columns>
+
+  <Order>
+    <OrderBy column="ID" descending="true"/>
+  </Order>
+</View>

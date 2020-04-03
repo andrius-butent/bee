@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Table xmlns="http://www.butent.com/table"
+
+       name="WriteOffStocks"
+       idName="WriteOffStockID"
+>
+  <Fields>
+    <Relation name="Item" relation="Items" label="=stocks" />
+    <String name="Name" precision="100" label="=name" notNull="true" />
+    <Numeric name="Quantity" label="=quantity" precision="15" notNull="true" />
+    <Relation name="Unit" relation="Units" label="=unit" />
+    <Date name="Date" label="=date"/>
+    <Text name="Notes" label="=notes" />
+  </Fields>
+</Table>

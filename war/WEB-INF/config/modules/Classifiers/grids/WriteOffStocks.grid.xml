@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<g:Grid xmlns="http://www.butent.com/column"
+        xmlns:g="http://www.butent.com/grid"
+
+        name="WriteOffStocks" viewName="WriteOffStocks" caption="=writeOffStocks"
+        order="ID desc"
+>
+  <g:columns>
+    <DataColumn name="Name" />
+    <DataColumn name="Quantity" />
+    <RelColumn name="Unit" />
+    <DataColumn name="Date" />
+    <DataColumn name="Notes" />
+  </g:columns>
+</g:Grid>

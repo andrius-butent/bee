@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table xmlns="http://www.butent.com/table"
+
+       name="StocksCategoryTree"
+       idName="StockCategoryTreeID"
+>
+  <Fields>
+    <String name="Name" precision="60" notNull="true" label="=name" />
+    <Relation name="Parent" relation="StocksCategoryTree" label="=category" />
+  </Fields>
+
+  <Constraints>
+    <Unique fields="Parent Name" />
+  </Constraints>
+</Table>

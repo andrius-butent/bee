@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<g:Grid xmlns="http://www.butent.com/column"
+        xmlns:g="http://www.butent.com/grid"
+
+        name="AdditionStocks" viewName="AdditionStocks" caption="=additionStocks"
+        order="ID desc"
+>
+  <g:columns>
+    <DataColumn name="Name" />
+    <RelColumn name="StockSupplier" renderColumns="CompanyName CompanyTypeName" />
+    <DataColumn name="Quantity" />
+    <RelColumn name="Unit" />
+    <DataColumn name="Date" />
+    <DataColumn name="Price" />
+    <RelColumn name="Currency" />
+    <DataColumn name="InvoiceSeries" />
+    <DataColumn name="InvoiceNumber" />
+    <DataColumn name="Notes" />
+  </g:columns>
+</g:Grid>

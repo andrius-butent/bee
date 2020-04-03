@@ -69,6 +69,14 @@
     </Table>
 
     <TabbedPages class="flexible">
+      <page predicate="row.IsService">
+        <text>+</text>
+        <ChildGrid name="AdditionStocks" relColumn="Item" summarize="false" />
+      </page>
+      <page predicate="row.IsService">
+        <text>-</text>
+        <ChildGrid name="WriteOffStocks" relColumn="Item" summarize="false" />
+      </page>
       <page>
         <text>=prices</text>
         <FlowPanel class="flexBox-vertical">

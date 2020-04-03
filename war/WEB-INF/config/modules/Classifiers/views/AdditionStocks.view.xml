@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view"
+
+      name="AdditionStocks" source="AdditionStocks" caption="=additionStocks" module="Classifiers"
+>
+  <Columns>
+    <IdColumn name="ID" />
+    <SimpleColumn name="Item" />
+    <SimpleColumn name="Name" />
+    <SimpleColumn name="Quantity" />
+    <SimpleColumn name="Unit" />
+    <SimpleJoin joinType="LEFT" name="Unit">
+      <SimpleColumn name="Name" alias="UnitName" />
+    </SimpleJoin>
+
+    <SimpleColumn name="StockSupplier" />
+    <SimpleJoin name="StockSupplier" joinType="LEFT">
+      <SimpleColumn alias="CompanyName" name="Name" />
+      <SimpleJoin joinType="LEFT" name="CompanyType">
+        <SimpleColumn name="Name" alias="CompanyTypeName" />
+      </SimpleJoin>
+    </SimpleJoin>
+
+    <SimpleColumn name="Price" />
+    <SimpleColumn name="Currency" />
+    <SimpleJoin joinType="LEFT" name="Currency">
+      <SimpleColumn name="Name" alias="CurrencyName" />
+    </SimpleJoin>
+    <SimpleColumn name="InvoiceSeries" />
+    <SimpleColumn name="InvoiceNumber" />
+    <SimpleColumn name="Date" />
+    <SimpleColumn name="Notes" />
+  </Columns>
+
+  <Order>
+    <OrderBy column="ID" descending="true"/>
+  </Order>
+</View>

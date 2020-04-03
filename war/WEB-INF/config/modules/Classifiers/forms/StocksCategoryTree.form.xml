@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Form []>
+<f:Form xmlns="http://www.butent.com/widget"
+        xmlns:f="http://www.butent.com/form"
+        xmlns:ui="http://www.butent.com/ui"
+
+        name="StocksCategoryTree" caption="=itemCategoryTree" data="StocksCategoryTree"
+>
+
+  <DataTree caption="=itemCategories" viewName="StocksCategoryTree" parentColumn="Parent">
+    <calc>
+      <ui:expression>row.Name + ' [' + rowId + ']'</ui:expression>
+    </calc>
+
+    <form>
+      <FlowPanel xmlns="http://www.butent.com/widget" class="flexBox-vertical" style="width: 50vw; height: 50vh;">
+
+        <Table kind="controls" style="margin-bottom: 1em;">
+          <col index="0" kind="label" />
+
+          <row>
+            <Label for="Name" text="=category" />
+            <InputText source="Name" style="width: 300px;" />
+          </row>
+        </Table>
+      </FlowPanel>
+
+    </form>
+  </DataTree>
+</f:Form>

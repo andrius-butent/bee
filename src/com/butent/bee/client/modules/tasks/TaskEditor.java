@@ -786,6 +786,7 @@ class TaskEditor extends ProductSupportInterceptor {
   @Override
   public void beforeRefresh(FormView form, IsRow row) {
     TaskHelper.setWidgetEnabled(relations, isExecutor() || isOwner());
+    TaskHelper.setWidgetsEnabled(form);
     setLateIndicatorHtml(null);
     super.beforeRefresh(form, row);
   }

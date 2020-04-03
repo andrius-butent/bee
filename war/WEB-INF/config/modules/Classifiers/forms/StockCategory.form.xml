@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Form []>
+<f:Form xmlns="http://www.butent.com/widget"
+        xmlns:f="http://www.butent.com/form"
+
+        name="StockCategory" viewName="StocksCategoryTree" caption="=itemCategory"
+        height="200" heightUnit="px"
+>
+  <FlowPanel class="flexBox-vertical">
+    <Table kind="controls" style="margin-bottom: 1em;">
+      <col index="0" kind="label" />
+
+      <row>
+        <Label for="Name" text="=category" />
+        <InputText source="Name" style="width: 300px;" />
+      </row>
+    </Table>
+  </FlowPanel>
+</f:Form>

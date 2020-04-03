@@ -5236,6 +5236,16 @@ public interface Dictionary {
 
   default String style() {return g("style");}
 
+  default String stocks() {return g("stocks");}
+
+  default String newStocks() {return g("newStocks");}
+
+  default String writeOffStocks() {return g("writeOffStocks");}
+
+  default String additionStocks() {return g("additionStocks");}
+
+  default String stocksCategories() {return g("stocksCategories");}
+
   default String summary() {return g("summary");}
 
   default String summer() {return g("summer");}

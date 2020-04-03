@@ -48,11 +48,11 @@ class ItemForm extends AbstractFormInterceptor {
       }
 
       caption = isService
-          ? Localized.dictionary().newService() : Localized.dictionary().newItem();
+          ? Localized.dictionary().newStocks() : Localized.dictionary().newItem();
 
     } else {
       caption = isService
-          ? Localized.dictionary().service() : Localized.dictionary().item();
+          ? Localized.dictionary().stocks() : Localized.dictionary().item();
 
     }
 
