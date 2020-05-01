@@ -14,6 +14,7 @@ public final class ClassifierConstants {
   public static final String SVC_GET_PRICE_AND_DISCOUNT = "GetPriceAndDiscount";
   public static final String SVC_FILTER_ORDERS = "FilterOrders";
   public static final String SVC_GET_RESERVATION = "GetReservation";
+  public static final String SVC_GET_STOCKS_IN_WAREHOUSE = "GetStocksInWarehouse";
 
   public static final String TIMER_REMIND_COMPANY_ACTIONS = "timer_remind_company_actions";
   public static final String TIMER_REMIND_TASKS_SUMMARY = "timer_remind_tasks_summary_";
@@ -69,6 +70,9 @@ public final class ClassifierConstants {
   public static final String TBL_VEHICLE_TYPES = "VehicleTypes";
   public static final String TBL_VEHICLE_BRANDS = "VehicleBrands";
   public static final String TBL_VEHICLE_MODELS = "VehicleModels";
+
+  public static final String TBL_ADDITION_STOCKS = "AdditionStocks";
+  public static final String TBL_WRITE_OFF_STOCKS = "WriteOffStocks";
 
   public static final String FORM_COMPANY = "Company";
   public static final String FORM_COMPANY_ACTION = "CompanyAction";
@@ -323,6 +327,8 @@ public final class ClassifierConstants {
   public static final String COL_VEHICLE_BRAND_NAME = "BrandName";
   public static final String COL_VEHICLE_MODEL_NAME = "Name";
   public static final String COL_VEHICLE_TYPE_NAME = "Name";
+
+  public static final String WIDGET_STOCKS_IN_WAREHOUSE = "StocksInWarehouse";
 
   public static final String ALS_COMPANY_NAME = "CompanyName";
   public static final String ALS_COMPANY_CODE = "CompanyCode";

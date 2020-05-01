@@ -1,5 +1,20 @@
 package com.butent.bee.client.modules.classifiers;
 
+import com.butent.bee.client.communication.ParameterList;
+import com.butent.bee.client.communication.ResponseCallback;
+import com.butent.bee.client.data.Data;
+import com.butent.bee.client.data.Queries;
+import com.butent.bee.client.event.logical.RowCountChangeEvent;
+import com.butent.bee.client.grid.ChildGrid;
+import com.butent.bee.client.ui.FormFactory;
+import com.butent.bee.client.ui.IdentifiableWidget;
+
+import com.butent.bee.client.view.grid.GridView;
+import com.butent.bee.client.view.grid.interceptor.AbstractGridInterceptor;
+import com.butent.bee.client.widget.InputNumber;
+import com.butent.bee.shared.communication.ResponseObject;
+import com.butent.bee.shared.data.value.Value;
+import com.butent.bee.shared.modules.trade.TradeConstants;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,10 +39,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.*;
+
 class ItemForm extends AbstractFormInterceptor {
 
-  @Override
-  public void afterRefresh(FormView form, IsRow row) {
+	@Override
+	public void afterCreateWidget(String name, IdentifiableWidget widget, FormFactory.WidgetDescriptionCallback callback) {
+
+		if (BeeUtils.same(name, TBL_ADDITION_STOCKS) && widget instanceof ChildGrid) {
+			((ChildGrid) widget).setGridInterceptor(getGridInterceptor());
+
+		} else if (BeeUtils.same(name, TBL_WRITE_OFF_STOCKS) && widget instanceof ChildGrid) {
+			((ChildGrid) widget).setGridInterceptor(getGridInterceptor());
+		}
+
+		super.afterCreateWidget(name, widget, callback);
+	}
+
+	@Override
+  	public void afterRefresh(FormView form, IsRow row) {
     int index = form.getDataIndex(ClassifierConstants.COL_ITEM_IS_SERVICE);
     boolean isService = row != null && !row.isNull(index);
 
@@ -82,6 +112,10 @@ class ItemForm extends AbstractFormInterceptor {
       }
     }
 
+    if (DataUtils.hasId(row) && isService) {
+    	getStocksInWarehouse();
+	}
+
     super.afterRefresh(form, row);
   }
 
@@ -110,6 +144,28 @@ class ItemForm extends AbstractFormInterceptor {
     return null;
   }
 
+  private void getStocksInWarehouse() {
+
+	  final FormView form = getFormView();
+	  final Widget widget = form.getWidgetByName(WIDGET_STOCKS_IN_WAREHOUSE, false);
+
+	  if (widget != null && getActiveRow() != null && DataUtils.isId(getActiveRowId())) {
+	  	ParameterList params = ClassifierKeeper.createArgs(SVC_GET_STOCKS_IN_WAREHOUSE);
+	  	params.addDataItem(COL_ITEM, getActiveRow().getId());
+
+	    BeeKeeper.getRpc().makePostRequest(params, new ResponseCallback() {
+		    @Override
+		    public void onResponse(ResponseObject response) {
+			    if (response.hasErrors()) {
+			    	return;
+			    }
+
+				((InputNumber) widget).setValue(response.getResponseAsString());
+		    }
+	    });
+	  }
+  }
+
   private HasWidgets getStockByWarehousePanel() {
     Widget panel = getWidgetByName("StockByWarehouse");
 
@@ -118,5 +174,38 @@ class ItemForm extends AbstractFormInterceptor {
     } else {
       return null;
     }
+  }
+
+  private GridInterceptor getGridInterceptor(){
+	return new AbstractGridInterceptor() {
+
+		@Override
+		public void afterUpdateRow(IsRow result) {
+			getStocksInWarehouse();
+			super.afterUpdateRow(result);
+		}
+
+		@Override
+		public boolean onRowCountChange(GridView gridView, RowCountChangeEvent event) {
+			getStocksInWarehouse();
+			return super.onRowCountChange(gridView, event);
+		}
+
+		@Override
+		public void afterInsertRow(IsRow result) {
+			getGridPresenter().refresh(true, true);
+
+			if (BeeUtils.same(getGridView().getGridName(), TBL_ADDITION_STOCKS)) {
+				Double price = Data.getDouble(TBL_ADDITION_STOCKS, result, COL_ITEM_PRICE);
+
+				if (price != null) {
+					Queries.updateCellAndFire(VIEW_ITEMS, ItemForm.this.getActiveRowId(),
+						ItemForm.this.getActiveRow().getVersion(), COL_ITEM_COST,null, BeeUtils.toString(price));
+				}
+			}
+
+			super.afterInsertRow(result);
+		}
+	};
   }
 }

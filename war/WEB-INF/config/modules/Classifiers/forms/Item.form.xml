@@ -42,6 +42,13 @@
       <row>
         <Label for="Article2" />
         <InputText source="Article2" summarize="true" />
+
+        <Label text="Sandėlyje">
+          &forservice;
+        </Label>
+        <InputInteger readOnly="true" name="StocksInWarehouse">
+          &forservice;
+        </InputInteger>
       </row>
 
       <row>
@@ -62,6 +69,15 @@
         <Label text="=itemCategories" />
         <cell colSpan="5">
           <ChildSelector name="Categories" childTable="ItemCategories" viewName="CategoryTree"
+                         targetRelColumn="Item" sourceRelColumn="Category" newRowEnabled="false"
+                         renderColumns="ParentName Name" label="=categories" style="width: 100%;" />
+        </cell>
+      </row>
+
+      <row>
+        <Label text="=itemCategories" />
+        <cell colSpan="5">
+          <ChildSelector name="StocksCategories" childTable="StocksCategories" viewName="StocksCategoryTree"
                          targetRelColumn="Item" sourceRelColumn="Category" newRowEnabled="false"
                          renderColumns="ParentName Name" label="=categories" style="width: 100%;" />
         </cell>

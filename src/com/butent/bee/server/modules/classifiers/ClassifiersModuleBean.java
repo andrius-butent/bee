@@ -1,5 +1,6 @@
 package com.butent.bee.server.modules.classifiers;
 
+import com.butent.bee.shared.data.*;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -69,13 +70,6 @@ import com.butent.bee.shared.Service;
 import com.butent.bee.shared.communication.ResponseObject;
 import com.butent.bee.shared.css.values.BorderStyle;
 import com.butent.bee.shared.css.values.TextAlign;
-import com.butent.bee.shared.data.BeeColumn;
-import com.butent.bee.shared.data.BeeRow;
-import com.butent.bee.shared.data.BeeRowSet;
-import com.butent.bee.shared.data.DataUtils;
-import com.butent.bee.shared.data.IsRow;
-import com.butent.bee.shared.data.SearchResult;
-import com.butent.bee.shared.data.SimpleRowSet;
 import com.butent.bee.shared.data.SimpleRowSet.SimpleRow;
 import com.butent.bee.shared.data.SqlConstants.SqlFunction;
 import com.butent.bee.shared.data.filter.Filter;
@@ -265,6 +259,9 @@ public class ClassifiersModuleBean implements BeeModule {
     } else if (BeeUtils.same(svc, SVC_GET_RESERVATION)) {
       response = getReservation(reqInfo);
 
+    } else if (BeeUtils.same(svc, SVC_GET_STOCKS_IN_WAREHOUSE)) {
+		response = getStocks(reqInfo);
+
     } else {
       String msg = BeeUtils.joinWords("Commons service not recognized:", svc);
       logger.warning(msg);
@@ -276,7 +273,7 @@ public class ClassifiersModuleBean implements BeeModule {
     return response;
   }
 
-  @Override
+	@Override
   public Collection<BeeParameter> getDefaultParameters() {
     return Collections.singletonList(BeeParameter.createMap(getModule().getName(),
         PRM_RECORD_DEPENDENCY, false, ImmutableMap.of(TBL_DOCUMENTS, COL_DOCUMENT_CATEGORY,
@@ -2258,6 +2255,35 @@ public class ClassifiersModuleBean implements BeeModule {
     }
 
     return remainders;
+  }
+
+  private ResponseObject getStocks(RequestInfo reqInfo) {
+
+  	Long itemId = reqInfo.getParameterLong(COL_ITEM);
+
+  	if (!DataUtils.isId(itemId)) {
+  		return ResponseObject.parameterNotFound(SVC_GET_STOCKS_IN_WAREHOUSE, COL_ITEM);
+  	}
+
+  	SqlSelect selectAddedStocks = new SqlSelect()
+  		.addSum(TBL_ADDITION_STOCKS, COL_TRADE_ITEM_QUANTITY)
+  		.addFrom(TBL_ADDITION_STOCKS)
+		.setWhere(SqlUtils.equals(TBL_ADDITION_STOCKS, COL_ITEM, itemId));
+
+	  SqlSelect selectWriteOffStocks = new SqlSelect()
+		  .addSum(TBL_WRITE_OFF_STOCKS, COL_TRADE_ITEM_QUANTITY)
+		  .addFrom(TBL_WRITE_OFF_STOCKS)
+		  .setWhere(SqlUtils.equals(TBL_WRITE_OFF_STOCKS, COL_ITEM, itemId));
+
+  	SimpleRowSet addedStocks = qs.getData(selectAddedStocks);
+  	SimpleRowSet writeOffStocks = qs.getData(selectWriteOffStocks);
+
+  	Integer addedStocksSum = addedStocks.getInt(0, 0);
+  	Integer writeOffStocksSum = writeOffStocks.getInt(0, 0);
+
+  	Integer result = (addedStocksSum == null ? 0 : addedStocksSum) - (writeOffStocksSum == null ? 0 : writeOffStocksSum);
+
+  	return ResponseObject.response(result);
   }
 
   private ResponseObject getReservation(RequestInfo reqInfo) {

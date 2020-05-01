@@ -3,11 +3,11 @@
         xmlns:g="http://www.butent.com/grid"
 
         name="WriteOffStocks" viewName="WriteOffStocks" caption="=writeOffStocks"
-        order="ID desc"
+        order="ID desc" editForm="WriteOffStocks" newRowForm="WriteOffStocks"
 >
   <g:columns>
     <DataColumn name="Name" />
-    <DataColumn name="Quantity" />
+    <DataColumn name="Quantity" editInPlace="false" />
     <RelColumn name="Unit" />
     <DataColumn name="Date" />
     <DataColumn name="Notes" />

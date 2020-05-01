@@ -5246,6 +5246,8 @@ public interface Dictionary {
 
   default String stocksCategories() {return g("stocksCategories");}
 
+  default String newBuying() {return g("newBuying");}
+
   default String summary() {return g("summary");}
 
   default String summer() {return g("summer");}

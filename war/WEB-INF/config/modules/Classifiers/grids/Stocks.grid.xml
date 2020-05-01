@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Grid[
+  <!ENTITY pricescale "2">
+  <!ENTITY costscale "2">
+  ]>
+<g:Grid xmlns="http://www.butent.com/column" xmlns:g="http://www.butent.com/grid"
+        xmlns:ui="http://www.butent.com/ui"
+        xmlns:w="http://www.butent.com/widget"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+
+        name="Stocks" viewName="Items" caption="=stocks"
+        newRowForm="Item" editForm="Item" editShowId="true"
+        newRowPopup="true" editPopup="true" editInPlace="true"
+>
+  <g:west size="200" splitterSize="2">
+    <w:DataTree name="StocksCategories" caption="=categories" viewName="StocksCategoryTree"
+                parentColumn="Parent">
+
+      <w:calc>
+        <ui:expression>row.Name</ui:expression>
+      </w:calc>
+    </w:DataTree>
+  </g:west>
+
+  <g:columns>
+    <DataColumn name="Ordinal" visible="false" />
+    <IdColumn name="Id" visible="false" />
+
+    <RelColumn name="Type" carry="true" />
+    <RelColumn name="Group" carry="true" />
+
+    <DataColumn name="Name" visible="true" />
+    <DataColumn name="Name2" visible="false" />
+    <DataColumn name="Article" />
+    <DataColumn name="Article2" visible="false" />
+    <DataColumn name="Barcode" />
+
+    <RelColumn name="Unit" caption="=unitShort" carry="true" />
+
+    <DataColumn name="TimeUnit" module="Trade.Acts" />
+    <DataColumn name="DaysPerWeek" caption="=taDaysPerWeekShort" module="Trade.Acts"
+                visible="false" />
+    <DataColumn name="MinTerm" caption="=taMinTermShort" module="Trade.Acts" visible="false" />
+
+    <DataColumn name="Weight" visible="false" />
+    <DataColumn name="Area" visible="false" />
+
+    <DataColumn name="Price" caption="=salePriceShort" scale="&pricescale;" />
+    <RelColumn name="Currency" caption="=currencyShort" />
+
+    <DataColumn name="Cost" scale="&costscale;" visible="false" />
+    <RelColumn name="CostCurrency" caption="=currencyShort" visible="false" />
+
+    <DataColumn name="Price1" scale="&pricescale;" visible="false" />
+    <RelColumn name="Currency1" caption="=currencyShort" visible="false" />
+    <DataColumn name="Price2" scale="&pricescale;" visible="false" />
+    <RelColumn name="Currency2" caption="=currencyShort" visible="false" />
+    <DataColumn name="Price3" scale="&pricescale;" visible="false" />
+    <RelColumn name="Currency3" caption="=currencyShort" visible="false" />
+
+    <DataColumn name="Vat" carry="true" />
+    <DataColumn name="VatPercent" carry="true" />
+  </g:columns>
+
+  <xi:include href="../../Administration/grids/columns/HiddenDimensions.columns.xml" />
+  <xi:include href="columns/HiddenTradeAccounts.columns.xml" />
+
+  <g:columns>
+    <DataColumn name="DefaultQuantity" visible="false" />
+    <DataColumn name="ExternalCode" visible="false" />
+
+    <DataColumn name="Description" visible="false" />
+    <DataColumn name="Notes" visible="false" />
+  </g:columns>
+
+  <g:rowMessage>
+    <ui:expression>[row.Name, row.Article].join(' ')</ui:expression>
+  </g:rowMessage>
+</g:Grid>

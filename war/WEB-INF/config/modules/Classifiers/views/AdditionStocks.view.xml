@@ -2,6 +2,7 @@
 <View xmlns="http://www.butent.com/view"
 
       name="AdditionStocks" source="AdditionStocks" caption="=additionStocks" module="Classifiers"
+      editForm="AdditionStocks" newRowForm="AdditionStocks" rowCaption="" newRowCaption="=newBuying"
 >
   <Columns>
     <IdColumn name="ID" />

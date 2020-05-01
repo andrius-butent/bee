@@ -5,6 +5,7 @@
 >
   <Item name="Goods" label="=goods" service="items" parameters="g" />
   <Item name="Services" label="=services" service="items" parameters="s" />
+  <Item name="Stocks" label="=stocks" service="grid" parameters="Stocks" />
 
   <Item name="ItemCategories" label="=itemCategoryTree" service="form" parameters="CategoryTree"
         data="CategoryTree" separator="true" />

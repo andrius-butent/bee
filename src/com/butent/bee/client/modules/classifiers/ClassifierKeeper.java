@@ -260,6 +260,7 @@ public final class ClassifierKeeper {
       ViewFactory.createAndShow(key);
     });
 
+    GridFactory.registerGridInterceptor("Stocks", new ItemsGrid(true));
     GridFactory.registerGridInterceptor(VIEW_VEHICLES, new VehiclesGrid());
     GridFactory.registerGridInterceptor(TBL_DISCOUNTS, new DiscountsGrid());
 

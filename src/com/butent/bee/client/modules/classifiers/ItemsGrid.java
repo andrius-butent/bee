@@ -137,7 +137,7 @@ class ItemsGrid extends TreeGridInterceptor {
   @Override
   public String getCaption() {
     if (showServices()) {
-      return Localized.dictionary().services();
+      return Localized.dictionary().stocks();
     } else {
       return Localized.dictionary().goods();
     }

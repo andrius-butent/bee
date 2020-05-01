@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Form>
+<f:Form xmlns="http://www.butent.com/widget"
+        xmlns:f="http://www.butent.com/form"
+
+        name="AdditionStocks" viewName="AdditionStocks" height="300"  width="600"
+>
+  <Table kind="controls" style="margin-left: 1em; margin-top: 1ex;">
+    <col index="0" kind="label" />
+    <col index="2" kind="label" />
+
+    <row>
+      <Label for="Name" />
+      <cell colSpan="3">
+        <InputText source="Name" style="width: 100%" />
+      </cell>
+    </row>
+
+    <row>
+      <Label for="StockSupplier" />
+      <cell colSpan="3">
+        <DataSelector source="StockSupplier" style="width: 100%" />
+      </cell>
+    </row>
+
+    <row>
+      <Label for="Quantity" />
+      <InputInteger source="Quantity" />
+
+      <Label for="Unit" />
+      <DataSelector source="Unit" />
+    </row>
+
+    <row>
+      <Label for="Date" />
+      <InputDate source="Date" />
+    </row>
+
+    <row>
+      <Label for="Price" />
+      <InputDecimal source="Price" />
+
+      <Label for="Currency" />
+      <DataSelector source="Currency" />
+    </row>
+
+    <row>
+      <Label for="InvoiceSeries" />
+      <InputText source="InvoiceSeries" />
+
+      <Label for="InvoiceNumber" />
+      <InputText source="InvoiceNumber" />
+    </row>
+
+    <row>
+      <Label for="Notes" />
+      <cell colSpan="3">
+        <InputText source="Notes" style="width: 100%" />
+      </cell>
+    </row>
+  </Table>
+</f:Form>
