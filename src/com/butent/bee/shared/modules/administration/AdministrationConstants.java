@@ -509,6 +509,8 @@ public final class AdministrationConstants {
   public static final String PRM_ERP_LOGIN = "ERPLogin";
   public static final String PRM_ERP_PASSWORD = "ERPPassword";
 
+  public static final String PRM_TASK_MAIL_OBSERVERS_GROUP = "TaskMailObserversGroup";
+
   public static final String PRM_RECORD_DEPENDENCY = "RecordDependency";
 
   public static final String PRM_WS_LB_EXCHANGE_RATES_ADDRESS = "WSLBExchangeRates";

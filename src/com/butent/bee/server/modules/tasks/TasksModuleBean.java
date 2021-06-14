@@ -680,7 +680,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
           Long senderAccountId = mail.getSenderAccountId(TIMER_REMIND_USER_TASKS);
 
           ResponseObject response = mailNewTask(senderAccountId, taskId, true, true,
-              recipientId, usr.getDictionary(recipientId).crmReminderMailSubject());
+              recipientId, usr.getDictionary(recipientId).crmReminderMailSubject(), null);
 
           if (response.hasErrors() || response.hasWarnings()) {
             logger.warning("user remind tasks canceled");
@@ -1692,7 +1692,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
             boolean pref = BeeConst.isTrue(taskRow.getProperty(PROP_MAIL));
 
             for (Long id : createdTasks) {
-              ResponseObject mailResponse = mailNewTask(senderAccountId, id, pref, false);
+              ResponseObject mailResponse = mailNewTask(senderAccountId, id, pref, false, null);
               response.addMessagesFrom(mailResponse);
             }
           }
@@ -2739,13 +2739,14 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
   }
 
   private ResponseObject mailNewTask(Long senderAccountId, long taskId,
-      boolean ownerPreference, boolean automatic) {
-    return mailNewTask(senderAccountId, taskId, ownerPreference, automatic, null, null);
+      boolean ownerPreference, boolean automatic, String[] taskObserversList) {
+    return mailNewTask(senderAccountId, taskId, ownerPreference, automatic, null, null,
+            taskObserversList);
   }
 
   private ResponseObject mailNewTask(Long senderAccountId, long taskId,
       boolean ownerPreference, boolean automatic,
-      Long recipientId, String mailSubject) {
+      Long recipientId, String mailSubject, String[] taskObserversList) {
 
     ResponseObject response = ResponseObject.emptyResponse();
     String label = "mail new task";
@@ -2817,7 +2818,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
         row.getValue(COL_SUMMARY));
 
     ResponseObject mailResponse = mail.sendStyledMail(senderAccountId, recipientEmail,
-        mailSubject == null ? constants.crmMailTaskSubject() : mailSubject, content, headerCaption);
+        mailSubject == null ? constants.crmMailTaskSubject() : mailSubject, content, headerCaption, taskObserversList);
 
     if (mailResponse.hasErrors()) {
       response.addWarning("Send mail failed");
@@ -2856,7 +2857,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
     }
 
     for (Long id : ids) {
-      ResponseObject response = mailNewTask(senderAccountId, id, true, true);
+      ResponseObject response = mailNewTask(senderAccountId, id, true, true, null);
       if (response.hasErrors() || response.hasWarnings()) {
         logger.warning("mail scheduled tasks canceled");
         break;
@@ -3267,7 +3268,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
       logger.info(label, taskId, "mail to", executor, recipientEmail);
 
       ResponseObject mailResponse = mail.sendStyledMail(accountId, recipientEmail,
-          constants.crmReminderMailSubject(), content, headerCaption);
+          constants.crmReminderMailSubject(), content, headerCaption, null);
 
       if (mailResponse.hasErrors()) {
         logger.severe(label, "mail error - canceled");
@@ -3620,7 +3621,25 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
       boolean pref = BeeConst.isTrue(taskRow.getProperty(PROP_MAIL));
 
       if (senderAccountId != null) {
-        ResponseObject mailResponse = mailNewTask(senderAccountId, taskId, pref, false);
+
+        String taskMailObserversGroupId = prm.getValue(PRM_TASK_MAIL_OBSERVERS_GROUP);
+        List<String> taskObserversList = new ArrayList<>();
+
+        // creating email list from members, that want to see forwarded tasks
+        if (!BeeUtils.isEmpty(taskMailObserversGroupId)) {
+          Long[] observerMembers = adm.getUserGroupMembers(taskMailObserversGroupId).getLongColumn(COL_UG_USER);
+
+          for (Long memberId : observerMembers) {
+            String memberEmail = usr.getUserEmail(memberId, true);
+            if (!BeeUtils.isEmpty(memberEmail)) {
+              taskObserversList.add(memberEmail);
+            }
+          }
+        }
+
+        ResponseObject mailResponse = mailNewTask(senderAccountId, taskId, pref, false,
+                taskObserversList.toArray(new String[0]));
+
         response.addMessagesFrom(mailResponse);
       }
     }

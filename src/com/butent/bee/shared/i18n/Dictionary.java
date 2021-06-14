@@ -4913,6 +4913,8 @@ public interface Dictionary {
 
   default String prmMainCurrency() {return g("prmMainCurrency");}
 
+  default String prmTaskMailObserversGroup() {return g("prmTaskMailObserversGroup");}
+
   default String prmMaintenanceServiceGroup() {return g("prmMaintenanceServiceGroup");}
 
   default String prmManagerDiscount() {return g("prmManagerDiscount");}

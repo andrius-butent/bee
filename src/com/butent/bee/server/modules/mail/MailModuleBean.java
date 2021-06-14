@@ -964,10 +964,10 @@ public class MailModuleBean implements BeeModule, HasTimerService {
   }
 
   public ResponseObject sendStyledMail(Long accountId, String to, String subject, String content,
-      String headerContent) {
-    String emailContent = BeeUtils.join("", styleMailHeader(headerContent), content);
+      String headerContent, String[] taskObservers) {
 
-    return sendMail(accountId, to, subject, emailContent);
+    String emailContent = BeeUtils.join("", styleMailHeader(headerContent), content);
+    return sendMail(accountId, new String[] {to}, taskObservers, null, subject, emailContent, null, false);
   }
 
   @Asynchronous

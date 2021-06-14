@@ -1711,7 +1711,7 @@ public class ServiceModuleBean implements BeeModule {
 
     String subject = BeeUtils.joinWords(dic.svcRepair(), maintenanceId);
 
-    return mail.sendStyledMail(accountId, recipientEmail, subject, doc.buildLines(), emailHeader);
+    return mail.sendStyledMail(accountId, recipientEmail, subject, doc.buildLines(), emailHeader, null);
   }
 
   private ResponseObject informCustomerWithSms(Dictionary dic, DateTimeFormatInfo dtfInfo,

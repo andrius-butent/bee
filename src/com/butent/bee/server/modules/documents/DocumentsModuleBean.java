@@ -980,7 +980,7 @@ public class DocumentsModuleBean extends TimerBuilder implements BeeModule {
       }
 
       ResponseObject mailResponse = mail.sendStyledMail(senderAccountId, recipientEmail,
-          dic.documentExpireReminderMailSubject(), content, headerCaption);
+          dic.documentExpireReminderMailSubject(), content, headerCaption, null);
 
       if (mailResponse.hasErrors()) {
         logger.severe(TIMER_REMIND_DOCUMENT_END, "mail error - canceled");

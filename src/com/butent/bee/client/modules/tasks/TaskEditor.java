@@ -1801,6 +1801,8 @@ class TaskEditor extends ProductSupportInterceptor {
         return;
       }
 
+      comment = "Grąžinta užduotis\n\n" + comment;
+
       BeeRow newRow = getNewRow();
       RelationUtils.updateRow(Data.getDataInfo(VIEW_TASKS), COL_EXECUTOR, newRow,
           Data.getDataInfo(VIEW_USERS), selector.getRelatedRow(), true);
