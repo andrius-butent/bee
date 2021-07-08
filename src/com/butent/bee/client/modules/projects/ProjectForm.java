@@ -247,7 +247,7 @@ class ProjectForm extends AbstractFormInterceptor implements DataChangeEvent.Han
 
     drawComments(form, row);
     drawChart(row);
-    setCategory(form, row);
+
     if (ProjectsHelper.isProjectOwner(form, row)) {
       ProjectsKeeper.createTemplateTasks(form, row, COL_PROJECT, tasks,
           Filter.isNull(COL_PROJECT_STAGE));
@@ -437,11 +437,11 @@ class ProjectForm extends AbstractFormInterceptor implements DataChangeEvent.Han
                   .getColumnIndex(vCol.getName())));
           visitedCols.add(vCol.getName());
         }
-
       } else {
         oldValue = oldData.getString(i);
         newValue = newData.getString(i);
       }
+
       oldDataMap.put(cols.get(i).getId(), oldValue);
       newDataMap.put(cols.get(i).getId(), newValue);
     }
@@ -617,21 +617,6 @@ class ProjectForm extends AbstractFormInterceptor implements DataChangeEvent.Han
       }
       row.setValue(idx, oldRow.getValue(idx));
       form.refreshBySource(event.getColumnId());
-    }
-  }
-
-  private static void setCategory(FormView form, IsRow row) {
-    if (DataUtils.isNewRow(row)) {
-      AllProjectsGrid gridHandler = getProjectsGrid(form);
-
-      if (gridHandler != null && gridHandler.getSelectedCategory() != null) {
-        IsRow catRow = gridHandler.getSelectedCategory();
-        row.setValue(form.getDataIndex(COL_PROJECT_CATEGORY), catRow.getId());
-        row.setValue(form.getDataIndex(ALS_CATEGORY_NAME), Data.getString(VIEW_PROJECT_TREE,
-            catRow, COL_TREE_NAME));
-
-        form.refreshBySource(COL_PROJECT_CATEGORY);
-      }
     }
   }
 
