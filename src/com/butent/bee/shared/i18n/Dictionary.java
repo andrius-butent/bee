@@ -3878,6 +3878,10 @@ public interface Dictionary {
 
   default String prjTeam() {return g("prjTeam");}
 
+  default String prjTeams() {return g("prjTeams");}
+
+  default String prjTeamUsers() {return g("prjTeamUsers");}
+
   default String prjTemplate() {return g("prjTemplate");}
 
   default String prjTemplateDateMark() {return g("prjTemplateDateMark");}

@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.shared.time.JustDate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -269,8 +270,27 @@ class TaskBuilder extends ProductSupportInterceptor {
     TaskStatus status = EnumUtils
         .getEnumByIndex(TaskStatus.class, newRow.getInteger(form.getDataIndex(COL_STATUS)));
 
+    int idxProject = form.getDataIndex(ProjectConstants.COL_PROJECT);
+    long projectId = BeeUtils.unbox(newRow.getLong(idxProject));
+
     DateTime start = newRow.getDateTime(getDataIndex(COL_START_TIME));
-    if (start == null && !TaskStatus.NOT_SCHEDULED.equals(status)) {
+    DateTime end = newRow.getDateTime(getDataIndex(COL_FINISH_TIME));
+
+    if (DataUtils.isId(projectId)) {
+
+      JustDate projectStartDate = newRow.getDate(Data.getColumnIndex(VIEW_TASKS, ProjectConstants.COL_PROJECT_START_DATE));
+      JustDate projectEndDate = newRow.getDate(Data.getColumnIndex(VIEW_TASKS, ProjectConstants.COL_PROJECT_END_DATE));
+
+
+      if (Objects.nonNull(projectStartDate)) {
+        start = projectStartDate.getDateTime();
+      }
+
+      if (Objects.nonNull(projectEndDate)) {
+        end = projectEndDate.getDateTime();
+      }
+
+    } else if (start == null && !TaskStatus.NOT_SCHEDULED.equals(status)) {
       start = TimeUtils.nowHours(1);
     }
 
@@ -279,7 +299,6 @@ class TaskBuilder extends ProductSupportInterceptor {
       ((InputDate) widget).setDate(start);
     }
 
-    DateTime end = newRow.getDateTime(getDataIndex(COL_FINISH_TIME));
     DateTime endTime = newRow.getDateTime(getDataIndex(COL_FINISH_TIME));
 
     if (end != null) {
@@ -895,9 +914,7 @@ class TaskBuilder extends ProductSupportInterceptor {
       observerGroups.getElement().addClassName(StyleUtils.NAME_DISABLED);
     }
 
-    Queries.getRowSet(ProjectConstants.VIEW_PROJECT_USERS, Lists
-        .newArrayList(AdministrationConstants.COL_USER), Filter.isEqual(
-        ProjectConstants.COL_PROJECT, Value.getValue(projectId)), new RowSetCallback() {
+    Queries.getRowSet(AdministrationConstants.VIEW_USERS, null, new RowSetCallback() {
 
       @Override
       public void onSuccess(BeeRowSet result) {
@@ -910,15 +927,9 @@ class TaskBuilder extends ProductSupportInterceptor {
         }
 
         List<Long> userIds = Lists.newArrayList(projectOwner);
-        int idxUser = result.getColumnIndex(AdministrationConstants.COL_USER);
-
-        if (BeeConst.isUndef(idxUser)) {
-          Assert.untouchable();
-          return;
-        }
 
         for (IsRow userRow : result) {
-          long projectUser = BeeUtils.unbox(userRow.getLong(idxUser));
+          long projectUser = BeeUtils.unbox(userRow.getId());
 
           if (DataUtils.isId(projectUser)) {
             userIds.add(projectUser);

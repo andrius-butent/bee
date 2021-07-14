@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Form[
+        <!ENTITY inpw "width: 400px;">
+        <!ENTITY lbl "margin-right: 1em; text-align: right; padding-left: 30px">
+        ]>
+<f:Form xmlns="http://www.butent.com/widget" xmlns:f="http://www.butent.com/form" xmlns:ui="http://www.butent.com/ui"
+
+        name="Team" viewName="Teams" width="800" height="600">
+    <FlowPanel>
+        <Table kind="controls">
+            <row>
+                <Label for="Name" visible="true" style="&lbl;"/>
+                <InputText source="Name" style="&inpw;" visible="true" />
+            </row>
+
+            <row>
+                <Label for="Notes" visible="true" style="&lbl;"/>
+                <InputArea source="Notes" style="width:400px;" />
+            </row>
+        </Table>
+
+        <ChildGrid name="TeamUsers" relColumn="Team" style="min-height: 200px;" />
+    </FlowPanel>
+</f:Form>

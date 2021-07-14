@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View xmlns="http://www.butent.com/view" name="Teams"
+      source="Teams" caption="=prjTeams" editForm="Team" newRowForm="Team" >
+    <Columns>
+        <SimpleColumn name="Name" />
+        <SimpleColumn name="Notes" />
+    </Columns>
+</View>

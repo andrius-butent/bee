@@ -12,7 +12,7 @@
     <Relation name="Company" relation="Companies"  label="=company" />
     <Relation name="Contact" relation="CompanyPersons"  label="=personContact" />
     <Relation name="Owner" relation="Users" notNull="true"  label="=prjManager" />    
-    <Relation name="Category" relation="ProjectTree" notNull="true" label="=category" />
+    <Relation name="Category" relation="ProjectTree" label="=category" />
     <Relation name="ProjectTemplate" relation="ProjectTemplates" label="=prjTemplate" />
 
     <Date name="StartDate"  label="=crmStartDate" />

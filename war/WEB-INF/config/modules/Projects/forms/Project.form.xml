@@ -67,7 +67,7 @@
          </row>
 
           <row>
-            <Label for="Category" text="=category" style="&lbl;" class="bee-required" />
+            <Label for="Category" text="=category" style="&lbl;" />
             <DataSelector name="Category" source="Category" style="&inp2;" />
             <Label for="Type" text="=type" style="&lbl;" />
             <DataSelector source="Type" style="&inp2;" />

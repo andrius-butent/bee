@@ -92,6 +92,8 @@
       <SimpleColumn name="Name" alias="ProjectName"/>
       <SimpleColumn name="Owner" alias="ProjectOwner" />
       <SimpleColumn name="Status" alias="ProjectStatus" />
+      <SimpleColumn name="StartDate" />
+      <SimpleColumn name="EndDate" />
       <SimpleColumn name="ProjectTemplate"  />
       <ExternalJoin name="Project" source="ProjectUsers" joinType="LEFT" filter="FilteredProjectUser = {u}">
         <SimpleColumn name="User" alias="FilteredProjectUser" />

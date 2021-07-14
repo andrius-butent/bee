@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Table xmlns="http://www.butent.com/table"
+
+       name="Teams"
+       idName="TeamID"
+>
+    <Fields>
+        <String name="Name" precision="255" notNull="true" label="=prjTeam" unique="true" />
+        <Text name="Notes" label="=notes" />
+    </Fields>
+</Table>

@@ -1679,21 +1679,21 @@ class TaskEditor extends ProductSupportInterceptor {
   private void doForward() {
     final Long oldUser = getExecutor();
     Set<Long> exclusions = new HashSet<>();
-    Set<Long> filter = new HashSet<>();
+    //Set<Long> filter = new HashSet<>();
     if (oldUser != null) {
       exclusions.add(oldUser);
     }
 
-    if (!BeeUtils.isEmpty(getProjectUsers())) {
+/*    if (!BeeUtils.isEmpty(getProjectUsers())) {
       filter.addAll(getProjectUsers());
-    }
+    }*/
 
     final TaskDialog dialog = new TaskDialog(Localized.dictionary().crmTaskForwarding());
 
     final String sid =
         dialog.addSelector(Localized.dictionary().crmTaskExecutor(), VIEW_USERS,
             Lists.newArrayList(COL_FIRST_NAME, COL_LAST_NAME),
-            true, exclusions, filter, null);
+            true, exclusions, null, null);
     final String obs = dialog.addCheckBox(true);
 
     final String cid = dialog.addComment(true);

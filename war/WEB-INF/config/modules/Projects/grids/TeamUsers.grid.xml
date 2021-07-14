@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<g:Grid xmlns="http://www.butent.com/column" xmlns:g="http://www.butent.com/grid"
+        xmlns:ui="http://www.butent.com/ui" xmlns:w="http://www.butent.com/widget"
+
+        name="TeamUsers" viewName="TeamUsers" caption="=prjTeamUsers"  >
+
+    <g:columns>
+        <RelColumn name="User" editEnabled="true" editSource="OwnerPerson" >
+            <renderToken source="FirstName" suffix=" " />
+            <renderToken source="LastName" />
+        </RelColumn>
+        <DataColumn name="PositionName" />
+        <DataColumn name="DepartmentName" />
+    </g:columns>
+</g:Grid>
