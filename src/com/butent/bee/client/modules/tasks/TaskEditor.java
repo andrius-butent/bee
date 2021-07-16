@@ -1777,6 +1777,7 @@ class TaskEditor extends ProductSupportInterceptor {
             Lists.newArrayList(COL_FIRST_NAME, COL_LAST_NAME),
             true, exclusions, filter, null);
     final String obs = dialog.addCheckBox(true);
+    final String isReturnedTask = dialog.addTaskReturnCheckBox();
 
     final String cid = dialog.addComment(true);
     final String fid = dialog.addFileCollector();
@@ -1801,7 +1802,9 @@ class TaskEditor extends ProductSupportInterceptor {
         return;
       }
 
-      comment = "Grąžinta užduotis\n\n" + comment;
+      if (dialog.isChecked(isReturnedTask)) {
+        comment = Localized.dictionary().taskReturnedTask() + "\n\n" + comment;
+      }
 
       BeeRow newRow = getNewRow();
       RelationUtils.updateRow(Data.getDataInfo(VIEW_TASKS), COL_EXECUTOR, newRow,

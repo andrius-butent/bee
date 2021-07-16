@@ -632,6 +632,8 @@ public enum Report implements HasWidgetSupplier {
           new ReportEnumItem(TaskConstants.COL_EVENT,
               Data.getColumnLabel(VIEW_TASK_EVENTS, TaskConstants.COL_EVENT), TaskEvent.class),
           new ReportTextItem(COL_PUBLISHER, loc.crmTaskPublisher()),
+          new ReportDateTimeItem(TaskConstants.COL_PUBLISH_TIME, Data.getColumnLabel(VIEW_TASK_EVENTS,
+                  TaskConstants.COL_PUBLISH_TIME)),
           new ReportTextItem(COL_PUBLISHER + COL_DEPARTMENT,
               loc.crmTaskPublisher() + BeeUtils.parenthesize(loc.department())),
           new ReportTextItem(COL_EVENT_NOTE, Data.getColumnLabel(VIEW_TASK_EVENTS, COL_EVENT_NOTE)),

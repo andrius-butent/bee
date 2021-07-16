@@ -200,6 +200,19 @@ class TaskDialog extends CustomTaskDialog {
     return chkBx.getId();
   }
 
+  String addTaskReturnCheckBox() {
+    HtmlTable table = getContainer();
+    int row = table.getRowCount();
+    int col = 2;
+
+    CheckBox chkBx = new CheckBox(Localized.dictionary().taskReturnedTask());
+    chkBx.setChecked(false);
+
+    table.setWidget(row, col, chkBx);
+
+    return chkBx.getId();
+  }
+
   Map<String, String> addEndResult(Map<String, MultiSelector> widgets, List<String> endResults,
       String fileId) {
     if (BeeUtils.isEmpty(endResults)) {

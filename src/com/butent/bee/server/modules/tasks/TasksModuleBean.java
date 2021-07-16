@@ -2208,7 +2208,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
     clause.add(report.getCondition(SqlUtils.field(ProjectConstants.VIEW_PROJECT_STAGES,
         ProjectConstants.COL_STAGE_NAME), ProjectConstants.ALS_STAGE_NAME));
 
-    Stream.of(COL_COMMENT, TaskConstants.COL_EVENT, COL_EVENT_NOTE)
+    Stream.of(COL_COMMENT, TaskConstants.COL_EVENT, COL_EVENT_NOTE, COL_PUBLISH_TIME)
         .forEach(col -> clause.add(report.getCondition(TBL_TASK_EVENTS, col)));
 
     clause.add(report.getCondition(SqlUtils.field(TBL_DURATION_TYPES, COL_DURATION_TYPE_NAME),
@@ -2232,7 +2232,7 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
         .addField(ProjectConstants.VIEW_PROJECT_STAGES, ProjectConstants.COL_STAGE_NAME,
             ProjectConstants.ALS_STAGE_NAME)
 
-        .addFields(TBL_TASK_EVENTS, COL_COMMENT, TaskConstants.COL_EVENT, COL_EVENT_NOTE)
+        .addFields(TBL_TASK_EVENTS, COL_COMMENT, TaskConstants.COL_EVENT, COL_EVENT_NOTE, COL_PUBLISH_TIME)
 
         .addField(TBL_DURATION_TYPES, COL_DURATION_TYPE_NAME, ALS_DURATION_TYPE_NAME)
 //      Verslo aljansas
@@ -2765,6 +2765,9 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
 
     HasConditions where = SqlUtils.and(SqlUtils.equals(TBL_TASKS, COL_TASK_ID, taskId));
 
+    SqlSelect slcTaskMailObsQuery = query.copyOf();
+    slcTaskMailObsQuery.setWhere(where.copyOf());
+
     if (!ownerPreference) {
       query.addFromInner(TBL_USER_SETTINGS,
           SqlUtils.join(TBL_USER_SETTINGS, COL_USER, TBL_TASKS, COL_EXECUTOR));
@@ -2778,20 +2781,33 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
     query.setWhere(where);
 
     SimpleRowSet data = qs.getData(query);
-    if (DataUtils.isEmpty(data)) {
+
+    boolean isTaskObserverEmail = false;
+
+    if ((DataUtils.isEmpty(data) && taskObserversList == null)
+            || (DataUtils.isEmpty(data) && taskObserversList != null && taskObserversList.length == 0)) {
       return response;
+    } else if (DataUtils.isEmpty(data) && taskObserversList != null && taskObserversList.length > 0) {
+      data = qs.getData(slcTaskMailObsQuery);
+      isTaskObserverEmail = true;
     }
 
     SimpleRow row = data.getRow(0);
 
     Long executor = row.getLong(COL_EXECUTOR);
 
+    String recipientEmail;
+
     Long recipientUser = recipientId;
     if (recipientUser == null) {
       recipientUser = executor;
     }
 
-    String recipientEmail = usr.getUserEmail(recipientUser, false);
+    if (isTaskObserverEmail) {
+      recipientEmail = taskObserversList[0];
+    } else {
+      recipientEmail = usr.getUserEmail(recipientUser, false);
+    }
 
     if (BeeUtils.isEmpty(recipientEmail)) {
       logger.warning(label, taskId, "recipient user", recipientUser, "email not available");
@@ -3626,7 +3642,8 @@ public class TasksModuleBean extends TimerBuilder implements BeeModule {
         List<String> taskObserversList = new ArrayList<>();
 
         // creating email list from members, that want to see forwarded tasks
-        if (!BeeUtils.isEmpty(taskMailObserversGroupId)) {
+        if (!BeeUtils.isEmpty(taskMailObserversGroupId)
+                && reqInfo.get("bee_task_comment").contains(Localized.dictionary().taskReturnedTask())) {
           Long[] observerMembers = adm.getUserGroupMembers(taskMailObserversGroupId).getLongColumn(COL_UG_USER);
 
           for (Long memberId : observerMembers) {

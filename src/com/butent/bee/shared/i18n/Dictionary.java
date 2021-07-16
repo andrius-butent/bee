@@ -5761,6 +5761,8 @@ public interface Dictionary {
     return Localized.format(g("taskAssignedToProject"), _m);
   }
 
+  default String taskReturnedTask() {return g("taskReturnedTask");}
+
   default String tcdArticleCategories() {return g("tcdArticleCategories");}
 
   default String tcdArticleCodes() {return g("tcdArticleCodes");}
