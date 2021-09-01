@@ -505,8 +505,6 @@
       <xs:enumeration value="TaskTemplates" />
       <xs:enumeration value="TaskTypes" />
       <xs:enumeration value="TaskUsers" />
-      <xs:enumeration value="Teams" />
-      <xs:enumeration value="TeamUsers" />
       <xs:enumeration value="TcdArticleCategories" />
       <xs:enumeration value="TcdArticleCodes" />
       <xs:enumeration value="TcdArticleCriteria" />

@@ -116,9 +116,9 @@
                 </row>
 
                 <row>
-                 <Label for="Company" class="bee-required" />
+                 <Label for="Company" />
                   <DataSelector source="Company" editPopup="true" newRowEnabled="true" choiceColumns="Name TypeName"
-                      renderColumns="CompanyName CompanyTypeName" style="&inp2x;" required="true" />
+                      renderColumns="CompanyName CompanyTypeName" style="&inp2x;" />
                 </row>
 
                 <row>

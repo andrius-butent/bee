@@ -281,7 +281,6 @@ class TaskBuilder extends ProductSupportInterceptor {
       JustDate projectStartDate = newRow.getDate(Data.getColumnIndex(VIEW_TASKS, ProjectConstants.COL_PROJECT_START_DATE));
       JustDate projectEndDate = newRow.getDate(Data.getColumnIndex(VIEW_TASKS, ProjectConstants.COL_PROJECT_END_DATE));
 
-
       if (Objects.nonNull(projectStartDate)) {
         start = projectStartDate.getDateTime();
       }

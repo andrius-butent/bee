@@ -8,6 +8,4 @@ name="Projects" label="=prjMenu" order="30" module="Projects"
   <Item name="ProjectInvoices" label="=trdInvoices" service="grid" parameters="ProjectInvoices" separator="true" />
   <Item name="ProjectReports" label="=report" service="report"  parameters="ProjectReport"/>
   <Item name="ProjectParameters" label="=parameters" service="parameters" parameters="Projects" separator="true"/>
-  <Item name="Teams" label="=prjTeams" service="grid" parameters="Teams" separator="true"/>
-
 </Entry>
