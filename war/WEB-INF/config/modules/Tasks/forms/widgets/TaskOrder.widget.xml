@@ -384,6 +384,7 @@
             <FlowPanel>
               <ListBox source="Bending" style="width: 165px;" >
                 <item>lenkimas</item>
+                <item>lenkimas, litavimas perimetru</item>
                 <item>bigas</item>
                 <item>ploteriavimas</item>
               </ListBox>
@@ -455,6 +456,8 @@
                 <item>į dėžes</item>
                 <item>į vakuumą</item>
                 <item>į popierių</item>
+                <item>į ruloną, strec, maketas</item>
+                <item>lankstyti, maketas</item>
                 <item>kita</item>
               </ListBox>
 

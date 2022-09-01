@@ -57,7 +57,7 @@
     <String name="Holes" precision="25" label="Skylės" />
     <String name="OtherHoles"  precision="27"/>
     <String name="Punching" precision="10" label="Štancavimas" />
-    <String name="Bending" precision="15" label="Apdaila" />
+    <String name="Bending" precision="30" label="Apdaila" />
     <String name="OtherBending"  precision="33"/>
     <String name="Selection" label="Parink. / perfor."  precision="100" />
     <String name="Glue" precision="45" label="Klijavimas" />
@@ -68,7 +68,7 @@
     <String name="To" precision="33" label="Nr. iki" />
     <Relation name="Packed" relation="CompanyPersons" label="Numeravo/pakavo" />
     <String name="MarkOnPack" precision="200" label="Žymė ant pakuotės" />
-    <String name="Packing" precision="10" label="Pakavimas" />
+    <String name="Packing" precision="30" label="Pakavimas" />
     <String name="OtherPacking" precision="45" />
     <String name="Total" precision="15" label="Viso:" />
 
