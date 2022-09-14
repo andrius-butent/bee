@@ -13,7 +13,9 @@ import com.google.common.eventbus.Subscribe;
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.*;
 import static com.butent.bee.shared.modules.calendar.CalendarConstants.*;
 import static com.butent.bee.shared.modules.cars.CarsConstants.COL_SERVICE_EVENT;
+import static com.butent.bee.shared.modules.cars.CarsConstants.COL_TYPE;
 import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.*;
+import static com.butent.bee.shared.modules.tasks.TaskConstants.TBL_TASK_TYPES;
 
 import com.butent.bee.server.communication.ChatBean;
 import com.butent.bee.server.data.DataEditorBean;
@@ -1347,13 +1349,13 @@ public class CalendarModuleBean extends TimerBuilder implements BeeModule {
         executors.remove(calendarOwner);
       }
 
-      ColorAndStyle cs = ColorAndStyle.maybeCreate(
+/*      ColorAndStyle cs = ColorAndStyle.maybeCreate(
           DataUtils.getString(calRowSet, calendar, COL_ASSIGNED_TASKS_BACKGROUND),
           DataUtils.getString(calRowSet, calendar, COL_ASSIGNED_TASKS_FOREGROUND),
           DataUtils.getLong(calRowSet, calendar, COL_ASSIGNED_TASKS_STYLE));
       if (cs != null) {
         typeAppearance.put(TaskType.ASSIGNED, cs);
-      }
+      }*/
     }
 
     if (delegated) {
@@ -1365,13 +1367,13 @@ public class CalendarModuleBean extends TimerBuilder implements BeeModule {
             SqlUtils.notEqual(source, TaskConstants.COL_EXECUTOR, calendarOwner)));
       }
 
-      ColorAndStyle cs = ColorAndStyle.maybeCreate(
+/*      ColorAndStyle cs = ColorAndStyle.maybeCreate(
           DataUtils.getString(calRowSet, calendar, COL_DELEGATED_TASKS_BACKGROUND),
           DataUtils.getString(calRowSet, calendar, COL_DELEGATED_TASKS_FOREGROUND),
           DataUtils.getLong(calRowSet, calendar, COL_DELEGATED_TASKS_STYLE));
       if (cs != null) {
         typeAppearance.put(TaskType.DELEGATED, cs);
-      }
+      }*/
     }
 
     if (observed) {
@@ -1382,13 +1384,13 @@ public class CalendarModuleBean extends TimerBuilder implements BeeModule {
               SqlUtils
                   .equals(TaskConstants.TBL_TASK_USERS, COL_USER, calendarOwner))));
 
-      ColorAndStyle cs = ColorAndStyle.maybeCreate(
+/*      ColorAndStyle cs = ColorAndStyle.maybeCreate(
           DataUtils.getString(calRowSet, calendar, COL_OBSERVED_TASKS_BACKGROUND),
           DataUtils.getString(calRowSet, calendar, COL_OBSERVED_TASKS_FOREGROUND),
           DataUtils.getLong(calRowSet, calendar, COL_OBSERVED_TASKS_STYLE));
       if (cs != null) {
         typeAppearance.put(TaskType.OBSERVED, cs);
-      }
+      }*/
     }
 
     if (!executors.isEmpty()) {
@@ -1403,7 +1405,9 @@ public class CalendarModuleBean extends TimerBuilder implements BeeModule {
             TaskConstants.COL_PRIORITY, TaskConstants.COL_STATUS,
             TaskConstants.COL_OWNER, TaskConstants.COL_EXECUTOR)
         .addField(TBL_COMPANIES, COL_COMPANY_NAME, ALS_COMPANY_NAME)
+        .addFields(TBL_TASK_TYPES, COL_BACKGROUND, COL_FOREGROUND)
         .addFrom(source)
+        .addFromLeft(TBL_TASK_TYPES, sys.joinTables(TBL_TASK_TYPES, source, COL_TYPE))
         .addFromLeft(TBL_COMPANIES, sys.joinTables(TBL_COMPANIES, source, COL_COMPANY))
         .setWhere(where)
         .addOrder(source, TaskConstants.COL_START_TIME, TaskConstants.COL_FINISH_TIME, idName);
@@ -1462,7 +1466,7 @@ public class CalendarModuleBean extends TimerBuilder implements BeeModule {
       if (executor != null && executorAppearance.containsKey(executor)) {
         cs = executorAppearance.get(executor);
       } else {
-        cs = null;
+        cs = ColorAndStyle.maybeCreate(row.getValue(COL_BACKGROUND), row.getValue(COL_FOREGROUND), null);
       }
 
       if (typeAppearance.containsKey(type)) {
