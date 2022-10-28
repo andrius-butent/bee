@@ -306,6 +306,11 @@ public final class MailConstants {
   public static final String PRM_SEND_NEWSLETTERS_INTERVAL = "SendNewslettersInterval";
   public static final String PRM_REMINDERS_MAIL_TEMPLATE = "RemindersMailTemplate";
 
+  public static final String PRM_OUTLOOK_365_CLIENT_ID = "Outlook365ClientId";
+  public static final String PRM_OUTLOOK_365_TENANT_ID = "Outlook365TenantId";
+  public static final String PRM_OUTLOOK_365_SECRET_KEY = "Outlook365SecretKey";
+  public static final String PRM_OUTLOOK_365_SCOPE = "Outlook365Scope";
+
   public static final String REMINDERS_MAIL_TEMPLATE_HEADER_TEXT = "{template_header_text}";
   public static final String REMINDERS_MAIL_TEMPLATE_HEADER_COLOR = "{template_header_color}";
   public static final String REMINDERS_MAIL_DEFAULT_COLOR = "#6bae45";

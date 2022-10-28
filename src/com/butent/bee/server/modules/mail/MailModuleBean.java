@@ -540,14 +540,15 @@ public class MailModuleBean implements BeeModule, HasTimerService {
 
     return Lists.newArrayList(
         BeeParameter.createBoolean(module, PRM_SIGNATURE_POSITION, true, true),
-        BeeParameter.createRelation(module, PRM_DEFAULT_ACCOUNT, TBL_ACCOUNTS,
-            COL_ACCOUNT_DESCRIPTION),
+        BeeParameter.createRelation(module, PRM_DEFAULT_ACCOUNT, TBL_ACCOUNTS, COL_ACCOUNT_DESCRIPTION),
         BeeParameter.createNumber(module, PRM_MAIL_CHECK_INTERVAL),
         BeeParameter.createNumber(module, PRM_SEND_NEWSLETTERS_COUNT, false, null),
         BeeParameter.createNumber(module, PRM_SEND_NEWSLETTERS_INTERVAL, false, null),
-        BeeParameter.createText(module, PRM_REMINDERS_MAIL_TEMPLATE, false,
-            DEFAULT_REMINDERS_MAIL_TEMPLATE_VALUE));
-
+        BeeParameter.createText(module, PRM_REMINDERS_MAIL_TEMPLATE, false, DEFAULT_REMINDERS_MAIL_TEMPLATE_VALUE),
+        BeeParameter.createText(module, PRM_OUTLOOK_365_CLIENT_ID, false, null),
+        BeeParameter.createText(module, PRM_OUTLOOK_365_TENANT_ID, false, null),
+        BeeParameter.createText(module, PRM_OUTLOOK_365_SECRET_KEY, false, null),
+        BeeParameter.createText(module, PRM_OUTLOOK_365_SCOPE, false, null));
   }
 
   @Override
