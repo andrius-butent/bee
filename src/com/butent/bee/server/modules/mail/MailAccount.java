@@ -17,7 +17,9 @@ import com.butent.bee.shared.utils.ArrayUtils;
 import com.butent.bee.shared.utils.BeeUtils;
 import com.butent.bee.shared.utils.Codec;
 import com.butent.bee.shared.utils.EnumUtils;
+import com.microsoft.aad.msal4j.*;
 
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +50,7 @@ public class MailAccount {
 
   private static final long CONNECTION_TIMEOUT = TimeUtils.MILLIS_PER_MINUTE;
   private static final long TIMEOUT = TimeUtils.MILLIS_PER_MINUTE * 10L;
+  private static final String OUTLOOK_365 = "office365.com";
 
   static final class MailStore {
     private final ArrayBlockingQueue<Object> running;
@@ -171,9 +175,11 @@ public class MailAccount {
   private final Map<String, String> transportProperties = new LinkedHashMap<>();
 
   private final AccountInfo accountInfo;
-  private Collection<Long> accountUsers = new HashSet<>();
+  private final Collection<Long> accountUsers = new HashSet<>();
 
-  MailAccount(SimpleRow data) {
+  private final OutlookConfigs outlookConfigs;
+
+  MailAccount(SimpleRow data, OutlookConfigs outlookConfigs) {
     Assert.notNull(data);
 
     storeProtocol = EnumUtils.getEnumByName(Protocol.class, data.getValue(COL_STORE_TYPE));
@@ -198,6 +204,7 @@ public class MailAccount {
         .forEach((p, v) -> transportProperties.put(BeeUtils.normalize(p), v));
 
     accountInfo = new AccountInfo(data);
+    this.outlookConfigs = outlookConfigs;
   }
 
   public Long getAccountId() {
@@ -282,6 +289,10 @@ public class MailAccount {
     return accountInfo.getUserId();
   }
 
+  public OutlookConfigs getOutlookConfigs() {
+    return outlookConfigs;
+  }
+
   public Collection<Long> getUsers() {
     return accountUsers;
   }
@@ -343,9 +354,21 @@ public class MailAccount {
     storesLock.unlock();
 
     try {
+
+      String password = getStorePassword();
       String protocol = getStoreProtocol().name().toLowerCase();
       Properties props = new Properties();
       String pfx = "mail." + protocol + ".";
+
+      if (!BeeUtils.isEmpty(getStoreHost()) && getStoreHost().contains(OUTLOOK_365)) {
+
+        IAuthenticationResult token = acquireOutlook365Token();
+
+        if (Objects.nonNull(token) && !BeeUtils.isEmpty(token.accessToken())) {
+          password = token.accessToken();
+          props.put("mail.imap.auth.mechanisms", "XOAUTH2");
+        }
+      }
 
       if (Objects.equals(getStoreProtocol(), Protocol.IMAP)) {
         props.put(pfx + "partialfetch", "false");
@@ -364,10 +387,10 @@ public class MailAccount {
         props.put(BeeUtils.isPrefix(key, "mail.") ? key : pfx + key, prop.getValue());
       }
       Store store = Session.getInstance(props, null).getStore(protocol);
-      store.connect(getStoreHost(), getStorePort(), getStoreLogin(), getStorePassword());
+      store.connect(getStoreHost(), getStorePort(), getStoreLogin(), password);
       mailStore.set(store);
 
-    } catch (MessagingException ex) {
+    } catch (Exception ex) {
       storesLock.lock();
       stores.remove(getAccountId());
       storesLock.unlock();
@@ -409,6 +432,33 @@ public class MailAccount {
     transport.connect(getTransportHost(), getTransportPort(), getTransportLogin(),
         getTransportPassword());
     return transport;
+  }
+
+  private IAuthenticationResult acquireOutlook365Token() {
+
+    try {
+
+      IClientCredential credential = ClientCredentialFactory.createFromSecret(getOutlookConfigs().getSecretKey());
+      ConfidentialClientApplication cca =
+              ConfidentialClientApplication
+                      .builder(getOutlookConfigs().getClientId(), credential)
+                      .authority("https://login.microsoftonline.com/" + getOutlookConfigs().getTenantId())
+                      .build();
+
+      Set<String> scopes = new HashSet<>();
+      scopes.add(getOutlookConfigs().getScope());
+
+      ClientCredentialParameters parameters =
+              ClientCredentialParameters
+                      .builder(scopes)
+                      .build();
+
+      return cca.acquireToken(parameters).join();
+
+    } catch (MalformedURLException e) {
+      logger.debug(e.getMessage());
+      return null;
+    }
   }
 
   boolean createRemoteFolder(MailFolder parent, String name) throws MessagingException {
@@ -544,10 +594,6 @@ public class MailAccount {
 
   MailFolder getRootFolder() {
     return accountInfo.getRootFolder();
-  }
-
-  static boolean holdsFolders(Folder remoteFolder) throws MessagingException {
-    return (remoteFolder.getType() & Folder.HOLDS_FOLDERS) != 0;
   }
 
   static boolean holdsMessages(Folder remoteFolder) throws MessagingException {
