@@ -1,5 +1,6 @@
 package com.butent.bee.server.modules.mail;
 
+import com.butent.bee.server.modules.ParamHolderBean;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.io.CharStreams;
@@ -83,9 +84,9 @@ import javax.ws.rs.core.MediaType;
 public class MailStorageBean {
 
   private static final class Profile {
-    private BeeLogger beeLogger;
+    private final BeeLogger beeLogger;
     private long millis = System.currentTimeMillis();
-    private Map<String, Long> history = new LinkedHashMap<>();
+    private final Map<String, Long> history = new LinkedHashMap<>();
 
     private Profile(BeeLogger logger) {
       this.beeLogger = logger;
@@ -115,6 +116,8 @@ public class MailStorageBean {
   FileStorageBean fs;
   @EJB
   ConcurrencyBean cb;
+  @EJB
+  ParamHolderBean prm;
 
   public void attachMessages(Long folderId, Map<Long, Integer> messages) {
     for (Entry<Long, Integer> message : messages.entrySet()) {
@@ -173,6 +176,13 @@ public class MailStorageBean {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public MailAccount getAccount(Long accountId, boolean checkUnread) {
+
+    OutlookConfigs outlookConfigs = new OutlookConfigs();
+    outlookConfigs.setClientId(prm.getText(PRM_OUTLOOK_365_CLIENT_ID));
+    outlookConfigs.setTenantId(prm.getText(PRM_OUTLOOK_365_TENANT_ID));
+    outlookConfigs.setScope(prm.getText(PRM_OUTLOOK_365_SCOPE));
+    outlookConfigs.setSecretKey(prm.getText(PRM_OUTLOOK_365_SECRET_KEY));
+
     MailAccount account = new MailAccount(qs.getRow(new SqlSelect()
         .addAllFields(TBL_ACCOUNTS)
         .addField(TBL_ACCOUNTS, sys.getIdName(TBL_ACCOUNTS), COL_ACCOUNT)
@@ -180,7 +190,7 @@ public class MailStorageBean {
         .addFrom(TBL_ACCOUNTS)
         .addFromInner(TBL_EMAILS,
             sys.joinTables(TBL_EMAILS, TBL_ACCOUNTS, MailConstants.COL_ADDRESS))
-        .setWhere(sys.idEquals(TBL_ACCOUNTS, accountId))));
+        .setWhere(sys.idEquals(TBL_ACCOUNTS, accountId))), outlookConfigs);
 
     SqlSelect query = new SqlSelect()
         .addFields(TBL_FOLDERS, COL_FOLDER_PARENT, COL_FOLDER_NAME, COL_FOLDER_UID,
