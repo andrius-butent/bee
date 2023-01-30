@@ -75,25 +75,15 @@ import com.butent.bee.shared.websocket.messages.MailMessage;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.imap.ResyncData;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -202,6 +192,18 @@ public class MailModuleBean implements BeeModule, HasTimerService {
             mailFolder.getSubFolders().forEach(folder -> holder.get().accept(folder));
           });
           holder.get().accept(localFolder);
+        } else if (account.getInboxFolder().getName().equalsIgnoreCase(localFolder.getName())) {
+          c += checkFolder(account, account.getRemoteFolder(store.get(), localFolder),
+                  localFolder, force, progressId);
+
+          List<MailFolder> folders = account.getRootFolder().getSubFolders().stream()
+                  .filter(folder -> folder.getName().equalsIgnoreCase("Išsiųsta") || folder.getName().contains("Sent"))
+                  .collect(Collectors.toList());
+
+          if (!CollectionUtils.isEmpty(folders)) {
+            folders.forEach(mailFolder -> checkMail(false, account, mailFolder, force));
+          }
+
         } else {
           c += checkFolder(account, account.getRemoteFolder(store.get(), localFolder),
               localFolder, force, progressId);

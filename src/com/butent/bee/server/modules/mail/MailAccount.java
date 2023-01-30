@@ -373,10 +373,10 @@ public class MailAccount {
       if (Objects.equals(getStoreProtocol(), Protocol.IMAP)) {
         props.put(pfx + "partialfetch", "false");
         props.put(pfx + "compress.enable", "true");
-        props.put(pfx + "connectionpoolsize", "10");
+        props.put(pfx + "connectionpoolsize", "15");
       }
       props.put("mail.mime.address.strict", "false");
-      props.put(pfx + "connectiontimeout", BeeUtils.toString(CONNECTION_TIMEOUT));
+      props.put(pfx + "connectiontimeout", BeeUtils.toString(CONNECTION_TIMEOUT * 3));
       props.put(pfx + "timeout", BeeUtils.toString(TIMEOUT));
 
       if (isStoreSSL()) {
