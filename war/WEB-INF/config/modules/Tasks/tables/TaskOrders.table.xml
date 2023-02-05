@@ -40,6 +40,7 @@
     <Text name="Note" label="Pastaba" />
 
     <Numeric name="Material" label="Žaliava" precision="10" scale="4" />
+    <String name="MaterialType" precision="25" label="Tipas" />
     <Numeric name="Paints" label="Dažai" precision="10" scale="4" />
     <Integer name="Pores" label="Porėmis" />
     <Integer name="Rings" label="Žiedai" />

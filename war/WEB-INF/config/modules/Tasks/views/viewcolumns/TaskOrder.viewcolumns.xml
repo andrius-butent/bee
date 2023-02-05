@@ -32,27 +32,13 @@
   <SimpleColumn name="Laminate1" />
   <SimpleColumn name="Laminate2" />
 
-  <SimpleColumn name="Printed" />
-  <SimpleJoin name="Printed" joinType="LEFT">
-    <SimpleColumn alias="PrintedPerson" name="Person" />
-    <SimpleJoin name="Person" joinType="LEFT">
-      <SimpleColumn alias="PrintedFirstName" name="FirstName" />
-      <SimpleColumn alias="PrintedLastName" name="LastName" />
-    </SimpleJoin>
-    <SimpleJoin name="Company" joinType="LEFT">
-      <SimpleColumn alias="PrintedCompanyName" name="Name" />
-    </SimpleJoin>
-  </SimpleJoin>
-
   <SimpleColumn name="ProductFormat" />
   <SimpleColumn name="NumberOfRuns" />
   <SimpleColumn name="Quantity" />
-  <SimpleColumn name="Counter" />
-  <SimpleColumn name="Waster" />
-  <SimpleColumn name="Good" />
   <SimpleColumn name="Note" />
 
   <SimpleColumn name="Material" />
+  <SimpleColumn name="MaterialType" />
   <SimpleColumn name="Paints" />
   <SimpleColumn name="Pores" />
   <SimpleColumn name="Rings" />

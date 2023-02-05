@@ -100,7 +100,7 @@
 
         <row>
           <Label for="PaperEnvelope" class="bee-required" />
-          <ListBox source="PaperEnvelope" style="width: 175px;" required="true" >
+          <ListBox source="PaperEnvelope" name="PaperEnvelope" style="width: 175px;" required="true" >
             <item>popierius</item>
             <item>vokai</item>
             <item>plastikas</item>
@@ -113,8 +113,15 @@
             <item>kita</item>
           </ListBox>
 
+          <Label for="MaterialType" name="MaterialTypeLabel" />
+          <ListBox source="MaterialType" name="MaterialType" style="width: 175px;" />
+        </row>
+
+        <row>
           <Label for="PaperEnvelopeNote" />
-          <InputText source="PaperEnvelopeNote" style="width: 285px;" maxLength="60" />
+          <cell colSpan="3">
+            <InputArea source="PaperEnvelopeNote" visibleLines="2" summarize="true" style="width: 100%; max-height: 50px;" />
+          </cell>
         </row>
 
         <row>
@@ -154,16 +161,8 @@
             <item>matinis</item>
             <item>blizgus</item>
             <item>aksomas</item>
+            <item>nesvarbu</item>
           </ListBox>
-        </row>
-
-        <row>
-          <Label for="Printed" />
-          <cell colSpan="3">
-            <DataSelector source="Printed" style="width: 100%;"
-                          renderColumns="PrintedFirstName PrintedLastName"
-                          choiceColumns="FirstName LastName CompanyName" />
-          </cell>
         </row>
 
         <row>
@@ -197,21 +196,6 @@
           <cell colSpan="3">
             <InputText source="Note" style="width: 100%;" maxLength="114" />
           </cell>
-        </row>
-
-        <row>
-          <Label for="Counter" />
-          <InputInteger source="Counter" minValue="0" maxLength="7" maxValue="9999999" format="0000000"
-                        style="width: 80px;" />
-
-          <Label for="Waster" />
-          <FlowPanel>
-            <InputInteger source="Waster" minValue="0" maxValue="999999" maxLength="6" style="width: 70px; &inline;" />
-            <Label text="vnt" style="&inline; margin-left: 5px;" />
-            <Label for="Good" style="&inline; margin-left: 50px; margin-right: 5px;" />
-            <InputInteger source="Good" minValue="0" maxValue="999999" maxLength="6" style="width: 70px; &inline;" />
-            <Label text="vnt" style="&inline; margin-left: 5px;" />
-          </FlowPanel>
         </row>
       </Table>
     </FlowPanel>
