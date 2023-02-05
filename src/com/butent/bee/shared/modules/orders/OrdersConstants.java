@@ -91,6 +91,8 @@ public final class OrdersConstants {
   public static final String COL_SALE_ITEM = "SaleItem";
   public static final String COL_ORDER_TRADE_OPERATION = "TradeOperation";
   public static final String COL_TRADE_OPERATION_NAME = "OperationName";
+  public static final String COL_PAPER_ENVELOPE = "PaperEnvelope";
+  public static final String COL_MATERIAL_TYPE = "MaterialType";
 
   public static final String PRP_FREE_REMAINDER = "FreeRemainder";
   public static final String PRP_COMPLETED_INVOICES = "CompletedInvoices";
