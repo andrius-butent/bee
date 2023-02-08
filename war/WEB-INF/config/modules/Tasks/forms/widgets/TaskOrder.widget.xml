@@ -114,7 +114,7 @@
           </ListBox>
 
           <Label for="MaterialType" name="MaterialTypeLabel" />
-          <ListBox source="MaterialType" name="MaterialType" style="width: 175px;" />
+          <ListBox source="MaterialType" name="MaterialType" style="width: 220px;" />
         </row>
 
         <row>
@@ -210,8 +210,7 @@
         <row>
           <Label for="Material" />
           <FlowPanel>
-            <InputDecimal source="Material" minValue="0" maxValue="999999.9999"
-                          style="width: 200px;" />
+            <InputDecimal source="Material" minValue="0" maxValue="999999.9999" style="width: 200px;" />
             <Label text="m2" style="&inline; margin-left: 5px;" />
           </FlowPanel>
 
