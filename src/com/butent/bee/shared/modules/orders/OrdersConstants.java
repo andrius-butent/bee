@@ -94,6 +94,10 @@ public final class OrdersConstants {
   public static final String COL_PAPER_ENVELOPE = "PaperEnvelope";
   public static final String COL_MATERIAL_TYPE = "MaterialType";
 
+  public static final String NAME_MATERIAL_TYPE_LABEL = "MaterialTypeLabel";
+  public static final String PLEVELE = "plėvelė";
+  public static final String TENTAS = "tentas";
+
   public static final String PRP_FREE_REMAINDER = "FreeRemainder";
   public static final String PRP_COMPLETED_INVOICES = "CompletedInvoices";
   public static final String PRP_AMOUNT_WO_VAT = "AmountWoVAT";
