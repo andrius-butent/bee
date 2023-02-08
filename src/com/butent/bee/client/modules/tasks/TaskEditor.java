@@ -16,8 +16,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.butent.bee.client.composite.Relations.PFX_RELATED;
+import static com.butent.bee.client.modules.tasks.TaskHelper.isMaterialTypeRequired;
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.*;
 import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.*;
+import static com.butent.bee.shared.modules.orders.OrdersConstants.*;
 import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
 
 import com.butent.bee.client.BeeKeeper;
@@ -80,6 +82,7 @@ import com.butent.bee.client.widget.Image;
 import com.butent.bee.client.widget.InputArea;
 import com.butent.bee.client.widget.InputDateTime;
 import com.butent.bee.client.widget.InternalLink;
+import com.butent.bee.client.widget.ListBox;
 import com.butent.bee.client.widget.Label;
 import com.butent.bee.client.widget.TextLabel;
 import com.butent.bee.shared.Assert;
@@ -110,7 +113,6 @@ import com.butent.bee.shared.modules.documents.DocumentConstants;
 import com.butent.bee.shared.modules.projects.ProjectConstants;
 import com.butent.bee.shared.modules.projects.ProjectStatus;
 import com.butent.bee.shared.modules.tasks.TaskConstants;
-import com.butent.bee.shared.modules.tasks.TaskConstants.*;
 import com.butent.bee.shared.modules.tasks.TaskUtils;
 import com.butent.bee.shared.rights.Module;
 import com.butent.bee.shared.time.DateTime;
@@ -159,6 +161,11 @@ class TaskEditor extends ProductSupportInterceptor {
   private static final String NAME_PRIVATE_TASK = "PrivateTask";
   private static final String NAME_LATE_INDICATOR = "LateIndicator";
 
+  private final List<String> pleveleType = Arrays.asList("3551 su oro kanalais (Auto)", "3551 be oro kanalų (Auto)",
+          "3951 su oro kanalais (Wrap)", "3951 be oro kanalų (Wrap)", "kita");
+  private final List<String> tentasType = Arrays.asList("440 laminuotas", "450 lietas", "270 mešas", "450 block out",
+          "450 šviesdėžinis", "kitas");
+
   private final long userId;
 
   private IdentifiableWidget taskWidget;
@@ -173,8 +180,12 @@ class TaskEditor extends ProductSupportInterceptor {
   private TextLabel lateIndicator;
   private Relations relations;
 
+  private ListBox materialTypeList;
+  private Label materialTypeLabel;
+  private ListBox paperEnvelope;
+
   private List<Long> projectUsers;
-  private Map<String, Pair<Long, String>> dbaParameters = Maps.newConcurrentMap();
+  private final Map<String, Pair<Long, String>> dbaParameters = Maps.newConcurrentMap();
   private Long prmEndOfWorkDay;
 
   private boolean isDefaultLayout;
@@ -627,6 +638,16 @@ class TaskEditor extends ProductSupportInterceptor {
       });
     } else if (BeeUtils.same(name, NAME_LATE_INDICATOR) && widget instanceof TextLabel) {
       lateIndicator = (TextLabel) widget;
+    } else if (BeeUtils.same(name, COL_MATERIAL_TYPE) && widget instanceof ListBox) {
+      materialTypeList = (ListBox) widget;
+    } else if (BeeUtils.same(name, NAME_MATERIAL_TYPE_LABEL) && widget instanceof Label) {
+      materialTypeLabel = (Label) widget;
+    } else if (BeeUtils.same(name, COL_PAPER_ENVELOPE) && widget instanceof ListBox) {
+      paperEnvelope = (ListBox) widget;
+      paperEnvelope.addChangeHandler(changeEvent -> {
+        setMaterialTypeRequired(paperEnvelope.getValue());
+        setMaterialTypes(paperEnvelope.getValue());
+      });
     }
 
     if (BeeUtils.same(name,
@@ -724,12 +745,27 @@ class TaskEditor extends ProductSupportInterceptor {
     Pair<AbstractSlackRenderer.SlackKind, Long> data = renderer.getMinutes(row);
     setLateIndicatorHtml(data);
     setTaskStatusStyle(header, form, row, data);
+
+    if (TaskHelper.isTaskOrder(row)) {
+      setMaterialTypeRequired(Data.getString(VIEW_TASK_ORDERS, row, COL_PAPER_ENVELOPE));
+      setMaterialTypes(Data.getString(VIEW_TASK_ORDERS, row, COL_PAPER_ENVELOPE));
+      materialTypeList.setValue(Data.getString(VIEW_TASK_ORDERS, row, COL_MATERIAL_TYPE));
+    }
   }
 
   @Override
   public boolean beforeAction(Action action, Presenter presenter) {
     if (action == Action.SAVE) {
-      return !maybeNotifyEmptyProduct(msg -> getFormView().notifySevere(msg));
+      if (maybeNotifyEmptyProduct(msg -> getFormView().notifySevere(msg))) {
+        return false;
+      }
+
+      if (TaskHelper.isTaskOrder(getFormView().getActiveRow())) {
+        if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
+          getFormView().notifySevere(Localized.dictionary().fieldRequired(Localized.dictionary().type()));
+          return false;
+        }
+      }
     }
 
     return super.beforeAction(action, presenter);
@@ -2400,5 +2436,19 @@ class TaskEditor extends ProductSupportInterceptor {
     }
 
     form.refresh();
+  }
+
+  private void setMaterialTypeRequired(String material) {
+    materialTypeLabel.setStyleName(StyleUtils.NAME_REQUIRED, isMaterialTypeRequired(material));
+  }
+
+  private void setMaterialTypes(String material) {
+    if (Objects.equals(TENTAS, material)) {
+      materialTypeList.setItems(tentasType);
+    } else if (Objects.equals(PLEVELE, material)) {
+      materialTypeList.setItems(pleveleType);
+    } else {
+      materialTypeList.clear();
+    }
   }
 }

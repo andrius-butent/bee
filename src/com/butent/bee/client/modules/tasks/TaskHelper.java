@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
+import static com.butent.bee.shared.modules.orders.OrdersConstants.PLEVELE;
+import static com.butent.bee.shared.modules.orders.OrdersConstants.TENTAS;
 import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
 import com.butent.bee.client.BeeKeeper;
 import com.butent.bee.client.communication.ParameterList;
@@ -248,6 +250,14 @@ final class TaskHelper {
     }
 
     selector.getOracle().setAdditionalFilter(filter, true);
+  }
+
+  public static boolean isTaskOrder(IsRow row) {
+    return DataUtils.isId(Data.getLong(TaskConstants.VIEW_TASKS, row, TaskConstants.COL_TASK_ORDER));
+  }
+
+  public static boolean isMaterialTypeRequired(String material) {
+    return Objects.equals(TENTAS, material) || Objects.equals(PLEVELE, material);
   }
 
   private TaskHelper() {

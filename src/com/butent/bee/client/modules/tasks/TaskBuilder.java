@@ -4,12 +4,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.Widget;
 
+import static com.butent.bee.client.modules.tasks.TaskHelper.isMaterialTypeRequired;
+import static com.butent.bee.client.modules.tasks.TaskHelper.isTaskOrder;
+import static com.butent.bee.shared.modules.orders.OrdersConstants.*;
+import static com.butent.bee.shared.modules.orders.OrdersConstants.PLEVELE;
 import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
 
 import com.butent.bee.client.BeeKeeper;
@@ -46,6 +49,7 @@ import com.butent.bee.client.widget.InputBoolean;
 import com.butent.bee.client.widget.InputDate;
 import com.butent.bee.client.widget.InputText;
 import com.butent.bee.client.widget.InputTime;
+import com.butent.bee.client.widget.ListBox;
 import com.butent.bee.client.widget.Label;
 import com.butent.bee.shared.Assert;
 import com.butent.bee.shared.BeeConst;
@@ -104,7 +108,12 @@ class TaskBuilder extends ProductSupportInterceptor {
   private static final String NAME_NOT_SCHEDULED_TASK = "NotScheduledTask";
   private static final String NAME_LABEL_SUFFIX = "Label";
 
-  private String[] widgets = {
+  private final List<String> pleveleType = Arrays.asList("3551 su oro kanalais (Auto)", "3551 be oro kanalų (Auto)",
+          "3951 su oro kanalais (Wrap)", "3951 be oro kanalų (Wrap)", "kita");
+  private final List<String> tentasType = Arrays.asList("440 laminuotas", "450 lietas", "270 mešas", "450 block out",
+          "450 šviesdėžinis", "kitas");
+
+  private final String[] widgets = {
       NAME_START_DATE, NAME_START_TIME, NAME_END_DATE, NAME_END_TIME,
       NAME_EXPECTED_DURATION, NAME_EXECUTORS, NAME_USER_GROUP_SETTINGS, COL_PRIVATE_TASK,
       PROP_MAIL, NAME_OBSERVERS, NAME_OBSERVER_GROUPS};
@@ -129,6 +138,10 @@ class TaskBuilder extends ProductSupportInterceptor {
   private Relations relations;
   private FileCollector fileCollector;
   private boolean taskIdsCallback;
+
+  private ListBox materialTypeList;
+  private Label materialTypeLabel;
+  private ListBox paperEnvelope;
 
   TaskBuilder() {
     super();
@@ -269,14 +282,11 @@ class TaskBuilder extends ProductSupportInterceptor {
         }
       });
 
-      userGroups.addKeyDownHandler(new KeyDownHandler() {
-        @Override
-        public void onKeyDown(KeyDownEvent event) {
-          if (!BeeUtils.isEmpty(userGroups.getDisplayValue()) && executorsLabel != null) {
-            executorsLabel.addStyleName(StyleUtils.NAME_HAS_DEFAULTS);
-          } else if (BeeUtils.isEmpty(userGroups.getDisplayValue()) && endDateInputLabel != null) {
-            executorsLabel.removeStyleName(StyleUtils.NAME_HAS_DEFAULTS);
-          }
+      userGroups.addKeyDownHandler(event -> {
+        if (!BeeUtils.isEmpty(userGroups.getDisplayValue()) && executorsLabel != null) {
+          executorsLabel.addStyleName(StyleUtils.NAME_HAS_DEFAULTS);
+        } else if (BeeUtils.isEmpty(userGroups.getDisplayValue()) && endDateInputLabel != null) {
+          executorsLabel.removeStyleName(StyleUtils.NAME_HAS_DEFAULTS);
         }
       });
     } else if (BeeUtils.same(NAME_EXECUTORS, name) && (widget instanceof MultiSelector)) {
@@ -361,6 +371,16 @@ class TaskBuilder extends ProductSupportInterceptor {
 
           return true;
         }
+      });
+    } else if (BeeUtils.same(name, COL_MATERIAL_TYPE) && widget instanceof ListBox) {
+      materialTypeList = (ListBox) widget;
+    } else if (BeeUtils.same(name, NAME_MATERIAL_TYPE_LABEL) && widget instanceof Label) {
+      materialTypeLabel = (Label) widget;
+    } else if (BeeUtils.same(name, COL_PAPER_ENVELOPE) && widget instanceof ListBox) {
+      paperEnvelope = (ListBox) widget;
+      paperEnvelope.addChangeHandler(changeEvent -> {
+        setMaterialTypeRequired(paperEnvelope.getValue());
+        setMaterialTypes(paperEnvelope.getValue());
       });
     }
 
@@ -483,6 +503,11 @@ class TaskBuilder extends ProductSupportInterceptor {
     boolean noExecutors = BeeUtils.allEmpty(activeRow.getProperty(PROP_EXECUTORS),
         activeRow.getProperty(PROP_EXECUTOR_GROUPS));
 
+    if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
+      getFormView().notifySevere(Localized.dictionary().fieldRequired(Localized.dictionary().type()));
+      return;
+    }
+
     if (start == null && start == end && noExecutors && notSheduledTask) {
       if (maybeNotifyEmptyProduct(msg -> event.getCallback().onFailure(msg))) {
         return;
@@ -556,6 +581,7 @@ class TaskBuilder extends ProductSupportInterceptor {
     });
     return false;
   }
+
 
   private static BeeRow getResponseRow(String caption, ResponseObject ro, RowCallback callback) {
     if (!Queries.checkResponse(caption, BeeConst.UNDEF, VIEW_TASKS, ro, BeeRow.class, null)
@@ -1222,4 +1248,18 @@ class TaskBuilder extends ProductSupportInterceptor {
     event.getCallback().onCancel();
   }
 
+  private void setMaterialTypeRequired(String material) {
+    boolean isPleveleOrTentas = Objects.equals(material, TENTAS) || Objects.equals(material, PLEVELE);
+    materialTypeLabel.setStyleName(StyleUtils.NAME_REQUIRED, isPleveleOrTentas);
+  }
+
+  private void setMaterialTypes(String material) {
+    if (Objects.equals(TENTAS, material)) {
+      materialTypeList.setItems(tentasType);
+    } else if (Objects.equals(PLEVELE, material)) {
+      materialTypeList.setItems(pleveleType);
+    } else {
+      materialTypeList.clear();
+    }
+  }
 }
