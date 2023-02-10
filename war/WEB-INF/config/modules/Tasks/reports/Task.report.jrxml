@@ -68,15 +68,10 @@
 	<parameter name="UV" class="java.lang.String"/>
 	<parameter name="Laminate1" class="java.lang.String"/>
 	<parameter name="Laminate2" class="java.lang.String"/>
-	<parameter name="PrintedFirstName" class="java.lang.String"/>
-	<parameter name="PrintedLastName" class="java.lang.String"/>
 	<parameter name="ProductFormat" class="java.lang.String"/>
 	<parameter name="Price" class="java.lang.String"/>
 	<parameter name="Quantity" class="java.lang.String"/>
 	<parameter name="NumberOfRuns" class="java.lang.String"/>
-	<parameter name="Counter" class="java.lang.String"/>
-	<parameter name="Waster" class="java.lang.String"/>
-	<parameter name="Good" class="java.lang.String"/>
 	<parameter name="DecorationSupplierName" class="java.lang.String"/>
 	<parameter name="DecorationSupplierTypeName" class="java.lang.String"/>
 	<parameter name="DecorationPrice" class="java.lang.String"/>
@@ -129,6 +124,7 @@
 	<parameter name="InvoiceNumber" class="java.lang.String"/>
 	<parameter name="InvoicePrice" class="java.lang.String"/>
 	<parameter name="Mounting" class="java.lang.String"/>
+	<parameter name="MaterialType" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -142,7 +138,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="597" splitType="Stretch">
+		<band height="582" splitType="Stretch">
 			<frame>
 				<reportElement positionType="Float" x="0" y="0" width="555" height="96" uuid="e695b260-86a8-42a6-925d-53c5d0d03dca">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -441,10 +437,10 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="0" y="162" width="555" height="147" isRemoveLineWhenBlank="true" uuid="83a7a9eb-5f5f-4ca3-9fc2-1c440081b54a">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<reportElement positionType="Float" x="0" y="162" width="555" height="130" isRemoveLineWhenBlank="true" uuid="83a7a9eb-5f5f-4ca3-9fc2-1c440081b54a">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -498,6 +494,19 @@
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<box leftPadding="0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[BeeUtils.joinWords("Tipas:", $P{MaterialType})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="11" y="44" width="543" height="12" isRemoveLineWhenBlank="true" uuid="494f0b81-3b25-4053-8896-f207b7d93414">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 						<printWhenExpression><![CDATA[$P{PaperEnvelopeNote} != null]]></printWhenExpression>
 					</reportElement>
 					<box leftPadding="0"/>
@@ -507,7 +516,7 @@
 					<textFieldExpression><![CDATA[$P{PaperEnvelopeNote}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="46" width="270" height="12" isRemoveLineWhenBlank="true" uuid="cdf08f67-bea6-41a9-a134-b2a052fbe185">
+					<reportElement positionType="Float" x="10" y="59" width="270" height="12" isRemoveLineWhenBlank="true" uuid="cdf08f67-bea6-41a9-a134-b2a052fbe185">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -518,7 +527,7 @@
 					<textFieldExpression><![CDATA[BeeUtils.joinWords("Spalvingumas:", $P{Color1}, " + ", $P{Color2})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="280" y="46" width="275" height="12" isRemoveLineWhenBlank="true" uuid="6ceb54fa-a297-4a0f-890c-0e1887493cc3">
+					<reportElement positionType="Float" x="280" y="59" width="275" height="12" isRemoveLineWhenBlank="true" uuid="6ceb54fa-a297-4a0f-890c-0e1887493cc3">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -532,7 +541,7 @@
 					<textFieldExpression><![CDATA[$P{ColorNote}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="60" width="150" height="12" isRemoveLineWhenBlank="true" uuid="e7ed2447-c34c-41e4-95e0-c74c8d534809">
+					<reportElement positionType="Float" x="10" y="73" width="150" height="12" isRemoveLineWhenBlank="true" uuid="e7ed2447-c34c-41e4-95e0-c74c8d534809">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -544,7 +553,7 @@
 					<textFieldExpression><![CDATA[BeeUtils.joinWords("Ofsetinis lakas:", $P{Offset})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="160" y="60" width="120" height="12" isRemoveLineWhenBlank="true" uuid="01ab06cd-2292-49af-99c4-a8723b6e70e5">
+					<reportElement positionType="Float" x="160" y="73" width="120" height="12" isRemoveLineWhenBlank="true" uuid="01ab06cd-2292-49af-99c4-a8723b6e70e5">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -558,7 +567,7 @@
 					<textFieldExpression><![CDATA["UV lakas"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="280" y="60" width="140" height="12" isRemoveLineWhenBlank="true" uuid="5dde24a2-5347-4301-b435-f55428abc082">
+					<reportElement positionType="Float" x="280" y="73" width="140" height="12" isRemoveLineWhenBlank="true" uuid="5dde24a2-5347-4301-b435-f55428abc082">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -570,7 +579,7 @@
 					<textFieldExpression><![CDATA[BeeUtils.joinWords("Laminavimas:", $P{Laminate1})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="420" y="60" width="134" height="12" isRemoveLineWhenBlank="true" uuid="73d1375c-7c65-4404-8d92-5589d557d57a">
+					<reportElement positionType="Float" x="420" y="73" width="134" height="12" isRemoveLineWhenBlank="true" uuid="73d1375c-7c65-4404-8d92-5589d557d57a">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -582,19 +591,7 @@
 					<textFieldExpression><![CDATA[$P{Laminate2}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="75" width="545" height="12" isRemoveLineWhenBlank="true" uuid="fefb2406-02f0-4077-b1a4-302754e1f3cb">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
-					<textElement verticalAlignment="Middle" markup="html">
-						<font fontName="DejaVu Sans" size="9" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA["<b>Spaudė: </b>" + BeeUtils.joinWords($P{PrintedFirstName}, $P{PrintedLastName})]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="90" width="544" height="12" isRemoveLineWhenBlank="true" uuid="1f16b091-c7b5-4f3d-ba81-e28757c72c16">
+					<reportElement positionType="Float" x="10" y="87" width="544" height="12" isRemoveLineWhenBlank="true" uuid="1f16b091-c7b5-4f3d-ba81-e28757c72c16">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -606,7 +603,7 @@
 					<textFieldExpression><![CDATA["<b>Gaminio formatas: </b>" + BeeUtils.nvl($P{ProductFormat}, "")]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="106" width="130" height="12" isRemoveLineWhenBlank="true" uuid="6536d82d-6aac-46e7-9fa6-f8f433196eca">
+					<reportElement positionType="Float" x="10" y="103" width="130" height="12" isRemoveLineWhenBlank="true" uuid="6536d82d-6aac-46e7-9fa6-f8f433196eca">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -618,7 +615,7 @@
 					<textFieldExpression><![CDATA["<b>Kiekis: </b>" + $P{Quantity}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="160" y="106" width="120" height="12" isRemoveLineWhenBlank="true" uuid="a1327ecc-56b2-4320-b4e7-f2988fd32285">
+					<reportElement positionType="Float" x="160" y="103" width="120" height="12" isRemoveLineWhenBlank="true" uuid="a1327ecc-56b2-4320-b4e7-f2988fd32285">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -629,7 +626,7 @@
 					<textFieldExpression><![CDATA[BeeUtils.joinWords("<b>Prabėgimų sk.: </b>", $P{NumberOfRuns})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="10" y="120" width="545" height="12" isRemoveLineWhenBlank="true" uuid="cb7879ed-ebef-47a3-bc81-f0f9a8becf36">
+					<reportElement positionType="Float" x="10" y="117" width="545" height="12" isRemoveLineWhenBlank="true" uuid="cb7879ed-ebef-47a3-bc81-f0f9a8becf36">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -641,77 +638,9 @@
 					</textElement>
 					<textFieldExpression><![CDATA[($P{Note}==null ? "" : $P{Note})]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="11" y="135" width="69" height="12" isRemoveLineWhenBlank="true" uuid="afb6d0ab-0b32-4c4f-b7fc-0bcd19e32bb7">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-						<font fontName="DejaVu Sans" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Skaitliukas:"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="185" y="135" width="69" height="12" isRemoveLineWhenBlank="true" uuid="6e8ce725-4869-4140-b86e-04ad8e76a1ee">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans" size="9" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Brokas:"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="359" y="135" width="69" height="12" isRemoveLineWhenBlank="true" uuid="998fdd1c-1686-49cc-a094-43c8badf56dc">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans" size="9" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Geri:"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="428" y="135" width="105" height="12" isRemoveLineWhenBlank="true" uuid="eef98132-d601-462b-92d6-fd65b238cf1e">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<printWhenExpression><![CDATA[$P{Good} != null]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans" size="9" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{Good}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="254" y="135" width="105" height="12" isRemoveLineWhenBlank="true" uuid="2adf529a-3e52-4b30-b22c-57dc16339096">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<printWhenExpression><![CDATA[$P{Waster} != null]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans" size="9" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{Waster}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" x="80" y="135" width="105" height="12" isRemoveLineWhenBlank="true" uuid="102ccb77-dd19-4702-b509-1ce120bcc696">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<printWhenExpression><![CDATA[$P{Counter} != null]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-						<font fontName="DejaVu Sans" size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[BeeUtils.toLeadingZeroes(BeeUtils.toInt($P{Counter}), 7)]]></textFieldExpression>
-				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="0" y="309" width="555" height="62" isRemoveLineWhenBlank="true" uuid="47a0dc53-8786-4836-8cb4-42341f5dd092">
+				<reportElement positionType="Float" x="0" y="295" width="555" height="62" isRemoveLineWhenBlank="true" uuid="47a0dc53-8786-4836-8cb4-42341f5dd092">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -837,7 +766,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="0" y="378" width="555" height="122" isRemoveLineWhenBlank="true" uuid="674b0e78-f463-449d-ac45-6e88c6c028b0">
+				<reportElement positionType="Float" x="0" y="359" width="555" height="122" isRemoveLineWhenBlank="true" uuid="674b0e78-f463-449d-ac45-6e88c6c028b0">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -1042,7 +971,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="0" y="500" width="555" height="69" isRemoveLineWhenBlank="true" uuid="2ef884f2-b6d6-488d-8736-66fc6bf0cef1">
+				<reportElement positionType="Float" x="0" y="484" width="555" height="69" isRemoveLineWhenBlank="true" uuid="2ef884f2-b6d6-488d-8736-66fc6bf0cef1">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -1159,7 +1088,7 @@
 				</frame>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="0" y="570" width="555" height="27" uuid="f418f1a6-fe2c-4e03-8144-0369f1f0fd47">
+				<reportElement positionType="Float" x="0" y="555" width="555" height="27" uuid="f418f1a6-fe2c-4e03-8144-0369f1f0fd47">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
