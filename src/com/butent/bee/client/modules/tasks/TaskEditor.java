@@ -162,7 +162,7 @@ class TaskEditor extends ProductSupportInterceptor {
   private static final String NAME_LATE_INDICATOR = "LateIndicator";
 
   private final List<String> pleveleType = Arrays.asList("3551 su oro kanalais (Auto)", "3551 be oro kanalų (Auto)",
-          "3951 su oro kanalais (Wrap)", "3951 be oro kanalų (Wrap)", "kita");
+          "3951 su oro kanalais (Wrap)", "3951 be oro kanalų (Wrap)", "removable", "ekonominė", "padidinto lipnumo", "kita");
   private final List<String> tentasType = Arrays.asList("440 laminuotas", "450 lietas", "270 mešas", "450 block out",
           "450 šviesdėžinis", "kitas");
 
