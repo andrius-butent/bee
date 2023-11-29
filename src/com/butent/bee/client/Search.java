@@ -69,6 +69,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
+import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
+import static com.butent.bee.shared.modules.tasks.TaskConstants.FORM_TASK_ORDER;
+
 public class Search {
 
   private static final class ResultPanel extends Flow implements HandlesDeleteEvents,
@@ -392,11 +395,10 @@ public class Search {
     @Override
     public void onBrowserEvent(Event event) {
       if (EventUtils.isClick(event)) {
-        if (Objects.equals(getViewName(), TaskConstants.VIEW_TASKS)) {
-          if (DataUtils.isId(Data.getLong(TaskConstants.VIEW_TASKS, getRow(),
-            TaskConstants.COL_TASK_ORDER))) {
-            RowEditor.open(TaskConstants.VIEW_TASK_ORDERS, getRow(), Opener.NEW_TAB);
-          }
+        if (Objects.equals(getViewName(), TaskConstants.VIEW_TASK_ORDERS)) {
+          String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, getRow(), COL_TASK_ORDER_P))
+                    ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+          RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, getRow(), Opener.NEW_TAB, null);
         } else {
           RowEditor.open(getViewName(), getRow(), Opener.NEW_TAB);
         }
@@ -523,11 +525,10 @@ public class Search {
       ViewCallback callback) {
 
     if (results.size() == 1 && callback == null) {
-      if (Objects.equals(results.get(0).getViewName(), TaskConstants.VIEW_TASKS)) {
-        if (DataUtils.isId(Data.getLong(TaskConstants.VIEW_TASKS, results.get(0).getRow(),
-          TaskConstants.COL_TASK_ORDER))) {
-          RowEditor.open(TaskConstants.VIEW_TASK_ORDERS, results.get(0).getRow(), Opener.modeless());
-        }
+      if (Objects.equals(results.get(0).getViewName(), VIEW_TASK_ORDERS)) {
+        String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, results.get(0).getRow(), COL_TASK_ORDER_P))
+                ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+        RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, results.get(0).getRow(), Opener.NEW_TAB, null);
       } else {
         RowEditor.open(results.get(0).getViewName(), results.get(0).getRow(), Opener.modeless());
       }
