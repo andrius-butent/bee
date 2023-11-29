@@ -82,7 +82,6 @@ import com.butent.bee.shared.modules.administration.AdministrationConstants;
 import com.butent.bee.shared.modules.classifiers.ClassifierConstants;
 import com.butent.bee.shared.modules.projects.ProjectConstants;
 import com.butent.bee.shared.modules.tasks.TaskConstants;
-import com.butent.bee.shared.modules.tasks.TaskConstants.*;
 import com.butent.bee.shared.modules.tasks.TaskType;
 import com.butent.bee.shared.modules.tasks.TaskUtils;
 import com.butent.bee.shared.modules.transport.TransportConstants;
@@ -332,7 +331,10 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
             .bracket(Localized.dictionary().createNewRow()));
       } else if (DataUtils.isId(row.getLong(Data.getColumnIndex(VIEW_TASKS, COL_TASK_ORDER)))) {
         event.consume();
-        RowEditor.openForm(FORM_TASK_ORDER, Data.getDataInfo(VIEW_TASK_ORDERS),
+        String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, row, COL_TASK_ORDER_P))
+                ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+
+        RowEditor.openForm(formName, Data.getDataInfo(VIEW_TASK_ORDERS),
             Filter.compareId(row.getId()), Opener.NEW_TAB);
       } else if (BeeKeeper.getUser().openInNewTab()) {
         event.consume();

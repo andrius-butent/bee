@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.client.composite.*;
 import com.butent.bee.shared.data.cache.CachingPolicy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -16,7 +17,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.butent.bee.client.composite.Relations.PFX_RELATED;
-import static com.butent.bee.client.modules.tasks.TaskHelper.isMaterialTypeRequired;
+import static com.butent.bee.client.modules.tasks.TaskHelper.*;
 import static com.butent.bee.shared.modules.administration.AdministrationConstants.*;
 import static com.butent.bee.shared.modules.classifiers.ClassifierConstants.*;
 import static com.butent.bee.shared.modules.orders.OrdersConstants.*;
@@ -27,12 +28,7 @@ import com.butent.bee.client.Global;
 import com.butent.bee.client.communication.ParameterList;
 import com.butent.bee.client.communication.ResponseCallback;
 import com.butent.bee.client.communication.RpcCallback;
-import com.butent.bee.client.composite.DataSelector;
-import com.butent.bee.client.composite.FileCollector;
-import com.butent.bee.client.composite.FileGroup;
 import com.butent.bee.client.composite.FileGroup.Column;
-import com.butent.bee.client.composite.MultiSelector;
-import com.butent.bee.client.composite.UnboundSelector;
 import com.butent.bee.client.data.Data;
 import com.butent.bee.client.data.Queries;
 import com.butent.bee.client.data.Queries.IntCallback;
@@ -57,7 +53,6 @@ import com.butent.bee.client.layout.Flow;
 import com.butent.bee.client.layout.Simple;
 import com.butent.bee.client.layout.Split;
 import com.butent.bee.client.layout.TabbedPages;
-import com.butent.bee.client.composite.Relations;
 import com.butent.bee.client.presenter.Presenter;
 import com.butent.bee.client.render.AbstractCellRenderer;
 import com.butent.bee.client.render.AbstractSlackRenderer;
@@ -165,6 +160,11 @@ class TaskEditor extends ProductSupportInterceptor {
           "3951 su oro kanalais (wrap)", "ekonominė skaidriais klijais", "padidinto lipnumo", "removable pilkais klijais",
           "perforuota", "2D wrap", "TERMO", "cristal clear", "kita");
   private final List<String> tentasType = Arrays.asList("440 laminuotas", "450 lietas", "270 mešas", "450 block out",
+          "450 šviesdėžinis", "kitas");
+  private final List<String> pleveleTypeP = Arrays.asList("3551 su oro kanalais (polimer)", "3551 be oro kanalų",
+          "551 be oro kanalų (polimer)", "3951 su oro kanalais (wrap)", "EKO skaidriais klijais", "EKO pilkais klijais",
+          "padidinto lipnumo", "removable pilkais klijais", "perforuota", "2D wrap", "TERMO", "cristal clear", "kita");
+  private final List<String> tentasTypeP = Arrays.asList("440 EKO laminuotas", "450/460 lietas", "270 mešas", "450 block out",
           "450 šviesdėžinis", "kitas");
 
   private final long userId;
@@ -649,6 +649,8 @@ class TaskEditor extends ProductSupportInterceptor {
         setMaterialTypeRequired(paperEnvelope.getValue());
         setMaterialTypes(paperEnvelope.getValue());
       });
+    } else if ((BeeUtils.same(name, "AdditionalInformation") || BeeUtils.same(name, "RelatedWith")) && isTaskOrderPForm(getFormView().getFormName())) {
+      ((Disclosure) widget).setVisible(false);
     }
 
     if (BeeUtils.same(name,
@@ -2444,10 +2446,18 @@ class TaskEditor extends ProductSupportInterceptor {
   }
 
   private void setMaterialTypes(String material) {
-    if (Objects.equals(TENTAS, material)) {
-      materialTypeList.setItems(tentasType);
-    } else if (Objects.equals(PLEVELE, material)) {
-      materialTypeList.setItems(pleveleType);
+    if (TENTAS.equalsIgnoreCase(material)) {
+      if(isTaskOrderPForm(getFormView().getFormName())) {
+        materialTypeList.setItems(tentasTypeP);
+      } else {
+        materialTypeList.setItems(tentasType);
+      }
+    } else if (PLEVELE.equalsIgnoreCase(material)) {
+      if(isTaskOrderPForm(getFormView().getFormName())) {
+        materialTypeList.setItems(pleveleTypeP);
+      } else {
+        materialTypeList.setItems(pleveleType);
+      }
     } else {
       materialTypeList.clear();
     }
