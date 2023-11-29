@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Form [
+        <!ENTITY inline "display: inline-block;">
+
+        <!ENTITY tbl "border-collapse: collapse;">
+        <!ENTITY cell "padding-bottom: 2px;">
+        <!ENTITY col1 "text-align: right; padding-right: 8px; width: 128px;">
+        <!ENTITY col3 "text-align: right; padding-left: 8px; padding-right: 8px; width: 128px;">
+
+        <!ENTITY inp2 "width: 160px;">
+        <!ENTITY inp2x "width: 500px;">
+        <!ENTITY inp2y "width: 500px;">
+        <!ENTITY inp3 "width: 70px;margin-left: -75px">
+
+        <!ENTITY dateStyle "&inline; min-width: 90px; max-width: 90px;">
+        <!ENTITY timeStyle "&inline; min-width: 60px; max-width: 60px; width: 60px; margin-left: 10px;">
+        <!ENTITY timeStep "30">
+        <!ENTITY col "text-align: right; padding-right: 8px;">
+        ]>
+<f:Form xmlns="http://www.butent.com/widget"
+        xmlns:f="http://www.butent.com/form"
+
+        name="NewTaskOrderP" viewName="TaskOrders" caption="=newOrder" width="700" height="700">
+
+    <FlowPanel style="padding: 10px 2px 2px 10px;">
+
+        <Table kind="controls" style="&tbl;" cellStyle="&cell;">
+            <col index="0" cellStyle="&col1;"/>
+            <col index="2" cellStyle="&col1;"/>
+
+            <row>
+                <Label for="Summary"/>
+                <cell colSpan="3">
+                    <InputText source="Summary" style="&inp2x;" autocomplete="true" visible="true"
+                               maxLength="70"/>
+                </cell>
+            </row>
+
+            <row>
+                <Label text="=files" style="&col1; margin-top: 4px;"/>
+                <FlowPanel class="flexBox-horizontal-top" data="TaskFiles">
+                    <FileCollector name="Files" editableColumns="name"/>
+                </FlowPanel>
+
+                <Label for="OrderNo"/>
+                <InputText source="OrderNo" style="width: 100%;"/>
+            </row>
+        </Table>
+
+        <Table kind="controls" style="&tbl;" cellStyle="&cell;">
+            <col index="0" cellStyle="&col1;"/>
+            <row>
+                <Label name="ExecutorsLabel" text="=crmTaskExecutors"/>
+                <MultiSelector name="Executors" viewName="Users" property="Executors" renderColumns="FirstName LastName"
+                               editPopup="true" newRowEnabled="false" editSource="CompanyPerson" style="&inp2x;"
+                               label="=crmTaskExecutors"/>
+            </row>
+
+            <row>
+                <Label text="=crmTaskObservers"/>
+                <MultiSelector name="Observers" viewName="Users" property="Observers" renderColumns="FirstName LastName"
+                               editPopup="true" newRowEnabled="false" editSource="CompanyPerson" style="&inp2x;"
+                               label="=crmTaskObservers"/>
+            </row>
+
+            <row>
+                <Label text="=crmTaskObserverGroups"/>
+                <MultiSelector name="ObserverGroups" viewName="UserGroupSettings" property="ObserverGroups"
+                               renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;"
+                               label="=crmTaskObserverGroups"
+                               filter="Owner {u} or Visibility 1"/>
+            </row>
+
+            <row>
+                <Label for="Company"/>
+                <DataSelector source="Company" editPopup="true" newRowEnabled="true" choiceColumns="Name TypeName"
+                              renderColumns="CompanyName CompanyTypeName" style="&inp2x;"/>
+            </row>
+
+            <row>
+                <Label for="Contact"/>
+                <DataSelector source="Contact" editPopup="true" newRowEnabled="true" style="&inp2x;"
+                              renderColumns="ContactFirstName ContactLastName"
+                              choiceColumns="FirstName LastName CompanyName" options="Company"/>
+            </row>
+
+            <row>
+                <Label for="Type"/>
+                <DataSelector source="Type" name="Type" renderColumns="TypeName" newRowEnabled="true" style="&inp2x;"/>
+            </row>
+        </Table>
+
+        <Table kind="controls" style="&tbl;" cellStyle="&cell;">
+            <col index="0" cellStyle="&col1;"/>
+            <col index="2" cellStyle="&col3;"/>
+
+            <row>
+                <Label for="StartTime" name="StartTimeLabel"/>
+                <FlowPanel>
+                    <InputDate name="Start_Date" style="&dateStyle;"/>
+                    <InputTimeOfDay name="Start_Time" step="&timeStep;" style="&timeStyle;"/>
+                </FlowPanel>
+
+                <Label name="EndDateLabel" text="=endingDate"/>
+                <FlowPanel>
+                    <InputDate name="End_Date" style="&dateStyle;"/>
+                    <InputTimeOfDay name="End_Time" step="&timeStep;" style="&timeStyle;"/>
+                </FlowPanel>
+            </row>
+        </Table>
+
+        <FlowPanel xmlns="http://www.butent.com/widget">
+            <Disclosure open="false" style="margin-top: 2ex;">
+                <Label text="PARUOŠIMAS"/>
+                <FlowPanel>
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col1;"/>
+
+                        <row>
+                            <Label for="Model"/>
+                            <ListBox source="Model" style="width: 120px;">
+                                <item>senas</item>
+                                <item>naujas</item>
+                                <item>užsakovo</item>
+                            </ListBox>
+
+                            <Label for="ModelNote" style="margin-left:20px;"/>
+                            <InputArea source="ModelNote"
+                                       style="min-width: 300px;max-width: 300px; min-height: 75px; max-height: 75px;"/>
+                        </row>
+                    </Table>
+                </FlowPanel>
+            </Disclosure>
+
+            <Disclosure open="false" style="margin-top: 2ex;">
+                <Label text="SPAUDA"/>
+                <FlowPanel>
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col;"/>
+                        <col index="2" cellStyle="&col;"/>
+
+                        <row>
+                            <Label for="PaperEnvelope" class="bee-required"/>
+                            <ListBox source="PaperEnvelope" name="PaperEnvelope" style="width: 175px;" required="true">
+                                <item>Plėvelė</item>
+                                <item>Tentas</item>
+                                <item>Drobė</item>
+                                <item>Kompozitas</item>
+                                <item>Backlight</item>
+                                <item>Roll-up pilka kita pusė</item>
+                                <item>Plastikas</item>
+                                <item>Interjerinės medžiagos</item>
+                                <item>Popierius</item>
+                                <item>Vokai</item>
+                                <item>Užsakovo</item>
+                                <item>Kita</item>
+                            </ListBox>
+
+                            <Label for="MaterialType" name="MaterialTypeLabel"/>
+                            <ListBox source="MaterialType" name="MaterialType" style="width: 220px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="PaperEnvelopeNote"/>
+                            <cell colSpan="3">
+                                <InputArea source="PaperEnvelopeNote" style="min-width: 495px;max-width: 495px;
+                                min-height: 57px; max-height: 57px;"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="Color1" class="bee-required"/>
+                            <ListBox source="Color1" style="width: 175px;" required="true">
+                                <item>4</item>
+                                <item>8</item>
+                                <item>UV</item>
+                                <item>Nesvarbu</item>
+                            </ListBox>
+                        </row>
+
+                        <row>
+                            <Label for="ColorNote"/>
+                            <cell colSpan="3">
+                                <InputArea source="ColorNote" style="min-width: 495px;max-width: 495px;
+                                min-height: 57px; max-height: 57px;"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="Laminate1"/>
+                            <ListBox source="Laminate1" style="width: 175px;">
+                                <item>Eko MAT</item>
+                                <item>GLOSS</item>
+                                <item>Grindų</item>
+                                <item>Dekoratyvinis</item>
+                                <item>290</item>
+                                <item>215</item>
+                                <item>Kita</item>
+                            </ListBox>
+                        </row>
+
+                        <row>
+                            <Label for="ProductFormat" class="bee-required"/>
+                            <cell colSpan="3">
+                                <InputText source="ProductFormat" style="width: 100%;" autocomplete="true"
+                                           required="true" maxLength="94"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="Quantity" class="bee-required"/>
+                            <FlowPanel>
+                                <InputInteger source="Quantity" minValue="0" maxValue="999999" required="true"
+                                              style="width: 80px; &inline;"/>
+                                <Label text="vnt" style="&inline; margin-left: 5px;"/>
+                            </FlowPanel>
+                        </row>
+
+                        <row>
+                            <Label for="Note"/>
+                            <cell colSpan="3">
+                                <InputArea source="Note" style="min-width: 495px;max-width: 495px;
+                                min-height: 57px; max-height: 57px;"/>
+                            </cell>
+                        </row>
+                    </Table>
+                </FlowPanel>
+            </Disclosure>
+
+            <Disclosure open="false" style="margin-top: 2ex;">
+                <Label text="APDAILA"/>
+                <FlowPanel>
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col1;"/>
+                        <col index="2" cellStyle="&col;"/>
+                        <col index="4" cellStyle="&col;"/>
+
+                        <row>
+                            <Label for="DecorationSupplier"/>
+                            <cell colSpan="5">
+                                <DataSelector source="DecorationSupplier" style="width: 495px;"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="PriceSeries"/>
+                            <InputText source="PriceSeries" style="width: 100px;"/>
+
+                            <Label for="Number"/>
+                            <cell colSpan="3">
+                                <FlowPanel>
+                                    <InputText source="Number" style="&inline; width: 105px;"/>
+
+                                    <Label for="Date" style="&inline; margin-right: 5px; margin-left: 15px;"/>
+                                    <InputDate source="Date" style="&inline; width: 105px;"/>
+                                </FlowPanel>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="DecorationPrice"/>
+                            <FlowPanel>
+                                <InputMoney source="DecorationPrice" maxValue="999999.9999" maxLength="11"
+                                            style="width: 100px; &inline;"
+                                            scale="4" placeholder="999999.9999"/>
+                                <Label text="EUR" style="&inline; margin-left: 5px;"/>
+                            </FlowPanel>
+
+                            <Label for="DecorationSupplierNote"/>
+                            <cell colSpan="3">
+                                <InputText source="DecorationSupplierNote" style="width: 280px;"/>
+                            </cell>
+                        </row>
+                    </Table>
+
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col1;"/>
+
+                        <row>
+                            <Label for="Holes"/>
+                            <ListBox source="Holes" style="width: 165px; &inline;">
+                                <item>žiedai visu perimetru</item>
+                                <item>žiedai kitaip</item>
+                                <item>kita</item>
+                            </ListBox>
+                            <InputText source="OtherHoles" style="&inline; width: 325px; margin-left: 5px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="BendingPA"/>
+                            <cell colSpan="4">
+                                <FlowPanel>
+                                    <ListBox source="BendingPA" style="width: 165px;">
+                                        <item>lenkimas, litavimas perimetru</item>
+                                        <item>ploteriavimas</item>
+                                        <item>klijavimas ant paviršiaus</item>
+                                        <item>apipjaunama</item>
+                                        <item>montažas į teleskopinę</item>
+                                        <item>roll-up</item>
+                                        <item>šviesdėžė</item>
+                                        <item>kita</item>
+                                    </ListBox>
+
+                                    <InputText source="OtherBendingPA"
+                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                </FlowPanel>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="BendingPB"/>
+                            <cell colSpan="4">
+                                <FlowPanel>
+                                    <ListBox source="BendingPB" style="width: 165px;">
+                                        <item>lenkimas, litavimas perimetru</item>
+                                        <item>ploteriavimas</item>
+                                        <item>klijavimas ant paviršiaus</item>
+                                        <item>apipjaunama</item>
+                                        <item>montažas į teleskopinę</item>
+                                        <item>roll-up</item>
+                                        <item>šviesdėžė</item>
+                                        <item>kita</item>
+                                    </ListBox>
+
+                                    <InputText source="OtherBendingPB"
+                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                </FlowPanel>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="BendingPC"/>
+                            <cell colSpan="4">
+                                <FlowPanel>
+                                    <ListBox source="BendingPC" style="width: 165px;">
+                                        <item>lenkimas, litavimas perimetru</item>
+                                        <item>ploteriavimas</item>
+                                        <item>klijavimas ant paviršiaus</item>
+                                        <item>apipjaunama</item>
+                                        <item>montažas į teleskopinę</item>
+                                        <item>roll-up</item>
+                                        <item>šviesdėžė</item>
+                                        <item>kita</item>
+                                    </ListBox>
+
+                                    <InputText source="OtherBendingPC"
+                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                </FlowPanel>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="GlueNote"/>
+                            <cell colSpan="2">
+                                <InputArea source="GlueNote" style="min-width: 495px;max-width: 495px;
+                                min-height: 57px; max-height: 57px;"/>
+                            </cell>
+                        </row>
+                    </Table>
+
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col1;"/>
+                        <col index="2" cellStyle="&col1;"/>
+
+                        <row>
+                            <Label for="Packing"/>
+                            <ListBox source="Packing" style="width: 165px; &inline;">
+                                <item>į dėžes</item>
+                                <item>į vakuumą</item>
+                                <item>į popierių</item>
+                                <item>į ruloną, strec, maketas</item>
+                                <item>lankstyti, maketas</item>
+                                <item>strec</item>
+                                <item>burbulinė</item>
+                                <item>kartonas, (kurjeriams)</item>
+                                <item>kita</item>
+                            </ListBox>
+                            <Label for="Total" style="&inline; margin-right: 5px;"/>
+                            <InputText source="Total" style="&inline; width: 140px;"/>
+                        </row>
+
+                        <row>
+                            <Label text="Pastaba"/>
+                            <cell colSpan="3">
+                                <InputArea source="OtherPacking" style="min-width: 495px;max-width: 495px;
+                                min-height: 57px; max-height: 57px;"/>
+                            </cell>
+                        </row>
+                    </Table>
+                </FlowPanel>
+            </Disclosure>
+
+            <Disclosure open="false" style="margin-top: 2ex;">
+                <Label text="KAINA"/>
+                <FlowPanel>
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col;"/>
+                        <col index="2" cellStyle="&col;"/>
+                        <col index="4" cellStyle="&col;"/>
+
+                        <row>
+                            <Label text="SPAUDA Tiekėjas"/>
+                            <cell colSpan="3">
+                                <DataSelector source="Supplier" readOnly="true" style="width: 100%;"/>
+                            </cell>
+
+                            <Label for="Price"/>
+                            <InputMoney source="Price" readOnly="true" style="width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="PressSeries"/>
+                            <InputText source="PressSeries" readOnly="true" style="width: 100px;"/>
+
+                            <Label for="PressNumber"/>
+                            <InputText source="PressNumber" readOnly="true" style="&inline; width: 100px;"/>
+
+                            <Label for="PressDate" style="&inline; margin-left: 50px; margin-right: 5px;"/>
+                            <InputDate source="PressDate" readOnly="true" style="&inline; width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label text="APDAILA Tiekėjas"/>
+                            <cell colSpan="3">
+                                <DataSelector source="DecorationSupplier" readOnly="true" style="width: 100%;"/>
+                            </cell>
+
+                            <Label for="DecorationPrice"/>
+                            <InputMoney source="DecorationPrice" readOnly="true" style="width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="PriceSeries"/>
+                            <InputText source="PriceSeries" readOnly="true" style="width: 100px;"/>
+
+                            <Label for="Number"/>
+                            <InputText source="Number" readOnly="true" style="&inline; width: 100px;"/>
+
+                            <Label for="Date" style="&inline; margin-left: 50px; margin-right: 5px;"/>
+                            <InputDate source="Date" readOnly="true" style="&inline; width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="InvoiceSupplier"/>
+                            <cell colSpan="3">
+                                <ListBox source="InvoiceSupplier" style="width: 100%;">
+                                    <item>DRM</item>
+                                    <item>QPA</item>
+                                </ListBox>
+                            </cell>
+
+                            <Label for="InvoicePrice"/>
+                            <InputMoney source="InvoicePrice" style="width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="InvoiceNote"/>
+                            <cell colSpan="5">
+                                <InputText source="InvoiceNote" style="width: 495px;"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="InvoiceSeries"/>
+                            <InputText source="InvoiceSeries" style="width: 100px;"/>
+
+                            <Label for="InvoiceNumber"/>
+                            <InputText source="InvoiceNumber" style="&inline; width: 100px;"/>
+
+                            <Label for="InvoiceDate" style="&inline; margin-left: 50px; margin-right: 5px;"/>
+                            <InputDate source="InvoiceDate" style="&inline; width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="Transportation"/>
+                            <ListBox source="Transportation">
+                                <item>Diremta</item>
+                                <item>užsakovas</item>
+                                <item>kurjeriai</item>
+                                <item>QPA</item>
+                                <item>kita</item>
+                            </ListBox>
+
+                            <Label for="PackageQty"/>
+                            <InputInteger source="PackageQty" minValue="0" maxValue="999999" maxLength="6"
+                                          style="width: 100px;"/>
+
+                            <Label for="Weight"/>
+                            <InputDouble source="Weight" maxLength="10" placeholder="9999.999" minValue="0"
+                                         maxValue="9999.999"
+                                         style="width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="TransportationSupplier" style="margin-bottom: 10px;"/>
+                            <cell colSpan="5">
+                                <DataSelector source="TransportationSupplier" style="width: 495px;"/>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <Label for="TransportationSeries"/>
+                            <InputText source="TransportationSeries" style="width: 100px;"/>
+
+                            <Label for="TransportationNumber"/>
+                            <InputText source="TransportationNumber" style="&inline; width: 100px;"/>
+
+                            <Label for="TransportationPrice" style="&inline; margin-left: 50px; margin-right: 5px;"/>
+                            <InputMoney source="TransportationPrice" style="&inline; width: 100px;"/>
+                        </row>
+
+                        <row>
+                            <Label for="TransportationNote" style="margin-bottom: 10px;"/>
+                            <cell colSpan="5">
+                                <InputText source="TransportationNote" style="width: 495px; margin-bottom: 10px;"/>
+                            </cell>
+                        </row>
+                    </Table>
+
+                    <ChildGrid name="TaskOrderItems" relColumn="Task" class="flexible" style="height: 300px;"/>
+                </FlowPanel>
+            </Disclosure>
+        </FlowPanel>
+
+        <Disclosure open="false" style="margin-top: 2ex;" name="AdditionalInformation">
+            <Label text="PAPILDOMA INFORMACIJA"/>
+
+            <FlowPanel>
+                <Table kind="controls" style="&tbl;" cellStyle="&cell;">
+                    <col index="0" cellStyle="&col1;"/>
+
+                    <row>
+                        <Label text="=crmTaskExecutorGroups"/>
+                        <MultiSelector name="UserGroupSettings" viewName="UserGroupSettings" property="ExecutorGroups"
+                                       renderColumns="Name" editPopup="true" newRowEnabled="false" style="&inp2y;"
+                                       label="=crmTaskExecutorGroups"
+                                       filter="Owner {u} or Visibility 1">
+                        </MultiSelector>
+                    </row>
+
+                    <row module="Projects" data="Projects">
+                        <Label text="=project" name="ProjectLabel"/>
+                        <DataSelector source="Project" renderColumns="ProjectName" style="&inp2x;" disablable="true"
+                                      editPopup="false"/>
+                    </row>
+                    <row module="Projects" data="ProjectStages">
+                        <Label text="=prjStage" name="ProjectStageLabel"/>
+                        <DataSelector source="ProjectStage" renderColumns="StageName" style="&inp2x;"/>
+                    </row>
+                </Table>
+
+                <Table kind="controls" style="&tbl;" cellStyle="&cell;">
+                    <col index="0" cellStyle="&col1;"/>
+
+                    <row>
+                        <Label for="Priority"/>
+                        <Radio source="Priority"/>
+                    </row>
+
+                    <row>
+                        <Label text="=crmTaskTemplate" data="TaskTemplates"/>
+                        <UnboundSelector viewName="TaskTemplates" choiceColumns="Name" newRowEnabled="false"
+                                         style="&inp2x;" data="TaskTemplates"/>
+                    </row>
+
+                    <row>
+                        <Label for="Product" name="Product"/>
+                        <DataSelector source="Product" renderColumns="ProductName" newRowEnabled="true" style="&inp2x;"
+                                      filter="Visible"/>
+                    </row>
+                </Table>
+
+                <Table kind="controls" style="&tbl; margin-top: 20px;" cellStyle="&cell;">
+                    <col index="0" cellStyle="&col1;"/>
+                    <col index="2" cellStyle="&col3;"/>
+
+                    <row>
+                        <Label for="ExpectedDuration"/>
+                        <InputTime name="ExpectedDuration" source="ExpectedDuration" step="&timeStep;"
+                                   style="width: 90px;"/>
+                        <Label for="ExpectedExpenses"/>
+                        <FlowPanel>
+                            <InputDecimal source="ExpectedExpenses" style="&dateStyle;" disablable="true" scale="2"/>
+                            <DataSelector source="Currency" for="ExpectedExpenses" newRowEnabled="false"
+                                          editEnabled="false"
+                                          style="&timeStyle;" readOnly="true"/>
+                        </FlowPanel>
+                    </row>
+
+                    <row>
+                        <Label/>
+                        <CheckBox name="Mail" text="=mailNotify"/>
+                        <CheckBox source="PrivateTask"/>
+                        <CheckBox name="NotScheduledTask" text="=crmTasksNotScheduledTask"/>
+                    </row>
+                </Table>
+            </FlowPanel>
+        </Disclosure>
+    </FlowPanel>
+</f:Form>

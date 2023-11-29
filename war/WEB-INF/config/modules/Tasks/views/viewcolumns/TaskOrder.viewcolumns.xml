@@ -77,6 +77,12 @@
   <SimpleColumn name="Punching" />
   <SimpleColumn name="Bending" />
   <SimpleColumn name="OtherBending" />
+  <SimpleColumn name="BendingPA" />
+  <SimpleColumn name="BendingPB" />
+  <SimpleColumn name="BendingPC" />
+  <SimpleColumn name="OtherBendingPA" />
+  <SimpleColumn name="OtherBendingPB" />
+  <SimpleColumn name="OtherBendingPC" />
   <SimpleColumn name="Selection" />
   <SimpleColumn name="Glue" />
   <SimpleColumn name="GlueNote" />
@@ -127,4 +133,6 @@
   <SimpleColumn name="InvoiceSeries" />
   <SimpleColumn name="InvoiceNumber" />
   <SimpleColumn name="InvoiceDate" />
+
+  <SimpleColumn name="TaskOrderP" />
 </Columns>

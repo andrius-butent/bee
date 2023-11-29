@@ -210,7 +210,7 @@
                 </FlowPanel>
               </Disclosure>
 
-              <Disclosure open="false" style="margin-top: 2ex;" >
+              <Disclosure open="false" name="RelatedWith" style="margin-top: 2ex;" >
                 <Label text="SUSIJUSI SU" />
                 <Relations name="Relations" relColumn="Task" inline="true"
                            disablable="false" style="&section; width: 500px;" summarize="true"

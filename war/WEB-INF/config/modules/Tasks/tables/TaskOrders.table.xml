@@ -60,6 +60,14 @@
     <String name="Punching" precision="10" label="Štancavimas" />
     <String name="Bending" precision="30" label="Apdaila" />
     <String name="OtherBending"  precision="33"/>
+
+    <String name="BendingPA" precision="30" label="a" />
+    <String name="BendingPB" precision="30" label="b" />
+    <String name="BendingPC" precision="30" label="c" />
+    <String name="OtherBendingPA"  precision="33"/>
+    <String name="OtherBendingPB"  precision="33"/>
+    <String name="OtherBendingPC"  precision="33"/>
+
     <String name="Selection" label="Parink. / perfor."  precision="100" />
     <String name="Glue" precision="45" label="Klijavimas" />
     <String name="GlueNote" precision="114" label="Pastaba" />
@@ -91,5 +99,7 @@
     <String name="InvoiceSeries" precision="10" label="Serija" />
     <String name="InvoiceNumber" precision="10" label="Numeris" />
     <Date name="InvoiceDate" label="Data" />
+
+    <Boolean name="TaskOrderP" label="Naujas Užsakymas (P)"/>
   </Fields>
 </Table>
