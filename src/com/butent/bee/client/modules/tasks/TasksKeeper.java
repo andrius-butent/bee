@@ -184,9 +184,11 @@ public final class TasksKeeper {
   public static void register() {
     FormFactory.registerFormInterceptor(FORM_NEW_TASK, new TaskBuilder());
     FormFactory.registerFormInterceptor(FORM_NEW_TASK_ORDER, new TaskBuilder());
+    FormFactory.registerFormInterceptor(FORM_NEW_TASK_ORDER_P, new TaskBuilder());
     FormFactory.registerFormInterceptor(FORM_TASK, new TaskEditor());
     FormFactory.registerFormInterceptor(FORM_TASK_PREVIEW, new TaskEditor());
     FormFactory.registerFormInterceptor(FORM_TASK_ORDER, new TaskEditor());
+    FormFactory.registerFormInterceptor(FORM_TASK_ORDER_P, new TaskEditor());
 
     FormFactory.registerFormInterceptor(FORM_RECURRING_TASK, new RecurringTaskHandler());
 
