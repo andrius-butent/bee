@@ -250,6 +250,14 @@ public final class RowFactory {
     addMenuItem(panel, Module.TASKS, TaskConstants.VIEW_TASKS,
         Localized.dictionary().crmNewTask());
 
+    addMenuItem(panel, Module.TASKS, TaskConstants.VIEW_TASKS, "Naujas užsakymas (P)", () -> {
+              DataInfo dataInfo = Data.getDataInfo(TaskConstants.VIEW_TASKS);
+              BeeRow row = createEmptyRow(dataInfo, true);
+
+              RowFactory.createRow(TaskConstants.FORM_NEW_TASK_ORDER_P,
+                      "Naujas užsakymas (P)", dataInfo, row, DEFAULT_MODALITY, null);
+            });
+
     addMenuItem(panel, Module.TASKS, TaskConstants.VIEW_TASKS,
         Localized.dictionary().newOrder(), () -> {
           DataInfo dataInfo = Data.getDataInfo(TaskConstants.VIEW_TASKS);
