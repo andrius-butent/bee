@@ -262,4 +262,12 @@ final class TaskHelper {
 
   private TaskHelper() {
   }
+
+  public static boolean isNewTaskOrderPForm(String formName) {
+    return Objects.equals(formName, FORM_NEW_TASK_ORDER_P);
+  }
+
+  public static boolean isTaskOrderPForm(String formName) {
+    return Objects.equals(formName, FORM_TASK_ORDER_P);
+  }
 }
