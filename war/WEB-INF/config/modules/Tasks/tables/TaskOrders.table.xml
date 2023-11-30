@@ -28,7 +28,7 @@
     <String name="ColorNote" precision="100" label="Pastaba" />
     <String name="Offset" precision="10" label="Ofsetinis lakas" />
     <Boolean name="UV" label="UV lakas" />
-    <String name="Laminate1" precision="10" label="Laminavimas" />
+    <String name="Laminate1" precision="15" label="Laminavimas" />
     <String name="Laminate2" precision="10" label="Laminavimas" />
     <Relation name="Printed" relation="CompanyPersons" label="Spaudė" />
     <String name="ProductFormat" precision="200" label="Gaminio formatas" />

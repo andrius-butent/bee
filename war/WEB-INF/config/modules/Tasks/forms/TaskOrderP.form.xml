@@ -26,7 +26,7 @@
         name="TaskOrderP" viewName="TaskOrders" caption="=order" showRowId="true" printHeader="true"
         width="1024" height="768" favorite="Summary"
 >
-    <f:properties jasperReports="Task1_lt:Gamybai, Task_lt:Užsakymas, ExternalOrder_lt:Užsakymas (išplėstinis)"/>
+    <f:properties jasperReports="TaskOrderPProduction_lt:Gamybai (P)"/>
     <SplitPanel splitterSize="1" style="margin:5px;" name="Split">
         <west size="660">
             <TabbedPages resizable="false" name="TabbedPages">
@@ -162,8 +162,8 @@
                                                     <item>užsakovo</item>
                                                 </ListBox>
 
-                                                <Label for="ModelNote" style="margin-left:20px;"/>
-                                                <InputArea source="ModelNote"
+                                                <Label for="ModelNoteP" style="margin-left:20px;"/>
+                                                <InputArea source="ModelNoteP"
                                                            style="min-width: 300px;max-width: 300px; min-height: 75px; max-height: 75px;"/>
                                             </row>
                                         </Table>
@@ -201,16 +201,16 @@
                                             </row>
 
                                             <row>
-                                                <Label for="PaperEnvelopeNote"/>
+                                                <Label for="MaterialNoteP"/>
                                                 <cell colSpan="3">
-                                                    <InputArea source="PaperEnvelopeNote" style="min-width: 495px;max-width: 495px;
+                                                    <InputArea source="MaterialNoteP" style="min-width: 495px;max-width: 495px;
                                 min-height: 57px; max-height: 57px;"/>
                                                 </cell>
                                             </row>
 
                                             <row>
-                                                <Label for="Color1" class="bee-required"/>
-                                                <ListBox source="Color1" style="width: 175px;" required="true">
+                                                <Label for="ColorP" class="bee-required"/>
+                                                <ListBox source="ColorP" style="width: 175px;" required="true">
                                                     <item>4</item>
                                                     <item>8</item>
                                                     <item>UV</item>
@@ -219,9 +219,9 @@
                                             </row>
 
                                             <row>
-                                                <Label for="ColorNote"/>
+                                                <Label for="ColorNoteP"/>
                                                 <cell colSpan="3">
-                                                    <InputArea source="ColorNote" style="min-width: 495px;max-width: 495px;
+                                                    <InputArea source="ColorNoteP" style="min-width: 495px;max-width: 495px;
                                 min-height: 57px; max-height: 57px;"/>
                                                 </cell>
                                             </row>
@@ -259,9 +259,9 @@
                                             </row>
 
                                             <row>
-                                                <Label for="Note"/>
+                                                <Label for="ProductNoteP"/>
                                                 <cell colSpan="3">
-                                                    <InputArea source="Note" style="min-width: 495px;max-width: 495px;
+                                                    <InputArea source="ProductNoteP" style="min-width: 495px;max-width: 495px;
                                 min-height: 57px; max-height: 57px;"/>
                                                 </cell>
                                             </row>
@@ -395,9 +395,9 @@
                                             </row>
 
                                             <row>
-                                                <Label for="GlueNote"/>
+                                                <Label for="BendingNoteP"/>
                                                 <cell colSpan="2">
-                                                    <InputArea source="GlueNote" style="min-width: 495px;max-width: 495px;
+                                                    <InputArea source="BendingNoteP" style="min-width: 495px;max-width: 495px;
                                 min-height: 57px; max-height: 57px;"/>
                                                 </cell>
                                             </row>
@@ -425,9 +425,9 @@
                                             </row>
 
                                             <row>
-                                                <Label text="Pastaba"/>
+                                                <Label for="PackageNoteP"/>
                                                 <cell colSpan="3">
-                                                    <InputArea source="OtherPacking" style="min-width: 495px;max-width: 495px;
+                                                    <InputArea source="PackageNoteP" style="min-width: 495px;max-width: 495px;
                                 min-height: 57px; max-height: 57px;"/>
                                                 </cell>
                                             </row>
