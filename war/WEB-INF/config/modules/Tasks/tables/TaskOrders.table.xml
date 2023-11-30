@@ -61,13 +61,6 @@
     <String name="Bending" precision="30" label="Apdaila" />
     <String name="OtherBending"  precision="33"/>
 
-    <String name="BendingPA" precision="30" label="a" />
-    <String name="BendingPB" precision="30" label="b" />
-    <String name="BendingPC" precision="30" label="c" />
-    <String name="OtherBendingPA"  precision="33"/>
-    <String name="OtherBendingPB"  precision="33"/>
-    <String name="OtherBendingPC"  precision="33"/>
-
     <String name="Selection" label="Parink. / perfor."  precision="100" />
     <String name="Glue" precision="45" label="Klijavimas" />
     <String name="GlueNote" precision="114" label="Pastaba" />
@@ -101,5 +94,19 @@
     <Date name="InvoiceDate" label="Data" />
 
     <Boolean name="TaskOrderP" label="Naujas Užsakymas (P)"/>
+
+    <String name="BendingPA" precision="30" label="a" />
+    <String name="BendingPB" precision="30" label="b" />
+    <String name="BendingPC" precision="30" label="c" />
+    <String name="OtherBendingPA"  precision="33"/>
+    <String name="OtherBendingPB"  precision="33"/>
+    <String name="OtherBendingPC"  precision="33"/>
+    <String name="ColorP" precision="30" label="Spalvingumas" />
+    <Text name="ColorNoteP" label="Pastaba" />
+    <Text name="MaterialNoteP" label="Pastaba" />
+    <Text name="ProductNoteP" label="Pastaba" />
+    <Text name="ModelNoteP" label="Pastaba" />
+    <Text name="PackageNoteP" label="Pastaba" />
+    <Text name="BendingNoteP" label="Pastaba" />
   </Fields>
 </Table>
