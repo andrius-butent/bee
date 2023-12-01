@@ -364,7 +364,7 @@
 
                         <row>
                             <Label for="Packing"/>
-                            <ListBox source="Packing" style="width: 165px; &inline;">
+                            <ListBox source="Packing" style="width: 180px; &inline;">
                                 <item>į dėžes</item>
                                 <item>į vakuumą</item>
                                 <item>į popierių</item>

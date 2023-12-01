@@ -26,7 +26,7 @@
         name="TaskOrderP" viewName="TaskOrders" caption="=order" showRowId="true" printHeader="true"
         width="1024" height="768" favorite="Summary"
 >
-    <f:properties jasperReports="TaskOrderPProduction_lt:Gamybai (P)"/>
+    <f:properties jasperReports="TaskOrderPProduction_lt:Gamybai (P), TaskOrderP_lt:Užsakymas (P)"/>
     <SplitPanel splitterSize="1" style="margin:5px;" name="Split">
         <west size="660">
             <TabbedPages resizable="false" name="TabbedPages">
@@ -409,7 +409,7 @@
 
                                             <row>
                                                 <Label for="Packing"/>
-                                                <ListBox source="Packing" style="width: 165px; &inline;">
+                                                <ListBox source="Packing" style="width: 180px; &inline;">
                                                     <item>į dėžes</item>
                                                     <item>į vakuumą</item>
                                                     <item>į popierių</item>
