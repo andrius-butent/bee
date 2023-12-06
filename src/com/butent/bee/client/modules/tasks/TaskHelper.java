@@ -257,7 +257,7 @@ final class TaskHelper {
   }
 
   public static boolean isMaterialTypeRequired(String material) {
-    return Objects.equals(TENTAS, material) || Objects.equals(PLEVELE, material);
+    return TENTAS.equalsIgnoreCase(material) || PLEVELE.equalsIgnoreCase(material);
   }
 
   private TaskHelper() {
