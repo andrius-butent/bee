@@ -70,6 +70,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import static com.butent.bee.shared.modules.tasks.TaskConstants.*;
+import static com.butent.bee.shared.modules.tasks.TaskConstants.FORM_TASK_ORDER;
+
 public class NewsAggregator implements HandlesAllDataEvents {
 
   public interface HeadlineAccessor {
@@ -894,7 +897,9 @@ public class NewsAggregator implements HandlesAllDataEvents {
           public void onSuccess(BeeRow result) {
             if (result != null && DataUtils.isId(Data.getLong(TaskConstants.VIEW_TASKS, result,
                 TaskConstants.COL_TASK_ORDER))) {
-              RowEditor.open(TaskConstants.VIEW_TASK_ORDERS, result, Opener.modeless(), null);
+              String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, result, COL_TASK_ORDER_P))
+                      ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+              RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, result, Opener.modeless(), null);
             } else {
               RowEditor.open(feed.getHeadlineView(), headlinePanel.getDataId(), Opener.modeless());
             }

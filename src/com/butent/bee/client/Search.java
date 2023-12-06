@@ -395,10 +395,13 @@ public class Search {
     @Override
     public void onBrowserEvent(Event event) {
       if (EventUtils.isClick(event)) {
-        if (Objects.equals(getViewName(), TaskConstants.VIEW_TASK_ORDERS)) {
-          String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, getRow(), COL_TASK_ORDER_P))
+        if (Objects.equals(getViewName(), VIEW_TASKS)) {
+          if (DataUtils.isId(Data.getLong(VIEW_TASKS, getRow(), COL_TASK_ORDER))) {
+
+            String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, getRow(), COL_TASK_ORDER_P))
                     ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
-          RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, getRow(), Opener.NEW_TAB, null);
+            RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, getRow(), Opener.NEW_TAB, null);
+          }
         } else {
           RowEditor.open(getViewName(), getRow(), Opener.NEW_TAB);
         }
@@ -525,10 +528,12 @@ public class Search {
       ViewCallback callback) {
 
     if (results.size() == 1 && callback == null) {
-      if (Objects.equals(results.get(0).getViewName(), VIEW_TASK_ORDERS)) {
-        String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, results.get(0).getRow(), COL_TASK_ORDER_P))
-                ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
-        RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, results.get(0).getRow(), Opener.NEW_TAB, null);
+      if (Objects.equals(results.get(0).getViewName(), VIEW_TASKS)) {
+        if (DataUtils.isId(Data.getLong(VIEW_TASKS, results.get(0).getRow(), COL_TASK_ORDER))) {
+          String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, results.get(0).getRow(), COL_TASK_ORDER_P))
+                  ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+          RowEditor.openForm(formName, TaskConstants.VIEW_TASK_ORDERS, results.get(0).getRow(), Opener.NEW_TAB, null);
+        }
       } else {
         RowEditor.open(results.get(0).getViewName(), results.get(0).getRow(), Opener.modeless());
       }
