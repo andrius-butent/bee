@@ -287,10 +287,10 @@
                         </row>
 
                         <row>
-                            <Label for="BendingPA"/>
+                            <Label text="Apdaila: a"/>
                             <cell colSpan="4">
                                 <FlowPanel>
-                                    <ListBox source="BendingPA" style="width: 165px;">
+                                    <ListBox source="BendingPA" style="width: 210px;">
                                         <item>lenkimas, litavimas perimetru</item>
                                         <item>ploteriavimas</item>
                                         <item>klijavimas ant paviršiaus</item>
@@ -302,7 +302,7 @@
                                     </ListBox>
 
                                     <InputText source="OtherBendingPA"
-                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                               style="&inline; width: 280px; margin-left: 5px;"/>
                                 </FlowPanel>
                             </cell>
                         </row>
@@ -311,7 +311,7 @@
                             <Label for="BendingPB"/>
                             <cell colSpan="4">
                                 <FlowPanel>
-                                    <ListBox source="BendingPB" style="width: 165px;">
+                                    <ListBox source="BendingPB" style="width: 210px;">
                                         <item>lenkimas, litavimas perimetru</item>
                                         <item>ploteriavimas</item>
                                         <item>klijavimas ant paviršiaus</item>
@@ -323,7 +323,7 @@
                                     </ListBox>
 
                                     <InputText source="OtherBendingPB"
-                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                               style="&inline; width: 280px; margin-left: 5px;"/>
                                 </FlowPanel>
                             </cell>
                         </row>
@@ -332,7 +332,7 @@
                             <Label for="BendingPC"/>
                             <cell colSpan="4">
                                 <FlowPanel>
-                                    <ListBox source="BendingPC" style="width: 165px;">
+                                    <ListBox source="BendingPC" style="width: 210px;">
                                         <item>lenkimas, litavimas perimetru</item>
                                         <item>ploteriavimas</item>
                                         <item>klijavimas ant paviršiaus</item>
@@ -344,7 +344,7 @@
                                     </ListBox>
 
                                     <InputText source="OtherBendingPC"
-                                               style="&inline; width: 325px; margin-left: 5px;"/>
+                                               style="&inline; width: 280px; margin-left: 5px;"/>
                                 </FlowPanel>
                             </cell>
                         </row>
@@ -396,28 +396,6 @@
                     <Table kind="controls">
                         <col index="0" cellStyle="&col;"/>
                         <col index="2" cellStyle="&col;"/>
-                        <col index="4" cellStyle="&col;"/>
-
-                        <row>
-                            <Label text="SPAUDA Tiekėjas"/>
-                            <cell colSpan="3">
-                                <DataSelector source="Supplier" readOnly="true" style="width: 100%;"/>
-                            </cell>
-
-                            <Label for="Price"/>
-                            <InputMoney source="Price" readOnly="true" style="width: 100px;"/>
-                        </row>
-
-                        <row>
-                            <Label for="PressSeries"/>
-                            <InputText source="PressSeries" readOnly="true" style="width: 100px;"/>
-
-                            <Label for="PressNumber"/>
-                            <InputText source="PressNumber" readOnly="true" style="&inline; width: 100px;"/>
-
-                            <Label for="PressDate" style="&inline; margin-left: 50px; margin-right: 5px;"/>
-                            <InputDate source="PressDate" readOnly="true" style="&inline; width: 100px;"/>
-                        </row>
 
                         <row>
                             <Label text="APDAILA Tiekėjas"/>
@@ -431,7 +409,7 @@
 
                         <row>
                             <Label for="PriceSeries"/>
-                            <InputText source="PriceSeries" readOnly="true" style="width: 100px;"/>
+                            <InputText source="PriceSeries" readOnly="true" style="width: 100;"/>
 
                             <Label for="Number"/>
                             <InputText source="Number" readOnly="true" style="&inline; width: 100px;"/>
@@ -456,9 +434,15 @@
                         <row>
                             <Label for="InvoiceNote"/>
                             <cell colSpan="5">
-                                <InputText source="InvoiceNote" style="width: 495px;"/>
+                                <InputText source="InvoiceNote" style="width: 500px;"/>
                             </cell>
                         </row>
+                    </Table>
+
+                    <Table kind="controls">
+                        <col index="0" cellStyle="&col;"/>
+                        <col index="2" cellStyle="&col;"/>
+                        <col index="4" cellStyle="&col;"/>
 
                         <row>
                             <Label for="InvoiceSeries"/>
