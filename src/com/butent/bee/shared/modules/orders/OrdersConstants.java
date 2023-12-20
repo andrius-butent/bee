@@ -95,6 +95,7 @@ public final class OrdersConstants {
   public static final String COL_MATERIAL_TYPE = "MaterialType";
 
   public static final String NAME_MATERIAL_TYPE_LABEL = "MaterialTypeLabel";
+  public static final String NAME_LAMINATE_LABEL = "LaminateLabel";
   public static final String PLEVELE = "plėvelė";
   public static final String TENTAS = "tentas";
 

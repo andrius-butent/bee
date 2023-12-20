@@ -183,6 +183,7 @@ class TaskEditor extends ProductSupportInterceptor {
 
   private ListBox materialTypeList;
   private Label materialTypeLabel;
+  private Label laminateLabel;
   private ListBox paperEnvelope;
 
   private List<Long> projectUsers;
@@ -643,11 +644,14 @@ class TaskEditor extends ProductSupportInterceptor {
       materialTypeList = (ListBox) widget;
     } else if (BeeUtils.same(name, NAME_MATERIAL_TYPE_LABEL) && widget instanceof Label) {
       materialTypeLabel = (Label) widget;
+    } else if (BeeUtils.same(name, NAME_LAMINATE_LABEL) && widget instanceof Label) {
+      laminateLabel = (Label) widget;
     } else if (BeeUtils.same(name, COL_PAPER_ENVELOPE) && widget instanceof ListBox) {
       paperEnvelope = (ListBox) widget;
       paperEnvelope.addChangeHandler(changeEvent -> {
         setMaterialTypeRequired(paperEnvelope.getValue());
         setMaterialTypes(paperEnvelope.getValue());
+        setLaminateRequired(paperEnvelope.getValue());
       });
     } else if ((BeeUtils.same(name, "AdditionalInformation") || BeeUtils.same(name, "RelatedWith")) && isTaskOrderPForm(getFormView().getFormName())) {
       ((Disclosure) widget).setVisible(false);
@@ -751,6 +755,7 @@ class TaskEditor extends ProductSupportInterceptor {
 
     if (TaskHelper.isTaskOrder(row)) {
       setMaterialTypeRequired(Data.getString(VIEW_TASK_ORDERS, row, COL_PAPER_ENVELOPE));
+      setLaminateRequired(Data.getString(VIEW_TASK_ORDERS, row, COL_PAPER_ENVELOPE));
       setMaterialTypes(Data.getString(VIEW_TASK_ORDERS, row, COL_PAPER_ENVELOPE));
       materialTypeList.setValue(Data.getString(VIEW_TASK_ORDERS, row, COL_MATERIAL_TYPE));
     }
@@ -2443,6 +2448,10 @@ class TaskEditor extends ProductSupportInterceptor {
 
   private void setMaterialTypeRequired(String material) {
     materialTypeLabel.setStyleName(StyleUtils.NAME_REQUIRED, isMaterialTypeRequired(material));
+  }
+
+  private void setLaminateRequired(String material) {
+    laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
   }
 
   private void setMaterialTypes(String material) {

@@ -144,6 +144,7 @@ class TaskBuilder extends ProductSupportInterceptor {
 
   private ListBox materialTypeList;
   private Label materialTypeLabel;
+  private Label laminateLabel;
   private ListBox paperEnvelope;
 
   TaskBuilder() {
@@ -379,11 +380,14 @@ class TaskBuilder extends ProductSupportInterceptor {
       materialTypeList = (ListBox) widget;
     } else if (BeeUtils.same(name, NAME_MATERIAL_TYPE_LABEL) && widget instanceof Label) {
       materialTypeLabel = (Label) widget;
+    } else if (BeeUtils.same(name, NAME_LAMINATE_LABEL) && widget instanceof Label) {
+      laminateLabel = (Label) widget;
     } else if (BeeUtils.same(name, COL_PAPER_ENVELOPE) && widget instanceof ListBox) {
       paperEnvelope = (ListBox) widget;
       paperEnvelope.addChangeHandler(changeEvent -> {
         setMaterialTypeRequired(paperEnvelope.getValue());
         setMaterialTypes(paperEnvelope.getValue());
+        setLaminateRequired(paperEnvelope.getValue());
       });
     } else if (BeeUtils.same(name, "AdditionalInformation") && isNewTaskOrderPForm(getFormView().getFormName())) {
       ((Disclosure) widget).setVisible(false);
@@ -512,7 +516,12 @@ class TaskBuilder extends ProductSupportInterceptor {
     boolean noExecutors = BeeUtils.allEmpty(activeRow.getProperty(PROP_EXECUTORS),
         activeRow.getProperty(PROP_EXECUTOR_GROUPS));
 
-    if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
+    if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue("Laminate1"))) {
+      getFormView().notifySevere(Localized.dictionary().fieldRequired("Laminavimas"));
+      return;
+    }
+
+    if (isLaminateRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
       getFormView().notifySevere(Localized.dictionary().fieldRequired(Localized.dictionary().type()));
       return;
     }
@@ -1259,6 +1268,10 @@ class TaskBuilder extends ProductSupportInterceptor {
   private void setMaterialTypeRequired(String material) {
     boolean isPleveleOrTentas = TENTAS.equalsIgnoreCase(material) || PLEVELE.equalsIgnoreCase(material);
     materialTypeLabel.setStyleName(StyleUtils.NAME_REQUIRED, isPleveleOrTentas);
+  }
+
+  private void setLaminateRequired(String material) {
+    laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
   }
 
   private void setMaterialTypes(String material) {

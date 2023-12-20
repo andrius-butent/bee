@@ -260,6 +260,10 @@ final class TaskHelper {
     return TENTAS.equalsIgnoreCase(material) || PLEVELE.equalsIgnoreCase(material);
   }
 
+  public static boolean isLaminateRequired(String material) {
+    return PLEVELE.equalsIgnoreCase(material);
+  }
+
   private TaskHelper() {
   }
 

@@ -150,7 +150,7 @@
         </row>
 
         <row>
-          <Label for="Laminate1" />
+          <Label for="Laminate1" name="LaminateLabel" />
           <ListBox source="Laminate1" style="width: 175px;" >
             <item>vienpusis</item>
             <item>abipusis</item>
