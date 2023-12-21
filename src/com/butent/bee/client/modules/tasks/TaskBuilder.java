@@ -516,12 +516,13 @@ class TaskBuilder extends ProductSupportInterceptor {
     boolean noExecutors = BeeUtils.allEmpty(activeRow.getProperty(PROP_EXECUTORS),
         activeRow.getProperty(PROP_EXECUTOR_GROUPS));
 
-    if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue("Laminate1"))) {
+    if (isLaminateRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue("Laminate1"))
+            && isNewTaskOrderPForm(getFormView().getFormName())) {
       getFormView().notifySevere(Localized.dictionary().fieldRequired("Laminavimas"));
       return;
     }
 
-    if (isLaminateRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
+    if (isMaterialTypeRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue(COL_MATERIAL_TYPE))) {
       getFormView().notifySevere(Localized.dictionary().fieldRequired(Localized.dictionary().type()));
       return;
     }
@@ -1271,7 +1272,9 @@ class TaskBuilder extends ProductSupportInterceptor {
   }
 
   private void setLaminateRequired(String material) {
-    laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
+    if (Objects.nonNull(laminateLabel)) {
+      laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
+    }
   }
 
   private void setMaterialTypes(String material) {

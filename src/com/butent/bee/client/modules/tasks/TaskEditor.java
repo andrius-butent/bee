@@ -773,6 +773,12 @@ class TaskEditor extends ProductSupportInterceptor {
           getFormView().notifySevere(Localized.dictionary().fieldRequired(Localized.dictionary().type()));
           return false;
         }
+
+        if (isLaminateRequired(getStringValue(COL_PAPER_ENVELOPE)) && BeeUtils.isEmpty(getStringValue("Laminate1"))
+                && isTaskOrderPForm(getFormView().getFormName())) {
+          getFormView().notifySevere(Localized.dictionary().fieldRequired("Laminavimas"));
+          return false;
+        }
       }
     }
 
@@ -2451,7 +2457,9 @@ class TaskEditor extends ProductSupportInterceptor {
   }
 
   private void setLaminateRequired(String material) {
-    laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
+    if (Objects.nonNull(laminateLabel)) {
+      laminateLabel.setStyleName(StyleUtils.NAME_REQUIRED, isLaminateRequired(material));
+    }
   }
 
   private void setMaterialTypes(String material) {

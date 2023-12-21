@@ -187,8 +187,9 @@
                         </row>
 
                         <row>
-                            <Label for="Laminate1"/>
+                            <Label for="Laminate1" name="LaminateLabel" />
                             <ListBox source="Laminate1" style="width: 175px;">
+                                <item>Nėra</item>
                                 <item>Eko MAT</item>
                                 <item>GLOSS</item>
                                 <item>Grindų</item>
