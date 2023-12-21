@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.client.widget.Label;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -168,6 +169,8 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
 
       presenter.getHeader().addCommandItem(createProject);
     }
+
+    presenter.getHeader().addCommandItem(createAddTaskOrderPButton());
   }
 
   @Override
@@ -1100,5 +1103,19 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
             }
           }
         });
+  }
+
+  private static Label createAddTaskOrderPButton() {
+    Label taskOrderPLabel = new Label("+ " + "KURTI NAUJĄ (P)");
+    taskOrderPLabel.addStyleName(BeeConst.CSS_CLASS_PREFIX + "CreateNew");
+    taskOrderPLabel.addClickHandler(clickEvent -> {
+      DataInfo dataInfo = Data.getDataInfo(TaskConstants.VIEW_TASKS);
+      BeeRow row = RowFactory.createEmptyRow(dataInfo, true);
+
+      RowFactory.createRow(TaskConstants.FORM_NEW_TASK_ORDER_P,
+              "Naujas užsakymas (P)", dataInfo, row, Modality.ENABLED, null);
+    });
+
+    return taskOrderPLabel;
   }
 }
