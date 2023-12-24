@@ -1,5 +1,6 @@
 package com.butent.bee.client.modules.tasks;
 
+import com.butent.bee.client.style.StyleUtils;
 import com.butent.bee.client.widget.Label;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -1108,6 +1109,8 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
   private static Label createAddTaskOrderPButton() {
     Label taskOrderPLabel = new Label("+ " + "KURTI NAUJĄ (P)");
     taskOrderPLabel.addStyleName(BeeConst.CSS_CLASS_PREFIX + "CreateNew");
+    StyleUtils.setBackgroundColor(taskOrderPLabel, "#1eb2d8");
+
     taskOrderPLabel.addClickHandler(clickEvent -> {
       DataInfo dataInfo = Data.getDataInfo(TaskConstants.VIEW_TASKS);
       BeeRow row = RowFactory.createEmptyRow(dataInfo, true);
