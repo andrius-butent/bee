@@ -21,6 +21,7 @@
     <DataColumn name="SerialNo" visible="true" />
     <DataColumn name="Description" visible="true"/>
     <DataColumn name="ArticleNo" visible="true" />
+    <DataColumn name="ManufacturerName" visible="true" />
   </g:columns>
   <g:rowStyle>
     <ui:class>bee-service-maintenance-late</ui:class>
