@@ -2079,7 +2079,8 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
         warehouse = invoice.getValue(COL_TRADE_WAREHOUSE_FROM);
         client = companies.get(invoice.getLong(COL_TRADE_CUSTOMER));
       }
-      WSDocument doc = new WSDocument(encodeId(trade, invoice.getLong(itemsRelation)),
+      int multiplier = prm.getInteger(PRM_MULTIPLIER);
+      WSDocument doc = new WSDocument(encodeId(trade, invoice.getLong(itemsRelation) * multiplier),
           invoice.getDateTime(COL_TRADE_DATE), invoice.getValue(COL_OPERATION_NAME), client,
           warehouse);
 

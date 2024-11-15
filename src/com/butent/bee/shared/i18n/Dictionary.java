@@ -4843,6 +4843,8 @@ public interface Dictionary {
 
   default String prmERPLogin() {return g("prmERPLogin");}
 
+  default String prmIdMultiplier() {return g("prmIdMultiplier");}
+
   default String prmERPPassword() {return g("prmERPPassword");}
 
   default String prmERPRefreshIntervalInMinutes() {return g("prmERPRefreshIntervalInMinutes");}

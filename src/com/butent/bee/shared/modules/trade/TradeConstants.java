@@ -20,6 +20,7 @@ public final class TradeConstants {
 
   public static final String PRM_ERP_REFRESH_INTERVAL = "ERPRefreshIntervalInMinutes";
   public static final String PRM_OVERDUE_INVOICES = "OverdueInvoices";
+  public static final String PRM_MULTIPLIER = "IdMultiplier";
 
   public static final String SVC_ITEMS_INFO = "ItemsInfo";
   public static final String SVC_CREDIT_INFO = "CreditInfo";

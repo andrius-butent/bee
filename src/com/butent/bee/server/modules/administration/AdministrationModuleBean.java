@@ -241,7 +241,7 @@ public class AdministrationModuleBean implements BeeModule, HasTimerService {
         BeeParameter.createNumber(module, Dimensions.PRM_DIMENSIONS, false,
             Dimensions.SPACETIME / 2),
         BeeParameter.createNumber(module, PRM_ERP_REFRESH_INTERVAL),
-        BeeParameter.createBoolean(module, PRM_OVERDUE_INVOICES)
+        BeeParameter.createNumber(module, PRM_MULTIPLIER, false, 1)
       );
 
     params.addAll(getSqlEngineParameters());
