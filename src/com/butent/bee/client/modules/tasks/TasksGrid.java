@@ -948,6 +948,9 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
               return;
             }
 
+            String formName = BeeUtils.unbox(Data.getBoolean(VIEW_TASK_ORDERS, newRow, COL_TASK_ORDER_P))
+                    ? FORM_TASK_ORDER_P : FORM_TASK_ORDER;
+
             Queries.getRowSet(VIEW_TASK_ORDER_ITEMS, null, Filter.equals(COL_TASK, oldRow.getId()), new RowSetCallback() {
               @Override
               public void onSuccess(BeeRowSet result) {
@@ -959,12 +962,14 @@ class TasksGrid extends AbstractGridInterceptor implements RowUpdateEvent.Handle
                   Queries.insertRows(insertRows, new RpcCallback<RowInfoList>() {
                     @Override
                     public void onSuccess(RowInfoList rowInfo) {
-                      RowEditor.openForm(FORM_TASK_ORDER, Data.getDataInfo(VIEW_TASKS), Filter.compareId(newTaskID),
+                      RowEditor.openForm(formName, Data.getDataInfo(VIEW_TASKS), Filter.compareId(newTaskID),
                         Opener.MODAL, null);
                       getGridPresenter().handleAction(Action.REFRESH);
                     }
                   });
                 } else {
+                  RowEditor.openForm(formName, Data.getDataInfo(VIEW_TASKS), Filter.compareId(newTaskID),
+                          Opener.MODAL, null);
                   getGridPresenter().handleAction(Action.REFRESH);
                 }
               }
