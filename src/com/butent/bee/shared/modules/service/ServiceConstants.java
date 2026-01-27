@@ -32,8 +32,8 @@ public final class ServiceConstants {
   public static final String PRM_URGENT_RATE = "UrgentRate";
   public static final String PRM_SERVICE_MANAGER_WAREHOUSE = "ServiceManagerWarehouse";
   public static final String PRM_SMS_REQUEST_SERVICE_ADDRESS = "SmsRequestServiceAddress";
-  public static final String PRM_SMS_REQUEST_SERVICE_USER_NAME = "SmsRequestServiceUserName";
-  public static final String PRM_SMS_REQUEST_SERVICE_PASSWORD = "SmsRequestServicePassword";
+  public static final String PRM_SMS_REQUEST_SERVICE_UID = "SmsRequestServiceUid";
+  public static final String PRM_SMS_REQUEST_SERVICE_APIKEY = "SmsRequestServiceApiKey";
   public static final String PRM_SMS_REQUEST_SERVICE_FROM = "SmsRequestServiceFrom";
   public static final String PRM_EXTERNAL_MAINTENANCE_URL = "ExternalMaintenanceUrl";
   public static final String PRM_SMS_REQUEST_CONTACT_INFO_FROM = "SmsRequestContactInfoFrom";

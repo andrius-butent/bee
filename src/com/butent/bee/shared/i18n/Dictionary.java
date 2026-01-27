@@ -4943,9 +4943,9 @@ public interface Dictionary {
 
   default String prmSmsRequestServiceFrom() {return g("prmSmsRequestServiceFrom");}
 
-  default String prmSmsRequestServicePassword() {return g("prmSmsRequestServicePassword");}
+  default String prmSmsRequestServiceApiKey() {return g("prmSmsRequestServiceApiKey");}
 
-  default String prmSmsRequestServiceUserName() {return g("prmSmsRequestServiceUserName");}
+  default String prmSmsRequestServiceUid() {return g("prmSmsRequestServiceUid");}
 
   default String prmSmsServiceAddress() {return g("prmSmsServiceAddress");}
 

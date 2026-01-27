@@ -90,6 +90,10 @@ import com.butent.bee.shared.utils.Codec;
 import com.butent.bee.shared.utils.Property;
 import com.butent.bee.shared.websocket.messages.ModificationMessage;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -102,6 +106,10 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -114,7 +122,7 @@ import javax.ws.rs.core.UriBuilder;
 @LocalBean
 public class ServiceModuleBean implements BeeModule {
 
-  private static BeeLogger logger = LogUtils.getLogger(ServiceModuleBean.class);
+  private static final BeeLogger logger = LogUtils.getLogger(ServiceModuleBean.class);
 
   @EJB
   SystemBean sys;
@@ -130,6 +138,17 @@ public class ServiceModuleBean implements BeeModule {
   OrdersModuleBean ord;
   @EJB
   SearchBean src;
+
+    TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+            }
+    };
 
   @Override
   public List<SearchResult> doSearch(String query) {
@@ -345,8 +364,8 @@ public class ServiceModuleBean implements BeeModule {
             COL_TYPE_NAME),
         BeeParameter.createNumber(module, PRM_URGENT_RATE),
         BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_ADDRESS),
-        BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_USER_NAME),
-        BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_PASSWORD),
+        BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_UID),
+        BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_APIKEY),
         BeeParameter.createText(module, PRM_SMS_REQUEST_SERVICE_FROM),
         BeeParameter.createText(module, PRM_EXTERNAL_MAINTENANCE_URL),
         BeeParameter.createText(module, PRM_SMS_REQUEST_CONTACT_INFO_FROM, false, VIEW_DEPARTMENTS),
@@ -1789,33 +1808,51 @@ public class ServiceModuleBean implements BeeModule {
     }
 
     String address = prm.getText(PRM_SMS_REQUEST_SERVICE_ADDRESS);
-    String userName = prm.getText(PRM_SMS_REQUEST_SERVICE_USER_NAME);
-    String password = prm.getText(PRM_SMS_REQUEST_SERVICE_PASSWORD);
+    String uid = prm.getText(PRM_SMS_REQUEST_SERVICE_UID);
+    String apiKey = prm.getText(PRM_SMS_REQUEST_SERVICE_APIKEY);
 
     if (BeeUtils.isEmpty(address)) {
       logger.warning(BeeUtils.joinWords(PRM_SMS_REQUEST_SERVICE_ADDRESS, " is empty"));
       return ResponseObject.error(PRM_SMS_REQUEST_SERVICE_ADDRESS + " is empty");
     }
-    if (BeeUtils.isEmpty(userName)) {
-      logger.warning(BeeUtils.joinWords(PRM_SMS_REQUEST_SERVICE_USER_NAME, " is empty"));
-      return ResponseObject.error(PRM_SMS_REQUEST_SERVICE_USER_NAME + " is empty");
+    if (BeeUtils.isEmpty(uid)) {
+      logger.warning(BeeUtils.joinWords(PRM_SMS_REQUEST_SERVICE_UID, " is empty"));
+      return ResponseObject.error(PRM_SMS_REQUEST_SERVICE_UID + " is empty");
     }
-    if (BeeUtils.isEmpty(password)) {
-      logger.warning(BeeUtils.joinWords(PRM_SMS_REQUEST_SERVICE_PASSWORD, " is empty"));
-      return ResponseObject.error(PRM_SMS_REQUEST_SERVICE_PASSWORD + " is empty");
+    if (BeeUtils.isEmpty(apiKey)) {
+      logger.warning(BeeUtils.joinWords(PRM_SMS_REQUEST_SERVICE_APIKEY, " is empty"));
+      return ResponseObject.error(PRM_SMS_REQUEST_SERVICE_APIKEY + " is empty");
     }
 
-    Client client = ClientBuilder.newClient();
+    ClientBuilder clientBuilder = ClientBuilder.newBuilder();
+    try {
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+        clientBuilder.sslContext(sslContext);
+    } catch (NoSuchAlgorithmException | KeyManagementException e) {
+      logger.severe("SSL setup error: " + e.getMessage());
+      return ResponseObject.error("SSL setup error: " + e.getMessage());
+    }
+
+    // Hostname verifier that ignores hostname mismatches
+    HostnameVerifier allHostsValid = (hostname, session) -> true;
+
+    Client client = clientBuilder
+            .hostnameVerifier(allHostsValid)
+            .build();
     UriBuilder uriBuilder = UriBuilder.fromPath(address);
 
-    uriBuilder.queryParam("username", userName);
-    uriBuilder.queryParam("password", password);
+    uriBuilder.queryParam("uid", uid);
+    uriBuilder.queryParam("apikey", apiKey);
     uriBuilder.queryParam("message", message);
     uriBuilder.queryParam("from", from);
     uriBuilder.queryParam("to", phone);
     WebTarget webtarget = client.target(uriBuilder);
 
-    Invocation.Builder builder = webtarget.request(MediaType.TEXT_PLAIN_TYPE)
+    System.out.println("======= SMS REQUEST URL =======");
+    System.out.println(webtarget.getUri().toString());
+
+    Invocation.Builder builder = webtarget.request(MediaType.APPLICATION_JSON)
         .acceptEncoding(BeeConst.CHARSET_UTF8);
 
     Response response = builder.get();
