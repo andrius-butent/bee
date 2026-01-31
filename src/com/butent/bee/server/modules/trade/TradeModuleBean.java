@@ -1894,6 +1894,7 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
   }
 
   private void importERPPayments() {
+    int multiplier = prm.getInteger(PRM_MULTIPLIER);
     long historyId = sys.eventStart(PRM_ERP_REFRESH_INTERVAL);
     int c = 0;
 
@@ -1914,7 +1915,7 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
           if (ids.length() > 0) {
             ids.append(",");
           }
-          ids.append("'").append(TradeModuleBean.encodeId(table, id)).append("'");
+          ids.append("'").append(TradeModuleBean.encodeId(table, id * multiplier)).append("'");
         }
         String remoteAddress = prm.getText(PRM_ERP_ADDRESS);
         String remoteLogin = prm.getText(PRM_ERP_LOGIN);
@@ -1931,9 +1932,8 @@ public class TradeModuleBean implements BeeModule, ConcurrencyBean.HasTimerServi
                   "id", "data", "suma");
 
           for (SimpleRow payment : payments) {
-            Long id = TradeModuleBean.decodeId(table, payment.getLong("id"));
-            Double paid = payment.getDouble("suma");
-
+              Long id = TradeModuleBean.decodeId(table, payment.getLong("id")) / multiplier;
+              Double paid = payment.getDouble("suma");
             if (!Objects.equals(paid, BeeUtils.toDoubleOrNull(debts.getValueByKey(idName,
                 BeeUtils.toString(id), COL_TRADE_PAID)))) {
 
