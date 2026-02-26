@@ -1787,6 +1787,9 @@ public class ServiceModuleBean implements BeeModule {
 
     String phone = commentInfoRow.getValue(COL_PHONE);
     phone = phone.replaceAll("\\D+", "");
+    if (phone.startsWith("0") || phone.startsWith("8")) {
+        phone = "370" + phone.substring(1);
+    }
 
     String maintenanceNumber = commentInfoRow.getValue(COL_MAINTENANCE_NUMBER);
     String externalLink = prm.getText(PRM_EXTERNAL_MAINTENANCE_URL);
@@ -1842,11 +1845,16 @@ public class ServiceModuleBean implements BeeModule {
             .build();
     UriBuilder uriBuilder = UriBuilder.fromPath(address);
 
-    uriBuilder.queryParam("uid", uid);
-    uriBuilder.queryParam("apikey", apiKey);
-    uriBuilder.queryParam("message", message);
-    uriBuilder.queryParam("from", from);
-    uriBuilder.queryParam("to", phone);
+    long timeStamp = System.currentTimeMillis();
+    String signature = Codec.md5(uid + phone + from + message + timeStamp + apiKey);
+
+    uriBuilder.queryParam("login", uid);
+    uriBuilder.queryParam("signature", signature);
+    uriBuilder.queryParam("phone", phone);
+    uriBuilder.queryParam("text", message);
+    uriBuilder.queryParam("sender", from);
+    uriBuilder.queryParam("timestamp", timeStamp);
+
     WebTarget webtarget = client.target(uriBuilder);
 
     System.out.println("======= SMS REQUEST URL =======");
@@ -1858,8 +1866,7 @@ public class ServiceModuleBean implements BeeModule {
     Response response = builder.get();
     String smsResponseMessage = response.readEntity(String.class);
 
-    if (response.getStatus() == 200 && !BeeUtils.isEmpty(smsResponseMessage)
-        && BeeUtils.containsSame(smsResponseMessage, "OK")) {
+    if (response.getStatus() == 200 && !BeeUtils.isEmpty(smsResponseMessage)) {
       return ResponseObject.emptyResponse();
     }
 
