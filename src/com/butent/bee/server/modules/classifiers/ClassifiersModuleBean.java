@@ -34,6 +34,8 @@ import static com.butent.bee.shared.modules.trade.TradeConstants.*;
 import static com.butent.bee.shared.modules.transport.TransportConstants.COL_MODEL;
 import static com.butent.bee.shared.modules.transport.TransportConstants.*;
 
+import com.butent.bee.server.concurrency.ConcurrencyBean;
+import com.butent.bee.server.concurrency.ConcurrencyBean.HasTimerService;
 import com.butent.bee.server.data.BeeTable;
 import com.butent.bee.server.data.BeeView;
 import com.butent.bee.server.data.DataEditorBean;
@@ -147,6 +149,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.Timer;
 import javax.ejb.TimerService;
 import javax.imageio.ImageIO;
 import javax.mail.internet.AddressException;
@@ -154,7 +157,7 @@ import javax.mail.internet.InternetAddress;
 
 @Stateless
 @LocalBean
-public class ClassifiersModuleBean implements BeeModule {
+public class ClassifiersModuleBean implements BeeModule, HasTimerService {
 
   private static BeeLogger logger = LogUtils.getLogger(ClassifiersModuleBean.class);
 
@@ -174,6 +177,8 @@ public class ClassifiersModuleBean implements BeeModule {
   AdministrationModuleBean adm;
   @EJB
   ParamHolderBean prm;
+  @EJB
+  ConcurrencyBean cb;
 
   @EJB
   SearchBean src;
@@ -294,12 +299,19 @@ public class ClassifiersModuleBean implements BeeModule {
   }
 
   @Override
+  public TimerService getTimerService() {
+    return timerService;
+  }
+
+  @Override
   public String getResourcePath() {
     return getModule().getName();
   }
 
   @Override
   public void init() {
+    cb.createIntervalTimer(this.getClass(), PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS);
+
     sys.registerDataEventHandler(new DataEventHandler() {
       @Subscribe
       @AllowConcurrentEvents
@@ -2367,6 +2379,62 @@ public class ClassifiersModuleBean implements BeeModule {
     SimpleRowSet rqs = qs.getData(objectsSql);
 
     return ResponseObject.response(rqs);
+  }
+
+  @Override
+  public void ejbTimeout(Timer timer) {
+    if (ConcurrencyBean.isParameterTimer(timer, PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS)) {
+      runScheduledTask();
+    }
+  }
+
+  private void runScheduledTask() {
+    logger.info("Timer " + PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + ", " + "started");
+
+    SimpleRowSet rows = qs.getData(new SqlSelect()
+        .addField(TBL_CONTACTS, sys.getIdName(TBL_CONTACTS), COL_CONTACT)
+        .addField(TBL_PERSONS, sys.getIdName(TBL_PERSONS), COL_PERSON)
+        .addFrom(TBL_SERVICE_MAINTENANCE)
+        .addFromInner(TBL_COMPANY_PERSONS,
+            SqlUtils.join(TBL_SERVICE_MAINTENANCE, COL_COMPANY,
+                TBL_COMPANY_PERSONS, COL_COMPANY))
+        .addFromInner(TBL_PERSONS,
+            sys.joinTables(TBL_PERSONS, TBL_COMPANY_PERSONS, COL_PERSON))
+        .addFromLeft(TBL_CONTACTS,
+            sys.joinTables(TBL_CONTACTS, TBL_PERSONS, COL_CONTACT))
+        .setWhere(SqlUtils.and(
+            SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE,
+                new DateTime(new DateTime().getTime() - 100L * TimeUtils.MILLIS_PER_DAY)),
+            SqlUtils.or(SqlUtils.notNull(TBL_PERSONS, COL_LAST_NAME),
+                SqlUtils.notNull(TBL_CONTACTS, COL_PHONE),
+                SqlUtils.notNull(TBL_CONTACTS, COL_EMAIL), SqlUtils.notNull(TBL_CONTACTS, COL_MOBILE)))));
+
+    Set<Long> contactIds = new HashSet<>();
+    Set<Long> personIds = new HashSet<>();
+    for (SimpleRow row : rows) {
+      Long contactId = row.getLong(COL_CONTACT);
+      if (DataUtils.isId(contactId)) {
+        contactIds.add(contactId);
+      }
+      Long personId = row.getLong(COL_PERSON);
+      if (DataUtils.isId(personId)) {
+        personIds.add(personId);
+      }
+    }
+    if (!contactIds.isEmpty()) {
+      qs.updateData(new SqlUpdate(TBL_CONTACTS)
+          .addConstant(COL_PHONE, null)
+          .addConstant(COL_MOBILE, null)
+          .addConstant(COL_EMAIL, null)
+          .setWhere(SqlUtils.inList(TBL_CONTACTS, sys.getIdName(TBL_CONTACTS), contactIds)));
+    }
+    if (!personIds.isEmpty()) {
+      qs.updateData(new SqlUpdate(TBL_PERSONS)
+          .addConstant(COL_LAST_NAME, null)
+          .setWhere(SqlUtils.inList(TBL_PERSONS, sys.getIdName(TBL_PERSONS), personIds)));
+    }
+    logger.info("Timer" + PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + "finished. Cleared "
+        + contactIds.size() + " contacts and " + personIds.size() + " persons");
   }
 
   @Schedule(hour = "*/1", persistent = false)
