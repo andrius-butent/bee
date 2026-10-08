@@ -183,8 +183,8 @@ public class ConcurrencyBean {
 
     if (BeeUtils.isPositive(minutes)) {
       try {
-        Timer timer = timerService.createIntervalTimer(minutes * TimeUtils.MILLIS_PER_MINUTE,
-            minutes * TimeUtils.MILLIS_PER_MINUTE, new TimerConfig(parameter, false));
+        Timer timer = timerService.createIntervalTimer((long) minutes * TimeUtils.MILLIS_PER_MINUTE,
+            (long) minutes * TimeUtils.MILLIS_PER_MINUTE, new TimerConfig(parameter, false));
 
         logger.info("Created", NameUtils.getClassName(handler), parameter, "timer every", minutes,
             "minutes starting at", timer.getNextTimeout());
