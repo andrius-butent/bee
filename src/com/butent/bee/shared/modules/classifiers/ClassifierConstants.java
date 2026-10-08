@@ -16,6 +16,8 @@ public final class ClassifierConstants {
   public static final String SVC_COMPANY_SOURCE_REPORT = "CompanySourceReport";
 
   public static final String TIMER_REMIND_COMPANY_ACTIONS = "timer_remind_company_actions";
+  public static final String PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS =
+      "TimerToCleanCompanyDetails";
   public static final String TIMER_REMIND_TASKS_SUMMARY = "timer_remind_tasks_summary_";
   public static final String TIMER_REMIND_CALENDAR_EVENTS = "timer_remind_calendar_events";
   public static final String TIMER_REMIND_USER_TASKS = "timer_remind_user_tasks";
