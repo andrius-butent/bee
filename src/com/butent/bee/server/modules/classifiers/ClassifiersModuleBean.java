@@ -150,6 +150,7 @@ import javax.ejb.Schedule;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.imageio.ImageIO;
 import javax.mail.internet.AddressException;
@@ -160,6 +161,9 @@ import javax.mail.internet.InternetAddress;
 public class ClassifiersModuleBean implements BeeModule, HasTimerService {
 
   private static BeeLogger logger = LogUtils.getLogger(ClassifiersModuleBean.class);
+
+  private static final String TIMER_CLEAN_COMPANY_CONTACT_DETAILS_ON_STARTUP =
+      PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + "_startup";
 
   @EJB
   SystemBean sys;
@@ -310,7 +314,9 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
 
   @Override
   public void init() {
-    cb.createIntervalTimer(this.getClass(), PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS);
+    cb.createDailyIntervalTimer(this.getClass(), PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS);
+    timerService.createSingleActionTimer(TimeUtils.MILLIS_PER_MINUTE,
+        new TimerConfig(TIMER_CLEAN_COMPANY_CONTACT_DETAILS_ON_STARTUP, false));
 
     sys.registerDataEventHandler(new DataEventHandler() {
       @Subscribe
@@ -2383,7 +2389,9 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
 
   @Override
   public void ejbTimeout(Timer timer) {
-    if (ConcurrencyBean.isParameterTimer(timer, PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS)) {
+    if (ConcurrencyBean.isParameterTimer(timer, PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS)
+        || ConcurrencyBean.isParameterTimer(timer,
+            TIMER_CLEAN_COMPANY_CONTACT_DETAILS_ON_STARTUP)) {
       runScheduledTask();
     }
   }
@@ -2391,23 +2399,41 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
   private void runScheduledTask() {
     logger.info("Timer " + PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + ", " + "started");
 
+    DateTime cutoff = new DateTime(new DateTime().getTime() - 730L * TimeUtils.MILLIS_PER_DAY);
     SimpleRowSet rows = qs.getData(new SqlSelect()
         .addField(TBL_CONTACTS, sys.getIdName(TBL_CONTACTS), COL_CONTACT)
         .addField(TBL_PERSONS, sys.getIdName(TBL_PERSONS), COL_PERSON)
+        .addField(TBL_COMPANY_PERSONS, COL_CONTACT, "CompanyPersonContact")
+        .addField(TBL_COMPANIES, COL_CONTACT, "CompanyContact")
         .addFrom(TBL_SERVICE_MAINTENANCE)
-        .addFromInner(TBL_COMPANY_PERSONS,
+        .addFromLeft(TBL_COMPANY_PERSONS,
             SqlUtils.join(TBL_SERVICE_MAINTENANCE, COL_COMPANY,
                 TBL_COMPANY_PERSONS, COL_COMPANY))
-        .addFromInner(TBL_PERSONS,
+        .addFromLeft(TBL_PERSONS,
             sys.joinTables(TBL_PERSONS, TBL_COMPANY_PERSONS, COL_PERSON))
         .addFromLeft(TBL_CONTACTS,
             sys.joinTables(TBL_CONTACTS, TBL_PERSONS, COL_CONTACT))
+        .addFromLeft(TBL_CONTACTS, "CompanyPersonContactDetails",
+            SqlUtils.join("CompanyPersonContactDetails", sys.getIdName(TBL_CONTACTS),
+                TBL_COMPANY_PERSONS, COL_CONTACT))
+        .addFromLeft(TBL_COMPANIES,
+            sys.joinTables(TBL_COMPANIES, TBL_SERVICE_MAINTENANCE, COL_COMPANY))
+        .addFromLeft(TBL_CONTACTS, "CompanyContactDetails",
+            SqlUtils.join("CompanyContactDetails", sys.getIdName(TBL_CONTACTS),
+                TBL_COMPANIES, COL_CONTACT))
         .setWhere(SqlUtils.and(
-            SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE,
-                new DateTime(new DateTime().getTime() - 100L * TimeUtils.MILLIS_PER_DAY)),
-            SqlUtils.or(SqlUtils.notNull(TBL_PERSONS, COL_LAST_NAME),
+            SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE, cutoff),
+            SqlUtils.or(
+                SqlUtils.notNull(TBL_PERSONS, COL_LAST_NAME),
                 SqlUtils.notNull(TBL_CONTACTS, COL_PHONE),
-                SqlUtils.notNull(TBL_CONTACTS, COL_EMAIL), SqlUtils.notNull(TBL_CONTACTS, COL_MOBILE)))));
+                SqlUtils.notNull(TBL_CONTACTS, COL_EMAIL),
+                SqlUtils.notNull(TBL_CONTACTS, COL_MOBILE),
+                SqlUtils.notNull("CompanyPersonContactDetails", COL_PHONE),
+                SqlUtils.notNull("CompanyPersonContactDetails", COL_EMAIL),
+                SqlUtils.notNull("CompanyPersonContactDetails", COL_MOBILE),
+                SqlUtils.notNull("CompanyContactDetails", COL_PHONE),
+                SqlUtils.notNull("CompanyContactDetails", COL_EMAIL),
+                SqlUtils.notNull("CompanyContactDetails", COL_MOBILE)))));
 
     Set<Long> contactIds = new HashSet<>();
     Set<Long> personIds = new HashSet<>();
@@ -2416,11 +2442,20 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
       if (DataUtils.isId(contactId)) {
         contactIds.add(contactId);
       }
+      Long companyPersonContactId = row.getLong("CompanyPersonContact");
+      if (DataUtils.isId(companyPersonContactId)) {
+        contactIds.add(companyPersonContactId);
+      }
+      Long companyContactId = row.getLong("CompanyContact");
+      if (DataUtils.isId(companyContactId)) {
+        contactIds.add(companyContactId);
+      }
       Long personId = row.getLong(COL_PERSON);
       if (DataUtils.isId(personId)) {
         personIds.add(personId);
       }
     }
+
     if (!contactIds.isEmpty()) {
       qs.updateData(new SqlUpdate(TBL_CONTACTS)
           .addConstant(COL_PHONE, null)
@@ -2431,6 +2466,7 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
     if (!personIds.isEmpty()) {
       qs.updateData(new SqlUpdate(TBL_PERSONS)
           .addConstant(COL_LAST_NAME, null)
+          .addConstant(COL_FIRST_NAME, "N/A")
           .setWhere(SqlUtils.inList(TBL_PERSONS, sys.getIdName(TBL_PERSONS), personIds)));
     }
     logger.info("Timer" + PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + "finished. Cleared "
