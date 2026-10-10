@@ -128,6 +128,7 @@ public class ConcurrencyBean {
 
   private final Map<String, Class<? extends HasTimerService>> calendarReg = new HashMap<>();
   private final Map<String, Class<? extends HasTimerService>> intervalReg = new HashMap<>();
+  private final Map<String, Long> intervalUnits = new HashMap<>();
 
   private final Map<String, ReentrantLock> locks = new ConcurrentHashMap<>();
 
@@ -177,17 +178,30 @@ public class ConcurrencyBean {
   }
 
   public <T extends HasTimerService> void createIntervalTimer(Class<T> handler, String parameter) {
+    createIntervalTimer(handler, parameter, TimeUtils.MILLIS_PER_MINUTE);
+  }
+
+  public <T extends HasTimerService> void createDailyIntervalTimer(Class<T> handler,
+      String parameter) {
+    createIntervalTimer(handler, parameter, TimeUtils.MILLIS_PER_DAY);
+  }
+
+  private <T extends HasTimerService> void createIntervalTimer(Class<T> handler, String parameter,
+      long millisPerUnit) {
     intervalReg.put(parameter, handler);
+    intervalUnits.put(parameter, millisPerUnit);
     TimerService timerService = removeTimer(handler, parameter);
-    Integer minutes = prm.getInteger(parameter);
+    Integer interval = prm.getInteger(parameter);
 
-    if (BeeUtils.isPositive(minutes)) {
+    if (BeeUtils.isPositive(interval)) {
       try {
-        Timer timer = timerService.createIntervalTimer((long) minutes * TimeUtils.MILLIS_PER_MINUTE,
-            (long) minutes * TimeUtils.MILLIS_PER_MINUTE, new TimerConfig(parameter, false));
+        long intervalMillis = interval * millisPerUnit;
+        Timer timer = timerService.createIntervalTimer(intervalMillis, intervalMillis,
+            new TimerConfig(parameter, false));
 
-        logger.info("Created", NameUtils.getClassName(handler), parameter, "timer every", minutes,
-            "minutes starting at", timer.getNextTimeout());
+        logger.info("Created", NameUtils.getClassName(handler), parameter, "timer every", interval,
+            millisPerUnit == TimeUtils.MILLIS_PER_DAY ? "days" : "minutes",
+            "starting at", timer.getNextTimeout());
       } catch (IllegalArgumentException ex) {
         if (DataUtils.isId(usr.getCurrentUserId())) {
           Endpoint.sendToUser(usr.getCurrentUserId(), LogMessage.error(ex));
@@ -209,7 +223,7 @@ public class ConcurrencyBean {
         }
         if (intervalReg.containsKey(param)) {
           Invocation.locateRemoteBean(ConcurrencyBean.class)
-              .createIntervalTimer(intervalReg.get(param), param);
+              .createIntervalTimer(intervalReg.get(param), param, intervalUnits.get(param));
         }
       }
     });
