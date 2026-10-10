@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-28T15:14:00 -->
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ServiceMaintenanceSticker" pageWidth="283" pageHeight="167" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="243" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="ffae7aa2-027b-45ee-896c-aa9d9dcfc6c0">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="mm"/>
@@ -26,6 +25,7 @@
 	<parameter name="ExternalMaintenanceUrl" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CreatorCompanyName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="TypePerson" class="java.lang.String"/>
+	<parameter name="Date" class="java.lang.String"/>
 	<summary>
 		<band height="125">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -45,7 +45,7 @@
 				<textFieldExpression><![CDATA[$P{MaintenanceNumber}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="120" y="10" width="120" height="30" isRemoveLineWhenBlank="true" uuid="e9449de7-0bec-4c84-af43-fe152c5bfac1">
+				<reportElement x="120" y="10" width="120" height="20" isRemoveLineWhenBlank="true" uuid="e9449de7-0bec-4c84-af43-fe152c5bfac1">
 					<property name="com.jaspersoft.studio.unit.barWidth" value="mm"/>
 				</reportElement>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="29">
@@ -123,6 +123,18 @@
 					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{DepartmentPhone}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="120" y="32" width="120" height="4" isRemoveLineWhenBlank="true" uuid="9662c93e-d4c7-4e92-be5b-771cb10521b3">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new com.butent.bee.shared.time.DateTime(BeeUtils.toLong($P{Date})).getDateTime()]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
