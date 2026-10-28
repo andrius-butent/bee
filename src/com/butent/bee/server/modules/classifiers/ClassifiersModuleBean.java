@@ -2422,6 +2422,7 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
             SqlUtils.join("CompanyContactDetails", sys.getIdName(TBL_CONTACTS),
                 TBL_COMPANIES, COL_CONTACT))
         .setWhere(SqlUtils.and(
+            SqlUtils.notEqual(TBL_COMPANIES, "CompanyID", 1),
             SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE, cutoff),
             SqlUtils.or(
                 SqlUtils.notNull(TBL_PERSONS, COL_LAST_NAME),
