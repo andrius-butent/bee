@@ -2399,7 +2399,36 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
   private void runScheduledTask() {
     logger.info("Timer " + PRM_TIMER_TO_CLEAN_COMPANY_CONTACT_DETAILS + ", " + "started");
 
-    DateTime cutoff = new DateTime(new DateTime().getTime() - 730L * TimeUtils.MILLIS_PER_DAY);
+    DateTime cutoff = new DateTime(new DateTime().getTime() - 720L * TimeUtils.MILLIS_PER_DAY);
+    SqlSelect recentCompanies = new SqlSelect()
+        .setDistinctMode(true)
+        .addFields(TBL_SERVICE_MAINTENANCE, COL_COMPANY)
+        .addFrom(TBL_SERVICE_MAINTENANCE)
+        .setWhere(SqlUtils.and(
+            SqlUtils.notNull(TBL_SERVICE_MAINTENANCE, COL_COMPANY),
+            SqlUtils.not(SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE, cutoff))));
+    SqlSelect eligibleCompanies = new SqlSelect()
+        .setDistinctMode(true)
+        .addFields(TBL_SERVICE_MAINTENANCE, COL_COMPANY)
+        .addFrom(TBL_SERVICE_MAINTENANCE)
+        .addFromInner(TBL_COMPANIES,
+            sys.joinTables(TBL_COMPANIES, TBL_SERVICE_MAINTENANCE, COL_COMPANY))
+        .setWhere(SqlUtils.and(
+            SqlUtils.notEqual(TBL_COMPANIES, "CompanyID", 1),
+            SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE, cutoff),
+            SqlUtils.not(SqlUtils.in(TBL_SERVICE_MAINTENANCE, COL_COMPANY, recentCompanies))));
+    SimpleRowSet blockedPeople = qs.getData(new SqlSelect()
+        .setDistinctMode(true)
+        .addFields(TBL_COMPANY_PERSONS, COL_PERSON)
+        .addFrom(TBL_COMPANY_PERSONS)
+        .setWhere(SqlUtils.not(SqlUtils.in(TBL_COMPANY_PERSONS, COL_COMPANY, eligibleCompanies))));
+    Set<Long> blockedPersonIds = new HashSet<>();
+    for (SimpleRow row : blockedPeople) {
+      Long personId = row.getLong(COL_PERSON);
+      if (DataUtils.isId(personId)) {
+        blockedPersonIds.add(personId);
+      }
+    }
     SimpleRowSet rows = qs.getData(new SqlSelect()
         .addField(TBL_CONTACTS, sys.getIdName(TBL_CONTACTS), COL_CONTACT)
         .addField(TBL_PERSONS, sys.getIdName(TBL_PERSONS), COL_PERSON)
@@ -2422,8 +2451,8 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
             SqlUtils.join("CompanyContactDetails", sys.getIdName(TBL_CONTACTS),
                 TBL_COMPANIES, COL_CONTACT))
         .setWhere(SqlUtils.and(
-            SqlUtils.notEqual(TBL_COMPANIES, "CompanyID", 1),
             SqlUtils.less(TBL_SERVICE_MAINTENANCE, COL_MAINTENANCE_DATE, cutoff),
+            SqlUtils.in(TBL_SERVICE_MAINTENANCE, COL_COMPANY, eligibleCompanies),
             SqlUtils.or(
                 SqlUtils.notNull(TBL_PERSONS, COL_LAST_NAME),
                 SqlUtils.notNull(TBL_CONTACTS, COL_PHONE),
@@ -2439,20 +2468,21 @@ public class ClassifiersModuleBean implements BeeModule, HasTimerService {
     Set<Long> contactIds = new HashSet<>();
     Set<Long> personIds = new HashSet<>();
     for (SimpleRow row : rows) {
+      Long personId = row.getLong(COL_PERSON);
+      boolean cleanPersonData = DataUtils.isId(personId) && !blockedPersonIds.contains(personId);
       Long contactId = row.getLong(COL_CONTACT);
-      if (DataUtils.isId(contactId)) {
+      if (cleanPersonData && DataUtils.isId(contactId)) {
         contactIds.add(contactId);
       }
       Long companyPersonContactId = row.getLong("CompanyPersonContact");
-      if (DataUtils.isId(companyPersonContactId)) {
+      if (cleanPersonData && DataUtils.isId(companyPersonContactId)) {
         contactIds.add(companyPersonContactId);
       }
       Long companyContactId = row.getLong("CompanyContact");
       if (DataUtils.isId(companyContactId)) {
         contactIds.add(companyContactId);
       }
-      Long personId = row.getLong(COL_PERSON);
-      if (DataUtils.isId(personId)) {
+      if (cleanPersonData) {
         personIds.add(personId);
       }
     }
